@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTPStation — Virtual Numbers & Instant OTP</title>
+<meta name="description" content="Buy virtual numbers for Facebook, WhatsApp, Telegram, TikTok, Instagram and more. OTP codes delivered in seconds, 24/7.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- announcement ticker -->
+<div class="ticker"><div class="ticker-track" id="tickerTrack"></div></div>
+
+<header class="topbar">
+  <div class="logo logo-home" onclick="goHome()">🛡️ <span id="siteName">OTPStation</span></div>
+  <div id="authArea"></div>
+</header>
+
+<div id="profileBar" class="profile-bar hidden">
+  <span>👤 <b id="pUsername"></b></span>
+  <span class="balance">$<b id="pBalance">0.00</b></span>
+</div>
+
+<main>
+  <!-- digital plates (navigation) -->
+  <div class="plates" id="plates">
+    <button class="plate active" data-tab="services">
+      <span class="plate-icon" style="background:linear-gradient(135deg,#4f7cff,#a04fff)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </span>
+      <span><span class="plate-label">Services</span><br><span class="plate-sub">Buy a number</span></span>
+    </button>
+    <button class="plate" data-tab="numbers">
+      <span class="plate-icon" style="background:linear-gradient(135deg,#12b981,#0a7a52)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+      </span>
+      <span><span class="plate-label">My Numbers</span><br><span class="plate-sub">Active & history</span></span>
+    </button>
+    <button class="plate" data-tab="topup">
+      <span class="plate-icon" style="background:linear-gradient(135deg,#ff8a3a,#e02828)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
+      </span>
+      <span><span class="plate-label">Add Funds</span><br><span class="plate-sub">bKash / Nagad</span></span>
+    </button>
+    <button class="plate" data-tab="profile" id="profilePlate">
+      <span class="plate-icon" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </span>
+      <span><span class="plate-label">Profile</span><br><span class="plate-sub">Account & history</span></span>
+    </button>
+    <button class="plate hidden" data-tab="admin" id="adminPlate">
+      <span class="plate-icon" style="background:linear-gradient(135deg,#f5b301,#d97706)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </span>
+      <span><span class="plate-label">Admin</span><br><span class="plate-sub">Manage site</span></span>
+    </button>
+  </div>
+
+  <!-- SERVICES / LANDING -->
+  <section id="tab-services" class="tab-page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-text">
+        <h1>Virtual Numbers for Any App.<br><span class="grad-text">Get OTP in Seconds.</span></h1>
+        <p class="hero-sub">Buy foreign numbers for verification on YouTube, Facebook, WhatsApp, Telegram — all popular services. Pay once, the number is yours, and the code arrives automatically.</p>
+        <div class="cta-row">
+          <button class="btn hero-btn" onclick="document.getElementById('servicesHead').scrollIntoView({behavior:'smooth'})">Buy Number</button>
+          <button class="btn btn-outline hero-btn" onclick="document.querySelector('[data-tab=topup]').click()">Top Up Balance</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>12,400+</b><span>Successful deliveries</span></div>
+          <div class="stat"><b>~8 sec</b><span>Avg OTP time</span></div>
+          <div class="stat"><b>24/7</b><span>Auto delivery</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="badge-float b1">🕘 Support 9 AM – 12 AM</div>
+        <div class="badge-float b2">⚡ Instant Delivery</div>
+        <div class="phone-mock">
+          <div class="pm-head"><img src="logos/youtube.svg" alt=""><div><b>YouTube</b><span>Verification code</span></div></div>
+          <div class="pm-num">+1 555 014 2287 <i class="dot"></i></div>
+          <div class="otp-digits"><span>4</span><span>8</span><span>1</span><span>2</span><span>9</span><span>6</span></div>
+          <div class="pm-exp">Code expires in 04:59</div>
+        </div>
+        <div class="badge-float b3">🛡️ Auto Refund</div>
+      </div>
+    </div>
+
+    <!-- SERVICES GRID -->
+    <div class="section-head" id="servicesHead">
+      <h2>Which service do you need a number for?</h2>
+      <p>Pick a service, then choose a country below and hit Buy — that's it, the number is yours.</p>
+    </div>
+    <div id="serviceGrid" class="grid"></div>
+
+    <div id="countryBox" class="hidden">
+      <button id="backBtn" class="link">← All services</button>
+      <div class="section-head"><h2 id="countryTitle"></h2>
+      <p>Each number delivers one OTP. No code? The full amount is refunded to your balance.</p></div>
+      <div id="countryList"></div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section-head"><h2>Frequently asked questions</h2></div>
+    <div class="faq">
+      <div class="faq-item"><b>How do I buy a number?</b><p>Top up your balance with bKash or Nagad, pick a service and a country, and your number appears instantly.</p></div>
+      <div class="faq-item"><b>How fast will I get the OTP code?</b><p>Usually within seconds — our average is around 8 seconds after you request it.</p></div>
+      <div class="faq-item"><b>What if the code never arrives?</b><p>You get a full automatic refund to your balance. No questions asked.</p></div>
+      <div class="faq-item"><b>Which payment methods do you accept?</b><p>bKash and Nagad (Send Money). Send the amount, submit the TrxID, and your balance is credited after a quick review.</p></div>
+      <div class="faq-item"><b>Do I need to install anything?</b><p>No — everything works right in your browser, on mobile and desktop.</p></div>
+    </div>
+
+    <footer class="footer">
+      <div class="logo">🛡️ <span>OTPStation</span></div>
+      <p>Virtual numbers & instant OTP delivery, 24/7.</p>
+      <p class="muted">© 2026 OTPStation · Support 9 AM – 12 AM</p>
+    </footer>
+  </section>
+
+  <!-- NUMBERS -->
+  <section id="tab-numbers" class="tab-page hidden">
+    <div id="orderList"></div>
+  </section>
+
+  <!-- TOPUP -->
+  <section id="tab-topup" class="tab-page hidden">
+    <div class="card">
+      <h3>💰 Add funds</h3>
+      <p class="muted">Top up with <b>bKash</b> or <b>Nagad</b> — send money, submit the TrxID, and your balance is credited after review.</p>
+      <div id="payInfo"><span class="muted">Loading…</span></div>
+      <div id="topupForm" class="hidden">
+        <label>Payment method
+          <select id="tMethod"></select>
+        </label>
+        <label>Amount (BDT) <input id="tAmountBdt" type="number" min="100" placeholder="e.g. 500"></label>
+        <div id="tRateInfo" class="muted"></div>
+        <label>Your bKash/Nagad number (the one you sent money from) <input id="tSender" type="tel" placeholder="01XXXXXXXXX" maxlength="11"></label>
+        <label>TrxID (from your bKash/Nagad app SMS) <input id="tTrxid" type="text" placeholder="e.g. 9HXK2LM4PQ" maxlength="30" autocomplete="off"></label>
+        <button id="tSubmit" class="btn">I've sent the payment</button>
+        <div id="tMsg" class="msg"></div>
+      </div>
+    </div>
+    <h3>My top-ups</h3>
+    <div id="myTopups"></div>
+  </section>
+
+  <!-- PROFILE -->
+  <section id="tab-profile" class="tab-page hidden">
+    <div class="card">
+      <h3>👤 My profile</h3>
+      <label>Full name <input id="pName" type="text" maxlength="50"></label>
+      <label>Username <input id="pUser" type="text" disabled></label>
+      <label>Email or phone <input id="pContact" type="text" maxlength="60"></label>
+      <p class="muted">Member since <span id="pJoined">—</span></p>
+      <button id="pSave" class="btn">Save changes</button>
+      <div id="pMsg" class="msg"></div>
+    </div>
+    <div class="card">
+      <h3>🔒 Change password</h3>
+      <div id="pwCurrentBox"><label>Current password <input id="pwCur" type="password"></label></div>
+      <label>New password <input id="pwNew" type="password"></label>
+      <label>Confirm new password <input id="pwNew2" type="password"></label>
+      <button id="pwSave" class="btn">Change password</button>
+      <div id="pwMsg" class="msg"></div>
+    </div>
+    <div class="card">
+      <h3>📜 Balance history</h3>
+      <div id="histList"><span class="muted">Loading…</span></div>
+    </div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="tab-admin" class="tab-page hidden">
+    <div class="plates admin-plates" id="adminPlates">
+      <button class="plate" data-apanel="stats">
+        <span class="plate-icon" style="background:linear-gradient(135deg,#4f7cff,#a04fff)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        </span>
+        <span><span class="plate-label">Stats</span><br><span class="plate-sub">Overview</span></span>
+      </button>
+      <button class="plate" data-apanel="users">
+        <span class="plate-icon" style="background:linear-gradient(135deg,#12b981,#0a7a52)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <span><span class="plate-label">Users</span><br><span class="plate-sub">All profiles</span></span>
+      </button>
+      <button class="plate" data-apanel="awaiting">
+        <span class="plate-icon" style="background:linear-gradient(135deg,#f5b301,#d97706)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </span>
+        <span><span class="plate-label">Awaiting</span><br><span class="plate-sub">Payments</span></span>
+      </button>
+      <button class="plate" data-apanel="review">
+        <span class="plate-icon" style="background:linear-gradient(135deg,#ff8a3a,#e02828)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </span>
+        <span><span class="plate-label">To Review</span><br><span class="plate-sub">Approve top-ups</span></span>
+      </button>
+      <button class="plate" data-apanel="settings">
+        <span class="plate-icon" style="background:linear-gradient(135deg,#8b9bb8,#5a6a8a)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </span>
+        <span><span class="plate-label">Settings</span><br><span class="plate-sub">Site config</span></span>
+      </button>
+    </div>
+    <div id="apanel-stats" class="apanel hidden"><div class="card"><h3>📊 Stats</h3><div id="adminStats"><span class="muted">Loading…</span></div></div></div>
+    <div id="apanel-users" class="apanel hidden"><div class="card"><h3>👥 Users</h3><div id="adminUsers"><span class="muted">Loading…</span></div></div></div>
+    <div id="apanel-awaiting" class="apanel hidden"><div class="card"><h3>⏳ Awaiting payment</h3><div id="adminAwaiting"><span class="muted">Loading…</span></div></div></div>
+    <div id="apanel-review" class="apanel hidden"><div class="card"><h3>✅ To review</h3><div id="adminTopups"><span class="muted">Loading…</span></div></div></div>
+    <div id="apanel-settings" class="apanel hidden"><div class="card">
+      <h3>⚙️ Settings</h3>
+      <label>Markup % <input id="cMarkup" type="number"></label>
+      <label>Provider
+        <select id="cProvider"><option value="mock">mock (demo)</option><option value="grizzly">grizzly (live API)</option></select>
+      </label>
+      <label>Site name <input id="cSite" type="text" maxlength="40"></label>
+      <label>bKash number (receive money — Send Money) <input id="cBkash" type="tel" placeholder="01XXXXXXXXX" maxlength="11" autocomplete="off"></label>
+      <label>Nagad number (receive money — Send Money) <input id="cNagad" type="tel" placeholder="01XXXXXXXXX" maxlength="11" autocomplete="off"></label>
+      <label>BDT per USD rate <input id="cRate" type="number" min="1" max="10000" step="any"></label>
+      <p class="muted">Users send BDT to these numbers via <b>Send Money</b>, then submit the TrxID. You verify in your bKash/Nagad app and approve in <b>Admin → To review</b> — the USD balance is credited at the rate above.</p>
+      <label>Google Client ID (for "Continue with Google") <input id="cGoogleId" type="text" maxlength="120" autocomplete="off" placeholder="….apps.googleusercontent.com"></label>
+      <label>Google Client Secret <input id="cGoogleSecret" type="password" maxlength="120" autocomplete="off"></label>
+      <label>Public site URL (for Google redirect — e.g. https://otpstation.com) <input id="cBaseUrl" type="text" maxlength="120" placeholder="leave empty to auto-detect"></label>
+      <p class="muted">Create the OAuth client at <b>Google Cloud Console → APIs & Services → Credentials</b>. Add this Authorized redirect URI: <span class="mono" id="googleRedirectHint"></span></p>
+      <button id="cSave" class="btn">Save</button>
+      <div id="cMsg" class="msg"></div>
+      <hr>
+      <h4>💾 Database backup</h4>
+      <p class="muted">On free hosting the database can be wiped on redeploy — download a backup regularly and restore it if needed.</p>
+      <button id="cBackup" class="btn btn-outline">Download backup</button>
+      <div style="margin-top:8px">
+        <input id="cRestoreFile" type="file" accept=".json,application/json">
+        <button id="cRestore" class="btn btn-outline">Restore backup</button>
+      </div>
+      <div id="cBackupMsg" class="msg"></div>
+    </div></div>
+  </section>
+</main>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal hidden">
+  <div class="modal-box">
+    <h3 id="authTitle">Log in</h3>
+    <input id="aName" class="hidden" placeholder="Full name" maxlength="50">
+    <input id="aUser" placeholder="Username">
+    <input id="aContact" class="hidden" placeholder="Email or phone number" maxlength="60">
+    <input id="aPass" type="password" placeholder="Password">
+    <button id="aGo" class="btn">Go</button>
+    <div id="googleBox" class="hidden">
+      <div class="divider-or"><span>or</span></div>
+      <button id="googleBtn" class="btn google-btn">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+        Continue with Google
+      </button>
+    </div>
+    <button id="aSwitch" class="link">Create a new account</button>
+    <button id="aClose" class="link">Close</button>
+    <div id="aMsg" class="msg"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
