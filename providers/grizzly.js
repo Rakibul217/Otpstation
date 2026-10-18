@@ -80,7 +80,7 @@ function checkError(text) {
   const errors = {
     'BAD_KEY': 'API key is invalid — reconnect Grizzly SMS',
     'NO_KEY': 'Grizzly API hiccup — please try again',
-    'NO_BALANCE': 'Grizzly balance is empty — top up your Grizzly account',
+    'NO_BALANCE': 'Number empty — please try again later',
     'NO_NUMBERS': 'No numbers right now — try another country or retry later',
     'BAD_SERVICE': 'Invalid service code',
     'BAD_COUNTRY': 'Country not found',
