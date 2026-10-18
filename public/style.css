@@ -260,3 +260,55 @@ label{font-size:14px;display:block;margin:8px 0;color:var(--muted)}
   .logo{font-size:22px}
   #countryList{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 }
+
+/* ===== 3D payment method cards (bKash pink / Nagad orange) ===== */
+.fld-label{font-size:14px;display:block;margin:8px 0 2px;color:var(--muted)}
+.method-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 4px}
+.method-card{position:relative;overflow:hidden;border:none;cursor:pointer;border-radius:16px;padding:12px;
+  color:#fff;text-align:left;font-family:inherit;background:var(--mgrad);
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 10px 24px var(--mglow),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 8px rgba(0,0,0,.18);
+  transition:transform .16s ease,box-shadow .16s ease}
+.method-card::before{content:'';position:absolute;top:0;left:0;right:0;height:46%;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0));border-radius:16px 16px 50% 50%/16px 16px 12% 12%}
+.method-card::after{content:'';position:absolute;top:0;left:-80%;width:45%;height:100%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg)}
+.method-card:hover{transform:translateY(-3px) scale(1.02)}
+.method-card:hover::after{left:130%;transition:left .6s}
+.method-card:active{transform:translateY(2px) scale(.99)}
+.method-card .mc-logo{flex:0 0 auto;background:rgba(255,255,255,.97);border-radius:12px;padding:6px 10px;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  box-shadow:inset 0 1px 0 #fff,0 3px 10px rgba(0,0,0,.22)}
+.method-card .mc-logo img{height:30px;width:auto;display:block}
+.method-card .mc-text{position:relative;min-width:0}
+.method-card .mc-name{display:block;font-weight:800;font-size:16px;letter-spacing:.3px;position:relative}
+.method-card .mc-num{display:block;font-family:ui-monospace,monospace;font-size:12.5px;margin-top:2px;opacity:.96;position:relative}
+.method-card .mc-check{position:absolute;top:8px;right:10px;width:24px;height:24px;border-radius:50%;
+  background:rgba(255,255,255,.95);color:#0aa86e;font-weight:900;font-size:14px;display:none;
+  align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.method-card.selected{transform:translateY(-2px);
+  box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(79,124,255,.6),0 16px 34px var(--mglow),inset 0 2px 0 rgba(255,255,255,.5)}
+.method-card.selected .mc-check{display:flex}
+
+/* ===== 3D send-money ticket ===== */
+.rate-card{margin-top:10px;border-radius:18px;padding:16px;color:#fff;position:relative;overflow:hidden;
+  background:var(--mgrad);box-shadow:0 14px 32px var(--mglow),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -5px 10px rgba(0,0,0,.18)}
+.rate-card::before{content:'';position:absolute;top:0;left:0;right:0;height:40%;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.32),transparent)}
+.rate-card .rc-top{font-size:14px;opacity:.95;position:relative}
+.rate-card .rc-num{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0;position:relative}
+.rate-card .rc-num .mono{font-size:22px;font-weight:800;letter-spacing:1.5px;text-shadow:0 2px 6px rgba(0,0,0,.3)}
+.rc-copy{border:none;cursor:pointer;border-radius:10px;padding:8px 12px;font-weight:700;font-size:13px;color:#22305c;
+  background:rgba(255,255,255,.95);box-shadow:0 4px 12px rgba(0,0,0,.25),inset 0 1px 0 #fff;font-family:inherit}
+.rc-copy:active{transform:translateY(2px)}
+.rate-card .rc-bot{font-size:14px;position:relative}
+.rate-card .rc-bot b{font-size:17px}
+.rc-rate{opacity:.85;font-size:12px}
+
+/* ===== 3D boost: plates & buttons get more depth ===== */
+.plate{transform-style:preserve-3d}
+.plate:hover{transform:translateY(-3px) perspective(600px) rotateX(2deg);
+  box-shadow:0 22px 48px rgba(100,110,255,.35),inset 0 2px 0 rgba(255,255,255,.9),inset 0 -3px 6px rgba(120,140,200,.12)}
+.btn{box-shadow:0 10px 28px rgba(100,110,255,.45),inset 0 2px 0 rgba(255,255,255,.45),inset 0 -4px 8px rgba(0,0,0,.12)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(100,110,255,.55),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 8px rgba(0,0,0,.12)}
+.btn:active{transform:translateY(3px);box-shadow:0 4px 14px rgba(100,110,255,.4),inset 0 2px 6px rgba(0,0,0,.15)}

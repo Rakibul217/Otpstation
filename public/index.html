@@ -131,9 +131,8 @@
       <p class="muted">Top up with <b>bKash</b> or <b>Nagad</b> — send money, submit the TrxID, and your balance is credited after review.</p>
       <div id="payInfo"><span class="muted">Loading…</span></div>
       <div id="topupForm" class="hidden">
-        <label>Payment method
-          <select id="tMethod"></select>
-        </label>
+        <div class="fld-label">Payment method</div>
+        <div id="tMethodCards" class="method-cards"></div>
         <label>Amount (BDT) <input id="tAmountBdt" type="number" min="100" placeholder="e.g. 500"></label>
         <div id="tRateInfo" class="muted"></div>
         <label>Your bKash/Nagad number (the one you sent money from) <input id="tSender" type="tel" placeholder="01XXXXXXXXX" maxlength="11"></label>

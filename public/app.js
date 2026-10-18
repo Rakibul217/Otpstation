@@ -168,7 +168,26 @@ async function cancelOrder(id) {
 }
 
 // ---------- topup (manual bKash / Nagad) ----------
-let payMethods = [], payRate = 120, payMin = 100, payMax = 50000;
+let payMethods = [], payRate = 120, payMin = 100, payMax = 50000, payMethod = null;
+const PAY_BRAND = {
+  bkash: { grad: 'linear-gradient(135deg,#E2136E 0%,#a80c4e 100%)', glow: 'rgba(226,19,110,.45)', logo: 'logos/bkash.png' },
+  nagad: { grad: 'linear-gradient(135deg,#F6921E 0%,#cf6a05 100%)', glow: 'rgba(246,146,30,.45)', logo: 'logos/nagad.png' }
+};
+const payBrand = (id) => PAY_BRAND[id] || { grad: 'linear-gradient(135deg,#4f7cff,#a04fff)', glow: 'rgba(100,110,255,.45)', logo: '' };
+const selMethod = () => payMethods.find(x => x.id === payMethod) || payMethods[0];
+function renderMethodCards() {
+  if (!payMethod && payMethods.length) payMethod = payMethods[0].id;
+  $('tMethodCards').innerHTML = payMethods.map(m => {
+    const b = payBrand(m.id);
+    const logo = b.logo ? `<span class="mc-logo"><img src="${b.logo}" alt="${esc(m.name)}"></span>` : '';
+    return `<button type="button" class="method-card${m.id === payMethod ? ' selected' : ''}" data-m="${m.id}" style="--mgrad:${b.grad};--mglow:${b.glow}">
+      ${logo}<span class="mc-text"><span class="mc-name">${esc(m.name)}</span><span class="mc-num">${esc(m.number)}</span></span>
+      <span class="mc-check">✓</span></button>`;
+  }).join('');
+  document.querySelectorAll('.method-card').forEach(c => c.onclick = () => {
+    payMethod = c.dataset.m; renderMethodCards(); updateRateInfo();
+  });
+}
 async function loadPayInfo() {
   try {
     const info = await api('GET', '/api/payinfo');
@@ -179,8 +198,7 @@ async function loadPayInfo() {
       $('topupForm').classList.add('hidden');
       return;
     }
-    $('tMethod').innerHTML = payMethods.map(m =>
-      `<option value="${m.id}">${m.name} — ${m.number}</option>`).join('');
+    renderMethodCards();
     $('tAmountBdt').min = payMin;
     $('tAmountBdt').placeholder = `e.g. ${payMin} (min $${info.minUsd || 5})`;
     updateRateInfo();
@@ -189,23 +207,27 @@ async function loadPayInfo() {
   } catch (e) { $('payInfo').innerHTML = ''; }
 }
 function updateRateInfo() {
-  const m = payMethods.find(x => x.id === $('tMethod').value) || payMethods[0];
+  const m = selMethod();
   const bdt = Math.round(Number($('tAmountBdt').value) || 0);
   const usd = bdt ? (bdt / payRate).toFixed(2) : '0.00';
+  const b = payBrand(m ? m.id : '');
   $('tRateInfo').innerHTML = m
-    ? `Send <b>৳${bdt || '—'}</b> via <b>${m.name}</b> Send Money to <b class="mono">${m.number}</b> <button class="link" onclick="copyPayNumber()">Copy</button><br>You will get <b>$${usd}</b> balance (rate ৳${payRate} = $1).`
+    ? `<div class="rate-card" style="--mgrad:${b.grad};--mglow:${b.glow}">
+        <div class="rc-top">Send <b>৳${bdt || '—'}</b> via <b>${esc(m.name)}</b> Send Money to</div>
+        <div class="rc-num"><span class="mono">${esc(m.number)}</span><button class="rc-copy" onclick="copyPayNumber()">⧉ Copy</button></div>
+        <div class="rc-bot">You will get <b>$${usd}</b> balance <span class="rc-rate">(rate ৳${payRate} = $1)</span></div>
+      </div>`
     : '';
 }
 function copyPayNumber() {
-  const m = payMethods.find(x => x.id === $('tMethod').value) || payMethods[0];
+  const m = selMethod();
   if (m) { navigator.clipboard.writeText(m.number); alert('Number copied'); }
 }
-$('tMethod').onchange = updateRateInfo;
 $('tAmountBdt').oninput = updateRateInfo;
 $('tSubmit').onclick = async () => {
   try {
     const { topup } = await api('POST', '/api/topups', {
-      method: $('tMethod').value,
+      method: payMethod,
       amountBdt: $('tAmountBdt').value,
       senderNumber: $('tSender').value.trim(),
       trxid: $('tTrxid').value.trim()
