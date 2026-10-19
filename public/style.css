@@ -217,7 +217,7 @@ label{font-size:14px;display:block;margin:8px 0;color:var(--muted)}
   .bnav-btn:active{transform:scale(.94)}
   .bnav-icon{font-size:26px;line-height:1;filter:drop-shadow(0 3px 6px rgba(0,0,0,.22))}
   .bnav-main{background:var(--grad);box-shadow:0 12px 28px rgba(120,90,255,.55),inset 0 2px 0 rgba(255,255,255,.45),inset 0 -3px 6px rgba(0,0,0,.12);
-    padding:11px 26px;margin-top:-26px;border:2px solid rgba(255,255,255,.55)}
+    border:2px solid rgba(255,255,255,.55)}
   .bnav-main .bnav-label{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.25)}
   .bnav-main .bnav-icon{filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
 }

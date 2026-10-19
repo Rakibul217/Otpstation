@@ -78,6 +78,7 @@ api('GET', '/api/auth/providers').then(p => {
 
 // ---------- plates (navigation) ----------
 function goHome() {
+  $('authModal').classList.add('hidden');
   const svc = document.querySelector('#plates [data-tab="services"]');
   if (svc) svc.click();
   else { document.querySelectorAll('.tab-page').forEach(p => p.classList.add('hidden')); $('tab-services').classList.remove('hidden'); }
@@ -85,12 +86,14 @@ function goHome() {
 }
 // ---------- mobile bottom nav ----------
 function bnavTopup() {
+  $('authModal').classList.add('hidden');
   if (!me) { $('authModal').classList.remove('hidden'); return; }
   const t = document.querySelector('#plates [data-tab="topup"]');
   if (t) t.click();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function bnavAuth() {
+  $('authModal').classList.add('hidden');
   if (me) { const p = document.querySelector('#plates [data-tab="profile"]'); if (p) p.click(); }
   else $('authModal').classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
