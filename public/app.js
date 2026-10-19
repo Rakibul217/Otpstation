@@ -229,7 +229,9 @@ async function loadServices() {
       </div>`).join('');
   } catch (e) { $('serviceGrid').innerHTML = `<div class="card">${e.message}</div>`; }
 }
+let currentService = null;
 async function openService(code, name) {
+  currentService = { code, name };
   $('serviceGrid').classList.add('hidden');
   $('countryBox').classList.remove('hidden');
   $('countryTitle').textContent = name + ' — choose country';
@@ -237,20 +239,25 @@ async function openService(code, name) {
   $('countryList').innerHTML = countries.map(c => `
     <div class="country">
       <div><div class="nm">${c.flag} ${c.name}</div><div class="ct">${Number(c.count).toLocaleString()} numbers</div></div>
-      <button class="buy" onclick="buyNumber('${code}','${c.code}','${fmtUSD(c.priceUsd)}')">${fmtUSD(c.priceUsd)}</button>
+      <button class="buy" onclick="buyNumber('${code}','${c.code}','${fmtUSD(c.priceUsd)}',${c.priceUsd})">${fmtUSD(c.priceUsd)}</button>
     </div>`).join('');
 }
 $('backBtn').onclick = () => { $('countryBox').classList.add('hidden'); $('serviceGrid').classList.remove('hidden'); };
 
-async function buyNumber(service, country, priceLabel) {
+async function buyNumber(service, country, priceLabel, priceUsd) {
   if (!me) { $('authModal').classList.remove('hidden'); return; }
   if (!confirm(`Buy a number for ${priceLabel}?`)) return;
   try {
-    const { order } = await api('POST', '/api/orders', { service, country });
+    const { order } = await api('POST', '/api/orders', { service, country, expectedPrice: priceUsd });
     alert('Your number: ' + order.number);
     await refreshMe();
     document.querySelector('[data-tab="numbers"]').click();
-  } catch (e) { alert(e.message); }
+  } catch (e) {
+    alert(e.message);
+    // Price shifted or stock ran out while buying — auto-refresh the list
+    // so it shows the new cheapest available price (like Grizzly's app).
+    if (currentService) { try { await openService(currentService.code, currentService.name); } catch (_) {} }
+  }
 }
 
 // ---------- accounts shop ----------
@@ -407,7 +414,7 @@ async function loadOrders() {
       <div><b>${o.serviceName}</b> · ${o.countryName} <span class="badge ${o.status}">${statusEn(o.status)}</span></div>
       <div class="num">📞 ${o.number}</div>
       ${o.status === 'done' ? `<div class="code">${o.code}</div><button class="btn green" onclick="copyCode('${o.code}')">Copy code</button>` : ''}
-      ${o.status === 'waiting' ? `<div class="wait">⏳ Waiting for SMS… (checking automatically)</div><button class="link" onclick="cancelOrder('${o.id}')">Cancel and refund</button>` : ''}
+      ${o.status === 'waiting' ? `<div class="wait">⏳ Waiting for SMS… (checking automatically)</div><span class="cancel-slot" data-created="${o.createdAt}" data-id="${o.id}"></span>` : ''}
       <div class="row"><span>${fmtUSD(o.priceUsd)}</span><span>${new Date(o.createdAt).toLocaleString('en-US')}</span></div>
     </div>`).join('');
   clearInterval(pollTimer);
@@ -427,11 +434,27 @@ async function loadOrders() {
   }
 }
 function statusEn(s) { return { waiting: 'Waiting', done: 'Done', cancelled: 'Cancelled' }[s] || s; }
+// Grizzly policy: cancel unlocks 2 minutes after purchase — same as Grizzly's own site.
+const CANCEL_MIN_MS = 2 * 60 * 1000;
+function tickCancelSlots() {
+  document.querySelectorAll('.cancel-slot').forEach(el => {
+    const age = Date.now() - Number(el.dataset.created || 0);
+    if (age >= CANCEL_MIN_MS) {
+      if (!el.dataset.open) { el.dataset.open = '1'; el.innerHTML = `<button class="link" onclick="cancelOrder('${el.dataset.id}')">Cancel and refund</button>`; }
+    } else {
+      const s = Math.ceil((CANCEL_MIN_MS - age) / 1000);
+      el.innerHTML = `<span class="muted">Cancel available in ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}</span>`;
+    }
+  });
+}
+setInterval(tickCancelSlots, 1000);
 function copyCode(c) { navigator.clipboard.writeText(c); alert('Copied: ' + c); }
 async function cancelOrder(id) {
   if (!confirm('Cancel this order and get a refund?')) return;
-  await api('POST', '/api/orders/' + id + '/cancel');
-  await refreshMe(); loadOrders();
+  try {
+    await api('POST', '/api/orders/' + id + '/cancel');
+    await refreshMe(); loadOrders();
+  } catch (e) { alert(e.message); loadOrders(); }
 }
 
 // ---------- topup (manual bKash / Nagad) ----------
