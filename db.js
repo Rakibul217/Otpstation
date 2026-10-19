@@ -1,31 +1,47 @@
-// Simple JSON-file database (MVP).
-// বড় হলে PostgreSQL/MySQL দিয়ে বদলে নিও — সব access এই ফাইলের ফাংশন দিয়ে হয়।
+// OTPStation data layer — dual mode.
+//
+// PostgreSQL mode: used when DATABASE_URL is set and reachable (e.g. Neon on
+// Render). Tables are created with CREATE TABLE IF NOT EXISTS at startup, so
+// users / top-ups / orders / config / sessions survive redeploys.
+// JSON-file mode: the original MVP behavior (data/db.json), used when
+// DATABASE_URL is unset or Postgres is unreachable. The site NEVER crashes
+// because Postgres is unavailable — it logs a warning and falls back.
+//
+// Every exported function is async (returns a Promise) in both modes.
+// Call db.init() once at startup before serving requests.
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const DATA_DIR = path.join(__dirname, 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 
+function defaultConfig() {
+  return {
+    provider: 'mock', markupPercent: 40, flatFeeUsd: 0, siteName: 'OTPStation',
+    // Manual bKash/Nagad top-ups — admin's personal numbers + BDT→USD rate
+    bkashNumber: '', nagadNumber: '', bdtRate: 125,
+    // Google OAuth ("Continue with Google") — set in Admin → Settings
+    googleClientId: '', googleClientSecret: '', baseUrl: ''
+  };
+}
 function defaultDb() {
   return {
     users: [],   // {id, name, username, email, phone, salt, hash, googleId, balance, isAdmin, createdAt}
-    orders: [],  // {id, userId, service, serviceName, country, countryName, number, priceBdt, providerId, status, code, createdAt}
-    topups: [],  // {id, userId, username, amount, method, trxid, status, createdAt}
-    config: {
-      provider: 'mock', markupPercent: 40, siteName: 'OTPStation',
-      // Manual bKash/Nagad top-ups — admin's personal numbers + BDT→USD rate
-      bkashNumber: '', nagadNumber: '', bdtRate: 125,
-      // Google OAuth ("Continue with Google") — set in Admin → Settings
-      googleClientId: '', googleClientSecret: '', baseUrl: ''
-    }
+    orders: [],  // {id, userId, service, serviceName, country, countryName, number, priceUsd, providerId, status, code, createdAt}
+    topups: [],  // {id, userId, username, amount, amountBdt, bdtRate, method, senderNumber, trxid, status, createdAt}
+    config: defaultConfig()
   };
 }
 
+const uid = () => crypto.randomBytes(8).toString('hex');
+const hashPw = (pw, salt) => crypto.createHash('sha256').update(salt + pw).digest('hex');
+
+// ---------------- JSON-file mode ----------------
 function save(d) {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
   fs.writeFileSync(DB_FILE, JSON.stringify(d, null, 2));
 }
-
 function load() {
   try {
     if (!fs.existsSync(DB_FILE)) { const d = defaultDb(); save(d); return d; }
@@ -34,35 +50,379 @@ function load() {
     const d = defaultDb(); save(d); return d;
   }
 }
-
 let cache = null;
-function db() { if (!cache) cache = load(); return cache; }
+function mem() { if (!cache) cache = load(); return cache; }
+const jsonSessions = new Map(); // token -> userId (in-memory, like before)
+
+// ---------------- PostgreSQL mode ----------------
+let pool = null;
+let pgMode = false;
+let initDone = false;
+
+function isPostgres() { return pgMode; }
+
+// TLS is required by hosted Postgres (Neon, Render, ...); local dev/test
+// instances usually run without it. An explicit ?sslmode=require always wins.
+function pgSslFor(url) {
+  if (/sslmode=require/.test(url)) return { rejectUnauthorized: false };
+  if (/(localhost|127\.0\.0\.1)/.test(url)) return undefined;
+  return { rejectUnauthorized: false };
+}
+
+async function createTables() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY,
+      name TEXT,
+      username TEXT UNIQUE,
+      email TEXT,
+      phone TEXT,
+      salt TEXT,
+      hash TEXT,
+      "googleId" TEXT,
+      balance NUMERIC DEFAULT 0,
+      "isAdmin" BOOLEAN DEFAULT FALSE,
+      "createdAt" BIGINT
+    );
+    CREATE TABLE IF NOT EXISTS orders (
+      id TEXT PRIMARY KEY,
+      "userId" TEXT,
+      service TEXT,
+      "serviceName" TEXT,
+      country TEXT,
+      "countryName" TEXT,
+      number TEXT,
+      "priceUsd" NUMERIC,
+      "providerId" TEXT,
+      status TEXT,
+      code TEXT,
+      "createdAt" BIGINT
+    );
+    CREATE TABLE IF NOT EXISTS topups (
+      id TEXT PRIMARY KEY,
+      "userId" TEXT,
+      username TEXT,
+      amount NUMERIC,
+      "amountBdt" NUMERIC,
+      "bdtRate" NUMERIC,
+      method TEXT,
+      trxid TEXT,
+      "senderNumber" TEXT,
+      status TEXT,
+      "createdAt" BIGINT
+    );
+    CREATE TABLE IF NOT EXISTS config (
+      id INT PRIMARY KEY DEFAULT 1,
+      data JSONB
+    );
+    CREATE TABLE IF NOT EXISTS sessions (
+      token TEXT PRIMARY KEY,
+      "userId" TEXT,
+      "createdAt" BIGINT
+    );
+  `);
+}
+
+// ---- row mappers: pg types -> the plain JS shapes the app expects ----
+function num(v, dflt) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : (dflt === undefined ? 0 : dflt);
+}
+function mapUser(r) {
+  if (!r) return undefined;
+  return {
+    id: r.id, name: r.name || '', username: r.username,
+    email: r.email || '', phone: r.phone || '',
+    salt: r.salt || '', hash: r.hash || '',
+    googleId: r.googleId === null || r.googleId === undefined ? undefined : r.googleId,
+    balance: num(r.balance), isAdmin: !!r.isAdmin, createdAt: num(r.createdAt)
+  };
+}
+function mapOrder(r) {
+  if (!r) return undefined;
+  return {
+    id: r.id, userId: r.userId, service: r.service, serviceName: r.serviceName,
+    country: r.country, countryName: r.countryName, number: r.number,
+    priceUsd: num(r.priceUsd), providerId: r.providerId, status: r.status,
+    code: r.code === undefined ? null : r.code, createdAt: num(r.createdAt)
+  };
+}
+function mapTopup(r) {
+  if (!r) return undefined;
+  return {
+    id: r.id, userId: r.userId, username: r.username,
+    amount: num(r.amount), amountBdt: num(r.amountBdt), bdtRate: num(r.bdtRate),
+    method: r.method, trxid: r.trxid, senderNumber: r.senderNumber,
+    status: r.status, createdAt: num(r.createdAt)
+  };
+}
+
+const USER_COLS = ['id', 'name', 'username', 'email', 'phone', 'salt', 'hash', 'googleId', 'balance', 'isAdmin', 'createdAt'];
+const ORDER_COLS = ['id', 'userId', 'service', 'serviceName', 'country', 'countryName', 'number', 'priceUsd', 'providerId', 'status', 'code', 'createdAt'];
+const TOPUP_COLS = ['id', 'userId', 'username', 'amount', 'amountBdt', 'bdtRate', 'method', 'trxid', 'senderNumber', 'status', 'createdAt'];
+
+function dbVal(v) { return v === undefined ? null : v; }
+function pickCols(obj, cols) {
+  const out = {};
+  for (const c of cols) out[c] = dbVal(obj[c]);
+  return out;
+}
+async function pgInsert(q, table, cols, obj) {
+  const row = pickCols(obj, cols);
+  const quoted = cols.map(c => `"${c}"`).join(', ');
+  const placeholders = cols.map((_, i) => `$${i + 1}`).join(', ');
+  await q(`INSERT INTO ${table} (${quoted}) VALUES (${placeholders})`, cols.map(c => row[c]));
+}
+async function pgUpdate(table, cols, id, patch, mapRow) {
+  const keys = Object.keys(patch || {}).filter(k => k !== 'id' && cols.includes(k));
+  if (keys.length === 0) {
+    const r = await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id]);
+    return mapRow(r.rows[0]);
+  }
+  const sets = keys.map((k, i) => `"${k}" = $${i + 2}`).join(', ');
+  const vals = keys.map(k => dbVal(patch[k]));
+  const r = await pool.query(`UPDATE ${table} SET ${sets} WHERE id = $1 RETURNING *`, [id, ...vals]);
+  return mapRow(r.rows[0]);
+}
+async function pgGetById(table, id, mapRow) {
+  const r = await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id]);
+  return mapRow(r.rows[0]);
+}
+const NEWEST_FIRST = `ORDER BY "createdAt" DESC, id DESC`;
+
+// ---- pg implementations ----
+async function pgGetConfig() {
+  const r = await pool.query('SELECT data FROM config WHERE id = 1');
+  const stored = (r.rows[0] && r.rows[0].data) || {};
+  return Object.assign({}, defaultConfig(), stored);
+}
+async function pgSetConfig(patch) {
+  const merged = Object.assign(await pgGetConfig(), patch);
+  await pool.query(
+    'INSERT INTO config (id, data) VALUES (1, $1) ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data',
+    [JSON.stringify(merged)]
+  );
+}
+async function pgStats() {
+  const r = await pool.query(`
+    SELECT
+      (SELECT COUNT(*) FROM users) AS users,
+      (SELECT COUNT(*) FROM orders) AS orders,
+      (SELECT COALESCE(SUM("priceUsd"), 0) FROM orders WHERE (status <> 'cancelled' OR status IS NULL)) AS revenue,
+      (SELECT COALESCE(SUM(amount), 0) FROM topups WHERE status = 'approved') AS "totalReceived",
+      (SELECT COUNT(*) FROM topups WHERE status IN ('pending', 'awaiting')) AS "pendingTopups"
+  `);
+  const row = r.rows[0];
+  return {
+    users: Number(row.users), orders: Number(row.orders),
+    revenue: Number(row.revenue), totalReceived: Number(row.totalReceived),
+    pendingTopups: Number(row.pendingTopups)
+  };
+}
+async function pgExport() {
+  const [u, o, t] = await Promise.all([
+    pool.query('SELECT * FROM users ORDER BY "createdAt" ASC, id ASC'),
+    pool.query(`SELECT * FROM orders ${NEWEST_FIRST}`),
+    pool.query(`SELECT * FROM topups ${NEWEST_FIRST}`)
+  ]);
+  return {
+    users: u.rows.map(mapUser),
+    orders: o.rows.map(mapOrder),
+    topups: t.rows.map(mapTopup),
+    config: await pgGetConfig()
+  };
+}
+function validateBackup(data) {
+  if (!data || !Array.isArray(data.users) || !Array.isArray(data.orders) ||
+      !Array.isArray(data.topups) || typeof data.config !== 'object' || !data.config) {
+    throw new Error('Invalid backup file.');
+  }
+}
+async function pgImport(data) {
+  validateBackup(data);
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const q = (text, params) => client.query(text, params);
+    await q('DELETE FROM topups');
+    await q('DELETE FROM orders');
+    await q('DELETE FROM users');
+    await q('DELETE FROM config');
+    for (const u of data.users) await pgInsert(q, 'users', USER_COLS, u);
+    for (const o of data.orders) await pgInsert(q, 'orders', ORDER_COLS, o);
+    for (const t of data.topups) await pgInsert(q, 'topups', TOPUP_COLS, t);
+    await q('INSERT INTO config (id, data) VALUES (1, $1)', [JSON.stringify(data.config || {})]);
+    await q('COMMIT');
+  } catch (e) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    throw e;
+  } finally {
+    client.release();
+  }
+}
+
+// ---- startup ----
+async function ensureSeed() {
+  const admin = await module.exports.findUserByName('admin');
+  if (!admin) {
+    const salt = crypto.randomBytes(8).toString('hex');
+    await module.exports.addUser({
+      id: uid(), username: 'admin', salt, hash: hashPw('admin123', salt),
+      balance: 0, isAdmin: true, createdAt: Date.now()
+    });
+    console.log('Seed admin created -> username: admin / password: admin123 (change it after first login!)');
+  }
+}
+
+async function init() {
+  if (initDone) return;
+  initDone = true;
+  const url = process.env.DATABASE_URL;
+  if (url) {
+    try {
+      const { Pool } = require('pg');
+      pool = new Pool({ connectionString: url, ssl: pgSslFor(url), connectionTimeoutMillis: 10000 });
+      await pool.query('SELECT 1');
+      await createTables();
+      pgMode = true;
+      console.log('[db] PostgreSQL connected — using Postgres mode (data survives redeploys)');
+    } catch (e) {
+      console.warn('[db] WARNING: PostgreSQL unavailable (' + (e && e.message ? e.message : e) + ') — falling back to JSON file mode');
+      if (pool) { try { await pool.end(); } catch (_) { /* ignore */ } pool = null; }
+    }
+  }
+  if (!pgMode) {
+    mem(); // ensure data/db.json exists
+    console.log('[db] Using JSON file mode (data/db.json)');
+  }
+  await ensureSeed();
+}
 
 module.exports = {
-  persist() { save(cache); },
-  reload() { cache = null; }, // re-read db.json from disk (used after restore)
-  getConfig: () => Object.assign({}, defaultDb().config, db().config),
-  setConfig: (patch) => { Object.assign(db().config, patch); save(cache); },
-  findUserById: (id) => db().users.find(u => u.id === id),
-  findUserByName: (name) => db().users.find(u => u.username === name),
-  findUserByEmail: (email) => db().users.find(u => u.email && u.email.toLowerCase() === String(email).toLowerCase()),
-  findUserByGoogleId: (gid) => db().users.find(u => u.googleId === gid),
-  getUsers: () => db().users,
-  updateUser: (id, patch) => { const u = db().users.find(x => x.id === id); if (u) Object.assign(u, patch); save(cache); return u; },
-  addUser: (u) => { db().users.push(u); save(cache); return u; },
-  addBalance: (userId, amount) => { const u = db().users.find(x => x.id === userId); if (u) { u.balance = Math.round((u.balance + amount) * 10000) / 10000; save(cache); } },
-  addOrder: (o) => { db().orders.unshift(o); save(cache); return o; },
-  getOrder: (id) => db().orders.find(o => o.id === id),
-  updateOrder: (id, patch) => { const o = db().orders.find(x => x.id === id); if (o) Object.assign(o, patch); save(cache); return o; },
-  userOrders: (userId) => db().orders.filter(o => o.userId === userId),
-  addTopup: (t) => { db().topups.unshift(t); save(cache); return t; },
-  getTopup: (id) => db().topups.find(t => t.id === id),
-  getTopupByTrxid: (tx) => db().topups.find(t => t.trxid === tx && t.status !== 'rejected'),
-  updateTopup: (id, patch) => { const t = db().topups.find(x => x.id === id); if (t) Object.assign(t, patch); save(cache); return t; },
-  topupsByStatus: (status) => db().topups.filter(t => t.status === status),
-  userTopups: (userId) => db().topups.filter(t => t.userId === userId),
-  stats: () => {
-    const d = db();
+  init,
+  isPostgres,
+  close: async () => { if (pool) { try { await pool.end(); } catch (_) {} pool = null; } },
+
+  persist: async () => { if (!pgMode) save(mem()); }, // no-op in Postgres mode (writes are immediate)
+  reload: async () => { cache = null; }, // re-read db.json from disk (JSON mode); nothing cached in pg mode
+
+  getConfig: async () => pgMode ? pgGetConfig() : Object.assign({}, defaultConfig(), mem().config),
+  setConfig: async (patch) => {
+    if (pgMode) { await pgSetConfig(patch); return; }
+    Object.assign(mem().config, patch); save(cache);
+  },
+
+  findUserById: async (id) => pgMode ? pgGetById('users', id, mapUser) : mem().users.find(u => u.id === id),
+  findUserByName: async (name) => {
+    if (pgMode) {
+      const r = await pool.query('SELECT * FROM users WHERE username = $1', [name]);
+      return mapUser(r.rows[0]);
+    }
+    return mem().users.find(u => u.username === name);
+  },
+  findUserByEmail: async (email) => {
+    if (pgMode) {
+      const r = await pool.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [email]);
+      return mapUser(r.rows[0]);
+    }
+    return mem().users.find(u => u.email && u.email.toLowerCase() === String(email).toLowerCase());
+  },
+  findUserByGoogleId: async (gid) => {
+    if (pgMode) {
+      const r = await pool.query('SELECT * FROM users WHERE "googleId" = $1', [gid]);
+      return mapUser(r.rows[0]);
+    }
+    return mem().users.find(u => u.googleId === gid);
+  },
+  getUsers: async () => {
+    if (pgMode) {
+      const r = await pool.query('SELECT * FROM users ORDER BY "createdAt" ASC, id ASC');
+      return r.rows.map(mapUser);
+    }
+    return mem().users;
+  },
+  updateUser: async (id, patch) => {
+    if (pgMode) return pgUpdate('users', USER_COLS, id, patch, mapUser);
+    const u = mem().users.find(x => x.id === id);
+    if (u) Object.assign(u, patch);
+    save(cache);
+    return u;
+  },
+  addUser: async (u) => {
+    if (pgMode) { await pgInsert((t, p) => pool.query(t, p), 'users', USER_COLS, u); return u; }
+    mem().users.push(u); save(cache); return u;
+  },
+  addBalance: async (userId, amount) => {
+    if (pgMode) {
+      // atomic + rounded to 4 decimals, exactly like the JSON behavior
+      await pool.query(
+        'UPDATE users SET balance = ROUND((COALESCE(balance, 0) + $2)::numeric, 4) WHERE id = $1',
+        [userId, amount]
+      );
+      return;
+    }
+    const u = mem().users.find(x => x.id === userId);
+    if (u) { u.balance = Math.round((u.balance + amount) * 10000) / 10000; save(cache); }
+  },
+
+  addOrder: async (o) => {
+    if (pgMode) { await pgInsert((t, p) => pool.query(t, p), 'orders', ORDER_COLS, o); return o; }
+    mem().orders.unshift(o); save(cache); return o;
+  },
+  getOrder: async (id) => pgMode ? pgGetById('orders', id, mapOrder) : mem().orders.find(o => o.id === id),
+  updateOrder: async (id, patch) => {
+    if (pgMode) return pgUpdate('orders', ORDER_COLS, id, patch, mapOrder);
+    const o = mem().orders.find(x => x.id === id);
+    if (o) Object.assign(o, patch);
+    save(cache);
+    return o;
+  },
+  userOrders: async (userId) => {
+    if (pgMode) {
+      const r = await pool.query(`SELECT * FROM orders WHERE "userId" = $1 ${NEWEST_FIRST}`, [userId]);
+      return r.rows.map(mapOrder);
+    }
+    return mem().orders.filter(o => o.userId === userId);
+  },
+
+  addTopup: async (t) => {
+    if (pgMode) { await pgInsert((t2, p) => pool.query(t2, p), 'topups', TOPUP_COLS, t); return t; }
+    mem().topups.unshift(t); save(cache); return t;
+  },
+  getTopup: async (id) => pgMode ? pgGetById('topups', id, mapTopup) : mem().topups.find(t => t.id === id),
+  getTopupByTrxid: async (tx) => {
+    if (pgMode) {
+      const r = await pool.query(
+        `SELECT * FROM topups WHERE trxid = $1 AND (status <> 'rejected' OR status IS NULL) ${NEWEST_FIRST} LIMIT 1`, [tx]);
+      return mapTopup(r.rows[0]);
+    }
+    return mem().topups.find(t => t.trxid === tx && t.status !== 'rejected');
+  },
+  updateTopup: async (id, patch) => {
+    if (pgMode) return pgUpdate('topups', TOPUP_COLS, id, patch, mapTopup);
+    const t = mem().topups.find(x => x.id === id);
+    if (t) Object.assign(t, patch);
+    save(cache);
+    return t;
+  },
+  topupsByStatus: async (status) => {
+    if (pgMode) {
+      const r = await pool.query(`SELECT * FROM topups WHERE status = $1 ${NEWEST_FIRST}`, [status]);
+      return r.rows.map(mapTopup);
+    }
+    return mem().topups.filter(t => t.status === status);
+  },
+  userTopups: async (userId) => {
+    if (pgMode) {
+      const r = await pool.query(`SELECT * FROM topups WHERE "userId" = $1 ${NEWEST_FIRST}`, [userId]);
+      return r.rows.map(mapTopup);
+    }
+    return mem().topups.filter(t => t.userId === userId);
+  },
+
+  stats: async () => {
+    if (pgMode) return pgStats();
+    const d = mem();
     return {
       users: d.users.length,
       orders: d.orders.length,
@@ -70,5 +430,43 @@ module.exports = {
       totalReceived: d.topups.filter(t => t.status === 'approved').reduce((s, t) => s + (Number(t.amount) || 0), 0),
       pendingTopups: d.topups.filter(t => t.status === 'pending' || t.status === 'awaiting').length
     };
+  },
+
+  // ---- backup / restore ----
+  exportJson: async () => {
+    if (pgMode) return pgExport();
+    const d = mem();
+    return JSON.parse(JSON.stringify({ users: d.users, orders: d.orders, topups: d.topups, config: d.config }));
+  },
+  importJson: async (data) => {
+    validateBackup(data);
+    if (pgMode) { await pgImport(data); return; }
+    cache = { users: data.users, orders: data.orders, topups: data.topups, config: data.config };
+    save(cache);
+  },
+
+  // ---- sessions ----
+  sessionCreate: async (token, userId) => {
+    if (pgMode) {
+      await pool.query(
+        'INSERT INTO sessions (token, "userId", "createdAt") VALUES ($1, $2, $3) ' +
+        'ON CONFLICT (token) DO UPDATE SET "userId" = EXCLUDED."userId", "createdAt" = EXCLUDED."createdAt"',
+        [token, userId, Date.now()]
+      );
+      return;
+    }
+    jsonSessions.set(token, userId);
+  },
+  sessionGet: async (token) => {
+    if (pgMode) {
+      const r = await pool.query('SELECT "userId" FROM sessions WHERE token = $1', [token]);
+      return r.rows[0] ? r.rows[0].userId : null;
+    }
+    const v = jsonSessions.get(token);
+    return v === undefined ? null : v;
+  },
+  sessionDelete: async (token) => {
+    if (pgMode) { await pool.query('DELETE FROM sessions WHERE token = $1', [token]); return; }
+    jsonSessions.delete(token);
   }
 };
