@@ -508,6 +508,10 @@ async function loadPayInfo() {
     $('tAmountBdt').placeholder = `e.g. ${payMin} (min $${info.minUsd || 5})`;
     updateRateInfo();
     $('payInfo').innerHTML = `<div class="pay-ok">✅ ${payMethods.map(m => m.name).join(' / ')} accepted — send money, then submit the TrxID below.</div>`;
+    const wb = info.welcomeBonus || {};
+    $('bonusBadge').innerHTML = (wb.enabled && wb.amount > 0)
+      ? `<div class="bonus-badge">🎁 <b>Welcome Bonus:</b> get <b>$${wb.amount} FREE</b> credit on your first deposit!</div>`
+      : '';
     $('topupForm').classList.remove('hidden');
   } catch (e) { $('payInfo').innerHTML = ''; }
 }
@@ -642,6 +646,10 @@ async function loadAdminPanel(name) {
   $('cBkash').value = config.bkashNumber || '';
   $('cNagad').value = config.nagadNumber || '';
   $('cRate').value = config.bdtRate || 120;
+  $('cBonusUsd').value = config.welcomeBonusUsd ?? 1;
+  $('cBonusOn').value = config.welcomeBonusEnabled === false ? '0' : '1';
+  $('cBonusLimit').value = config.welcomeBonusLimit || 0;
+  $('cBonusGiven').textContent = `Bonuses given so far: ${config.welcomeBonusGiven || 0}.`;
   $('cGoogleId').value = config.googleClientId || '';
   $('cGoogleSecret').value = config.googleClientSecret ? '•••••••• (set — paste a new one to replace)' : '';
   $('cGoogleSecret').placeholder = config.googleClientSecret ? '' : 'GOCSPX-…';
@@ -708,7 +716,8 @@ async function loadAdminPanel(name) {
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 async function decideTopup(id, action) {
   if (!confirm(action === 'approve' ? 'Approve and credit the balance?' : 'Reject this top-up?')) return;
-  await api('POST', '/api/admin/topups/' + id, { action });
+  const r = await api('POST', '/api/admin/topups/' + id, { action });
+  if (r.bonus > 0) alert(`🎁 Welcome bonus $${r.bonus} credited to the user!`);
   await loadAdminPanel('awaiting'); await loadAdminPanel('review');
 }
 $('cSave').onclick = async () => {
@@ -718,7 +727,10 @@ $('cSave').onclick = async () => {
       provider: $('cProvider').value, siteName: $('cSite').value,
       bkashNumber: $('cBkash').value.trim(),
       nagadNumber: $('cNagad').value.trim(),
-      bdtRate: $('cRate').value
+      bdtRate: $('cRate').value,
+      welcomeBonusUsd: $('cBonusUsd').value,
+      welcomeBonusEnabled: $('cBonusOn').value === '1',
+      welcomeBonusLimit: $('cBonusLimit').value
     };
     body.googleClientId = $('cGoogleId').value.trim();
     const gSec = $('cGoogleSecret').value.trim();
@@ -894,12 +906,17 @@ $('cRestore').onclick = async () => {
 };
 
 // ---------- announcement ticker ----------
-(function () {
+(async function () {
   const items = [
     '📢 Support open daily 9 AM – 12 AM',
     'Numbers in stock for all countries — order now and get your number instantly',
     'OTP not received? Full refund to your balance, automatically',
   ];
+  try {
+    const info = await api('GET', '/api/payinfo');
+    const wb = info.welcomeBonus || {};
+    if (wb.enabled && wb.amount > 0) items.unshift(`🎉 Welcome Bonus: $${wb.amount} FREE credit on your first deposit!`);
+  } catch (e) {}
   const half = items.map(t => `<span>${t}</span>`).join('<span class="tick-sep">✦</span>');
   $('tickerTrack').innerHTML = half + '<span class="tick-sep">✦</span>' + half + '<span class="tick-sep">✦</span>';
 })();
