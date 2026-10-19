@@ -230,18 +230,33 @@ async function loadServices() {
   } catch (e) { $('serviceGrid').innerHTML = `<div class="card">${e.message}</div>`; }
 }
 let currentService = null;
+let currentCountries = [];
+function countryRowHtml(code, c) {
+  return `
+    <div class="country">
+      <div><div class="nm">${c.flag} ${esc(c.name)}</div><div class="ct">${Number(c.count).toLocaleString()} numbers</div></div>
+      <button class="buy" onclick="buyNumber('${code}','${c.code}','${fmtUSD(c.priceUsd)}',${c.priceUsd})">${fmtUSD(c.priceUsd)}</button>
+    </div>`;
+}
+function renderCountries() {
+  const q = ($('countrySearch').value || '').trim().toLowerCase();
+  const list = q ? currentCountries.filter(c => c.name.toLowerCase().includes(q)) : currentCountries;
+  $('countryList').innerHTML = list.length
+    ? list.map(c => countryRowHtml(currentService.code, c)).join('')
+    : '<div class="card">No country matches your search.</div>';
+}
 async function openService(code, name) {
   currentService = { code, name };
   $('serviceGrid').classList.add('hidden');
   $('countryBox').classList.remove('hidden');
   $('countryTitle').textContent = name + ' — choose country';
+  $('countrySearch').value = '';
+  $('countryList').innerHTML = '<div class="card">Loading countries…</div>';
   const { countries } = await api('GET', '/api/countries?service=' + code);
-  $('countryList').innerHTML = countries.map(c => `
-    <div class="country">
-      <div><div class="nm">${c.flag} ${c.name}</div><div class="ct">${Number(c.count).toLocaleString()} numbers</div></div>
-      <button class="buy" onclick="buyNumber('${code}','${c.code}','${fmtUSD(c.priceUsd)}',${c.priceUsd})">${fmtUSD(c.priceUsd)}</button>
-    </div>`).join('');
+  currentCountries = countries;
+  renderCountries();
 }
+$('countrySearch').addEventListener('input', renderCountries);
 $('backBtn').onclick = () => { $('countryBox').classList.add('hidden'); $('serviceGrid').classList.remove('hidden'); };
 
 async function buyNumber(service, country, priceLabel, priceUsd) {
