@@ -368,6 +368,92 @@ app.get('/api/topups/mine', requireAuth, async (req, res) => {
   res.json({ topups: await db.userTopups(req.user.id) });
 });
 
+// ---------------- accounts shop (AccsZone-style digital accounts) ----------------
+// Admin uploads credential stock (one account per line); customers buy N pieces
+// and get N credentials instantly, deducted from their USD balance.
+function cleanPriceUsd(v) {
+  const n = Number(v);
+  if (!Number.isFinite(n) || n <= 0 || n > 100000) return null;
+  return Math.round(n * 10000) / 10000;
+}
+function cleanProductPatch(b) {
+  const patch = {};
+  if (b.name !== undefined) {
+    const name = String(b.name).trim();
+    if (name.length < 2 || name.length > 80) throw new Error('Product name: 2-80 characters');
+    patch.name = name;
+  }
+  if (b.description !== undefined) patch.description = String(b.description).trim().slice(0, 2000);
+  if (b.price_usd !== undefined || b.priceUsd !== undefined) {
+    const p = cleanPriceUsd(b.price_usd !== undefined ? b.price_usd : b.priceUsd);
+    if (p === null) throw new Error('Price must be a number between 0 and 100000 USD');
+    patch.priceUsd = p;
+  }
+  if (b.logo !== undefined) patch.logo = String(b.logo).trim().slice(0, 60);
+  if (b.active !== undefined) patch.active = !!b.active;
+  return patch;
+}
+
+// Admin: product CRUD + stock upload (counts only — credentials never listed)
+app.post('/api/admin/account-products', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const patch = cleanProductPatch(req.body || {});
+    if (!patch.name) return res.status(400).json({ error: 'Product name is required' });
+    if (patch.priceUsd === undefined) return res.status(400).json({ error: 'Price (price_usd) is required' });
+    const product = await db.createAccountProduct({
+      name: patch.name, description: patch.description || '',
+      priceUsd: patch.priceUsd, logo: patch.logo || ''
+    });
+    res.json({ product });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+app.get('/api/admin/account-products', requireAuth, requireAdmin, async (req, res) => {
+  try { res.json({ products: await db.listAccountProductsAdmin() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.put('/api/admin/account-products/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const patch = cleanProductPatch(req.body || {});
+    const product = await db.updateAccountProduct(req.params.id, patch);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json({ product });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+app.post('/api/admin/account-products/:id/stock', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const product = await db.getAccountProduct(req.params.id);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    const lines = String((req.body || {}).lines || '').split('\n')
+      .map(l => l.trim()).filter(l => l.length > 0).slice(0, 5000);
+    if (!lines.length) return res.status(400).json({ error: 'Paste at least one account line' });
+    const added = await db.addAccountStock(product.id, lines);
+    res.json({ added, productId: product.id });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Public: active products with stock counts (NO credentials)
+app.get('/api/account-products', async (req, res) => {
+  try { res.json({ products: await db.listAccountProductsPublic() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// User: buy N pieces -> credentials instantly delivered, balance deducted
+app.post('/api/account-products/:id/buy', requireAuth, async (req, res) => {
+  try {
+    const qty = Math.floor(Number((req.body || {}).qty));
+    if (!Number.isInteger(qty) || qty < 1 || qty > 100)
+      return res.status(400).json({ error: 'Quantity must be between 1 and 100' });
+    const { order, items } = await db.buyAccountStock(req.params.id, req.user.id, qty);
+    res.json({ order, items });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+// User: own past account orders (with their credentials)
+app.get('/api/my-accounts', requireAuth, async (req, res) => {
+  try { res.json({ orders: await db.myAccountOrders(req.user.id) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 // ---------------- admin ----------------
 app.get('/api/admin/stats', requireAuth, requireAdmin, async (req, res) => {
   const s = await db.stats();
