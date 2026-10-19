@@ -37,12 +37,7 @@
       </span>
       <span><span class="plate-label">My Numbers</span><br><span class="plate-sub">Active & history</span></span>
     </button>
-    <button class="plate" data-tab="accounts">
-      <span class="plate-icon" style="background:linear-gradient(135deg,#a04fff,#4f7cff)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      </span>
-      <span><span class="plate-label">Accounts</span><br><span class="plate-sub">Premium accounts</span></span>
-    </button>
+    <span id="acctServicePlates" style="display:contents"></span>
     <button class="plate" data-tab="topup">
       <span class="plate-icon" style="background:linear-gradient(135deg,#ff8a3a,#e02828)">
         <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
@@ -133,7 +128,7 @@
   <!-- ACCOUNTS SHOP -->
   <section id="tab-accounts" class="tab-page hidden">
     <div class="section-head">
-      <h2>Premium Accounts</h2>
+      <h2 id="acctTitle">Accounts</h2>
       <p>Pay with your balance — the login details are delivered instantly.</p>
     </div>
     <div id="acctDelivered"></div>
