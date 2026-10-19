@@ -90,7 +90,7 @@ document.querySelectorAll('#plates .plate').forEach(b => {
     if (b.dataset.tab === 'topup') { loadPayInfo(); loadMyTopups(); }
     if (b.dataset.tab === 'profile') loadProfile();
     if (b.dataset.tab === 'admin') loadAdmin();
-    if (b.dataset.tab === 'accounts') loadAccountShop();
+    if (b.dataset.tab === 'accounts') { acctServiceKey = null; $('acctDelivered').innerHTML = ''; loadAccountShop(); }
     if (b.dataset.tab === 'services') document.getElementById('servicesHead').scrollIntoView({ behavior: 'smooth' });
     else window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -131,7 +131,7 @@ async function buyNumber(service, country, priceLabel) {
 }
 
 // ---------- accounts shop ----------
-const ACCT_BRAND = { facebook: '#1877F2', whatsapp: '#25D366', telegram: '#229ED9', instagram: '#bc1888', google: '#4285F4', youtube: '#FF0000', tiktok: '#010101', imo: '#00B0FF' };
+const ACCT_BRAND = { facebook: '#1877F2', whatsapp: '#25D366', telegram: '#229ED9', instagram: '#bc1888', google: '#4285F4', youtube: '#FF0000', tiktok: '#010101', imo: '#00B0FF', netflix: '#E50914' };
 function acctLogo(p) {
   const logo = String(p.logo || '').trim();
   if (logo) {
@@ -140,11 +140,23 @@ function acctLogo(p) {
   }
   return `<span class="logo-chip" style="background:linear-gradient(135deg,#a04fff,#4f7cff)">🔑</span>`;
 }
-async function loadAccountShop() {
+let acctServiceKey = null;
+function acctServiceKeyOf(p) { return String(p.logo || '').trim().toLowerCase() || 'other'; }
+function acctServiceName(key) {
+  if (key === 'other') return 'Other Accounts';
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
+function acctServiceTileLogo(key) {
+  if (key === 'other') return `<span class="logo-chip" style="background:linear-gradient(135deg,#a04fff,#4f7cff)">🔑</span>`;
+  return `<span class="logo-chip" style="background:${ACCT_BRAND[key] || '#4f7cff'}"><img class="logo-img" src="logos/${esc(key)}.svg" alt=""></span>`;
+}
+function selectAcctService(key) {
+  acctServiceKey = key;
   $('acctDelivered').innerHTML = '';
-  try {
-    const { products } = await api('GET', '/api/account-products');
-    $('acctGrid').innerHTML = products.length ? products.map(p => `
+  loadAccountShop();
+}
+function acctProductCard(p) {
+  return `
       <div class="acct-card">
         <div class="acct-head">
           ${acctLogo(p)}
@@ -159,8 +171,27 @@ async function loadAccountShop() {
           <button class="buy" ${p.available < 1 ? 'disabled' : ''} onclick="buyAccount('${p.id}','${esc(p.name)}',${p.priceUsd})">🛒 Buy</button>
         </div>
         ${p.available < 1 ? '<div class="warn">Out of stock</div>' : ''}
-      </div>`).join('')
-      : '<div class="card">No accounts for sale right now — check back soon.</div>';
+      </div>`;
+}
+async function loadAccountShop() {
+  try {
+    const { products } = await api('GET', '/api/account-products');
+    if (!products.length) {
+      $('acctGrid').innerHTML = '<div class="card">No accounts for sale right now — check back soon.</div>';
+    } else if (!acctServiceKey) {
+      const groups = {};
+      for (const p of products) { const k = acctServiceKeyOf(p); (groups[k] = groups[k] || []).push(p); }
+      const keys = Object.keys(groups).sort();
+      $('acctGrid').innerHTML = '<div class="grid">' + keys.map(k => {
+        const avail = groups[k].reduce((s, p) => s + (p.available || 0), 0);
+        return `<div class="svc" onclick="selectAcctService('${esc(k)}')">${acctServiceTileLogo(k)}${esc(acctServiceName(k))}<span class="pr">${avail} pcs. available</span></div>`;
+      }).join('') + '</div>';
+    } else {
+      const list = products.filter(p => acctServiceKeyOf(p) === acctServiceKey);
+      $('acctGrid').innerHTML = `<button class="btn btn-outline" style="margin-bottom:12px" onclick="selectAcctService(null)">← All services</button>` +
+        (list.length ? list.map(acctProductCard).join('')
+          : '<div class="card">No products in this service right now.</div>');
+    }
   } catch (e) { $('acctGrid').innerHTML = `<div class="card">${esc(e.message)}</div>`; }
   loadMyAccounts();
 }
