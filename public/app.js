@@ -90,6 +90,7 @@ document.querySelectorAll('#plates .plate').forEach(b => {
     if (b.dataset.tab === 'topup') { loadPayInfo(); loadMyTopups(); }
     if (b.dataset.tab === 'profile') loadProfile();
     if (b.dataset.tab === 'admin') loadAdmin();
+    if (b.dataset.tab === 'accounts') loadAccountShop();
     if (b.dataset.tab === 'services') document.getElementById('servicesHead').scrollIntoView({ behavior: 'smooth' });
     else window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -127,6 +128,97 @@ async function buyNumber(service, country, priceLabel) {
     await refreshMe();
     document.querySelector('[data-tab="numbers"]').click();
   } catch (e) { alert(e.message); }
+}
+
+// ---------- accounts shop ----------
+const ACCT_BRAND = { facebook: '#1877F2', whatsapp: '#25D366', telegram: '#229ED9', instagram: '#bc1888', google: '#4285F4', youtube: '#FF0000', tiktok: '#010101', imo: '#00B0FF' };
+function acctLogo(p) {
+  const logo = String(p.logo || '').trim();
+  if (logo) {
+    const bg = ACCT_BRAND[logo.toLowerCase()] || '#4f7cff';
+    return `<span class="logo-chip" style="background:${bg}"><img class="logo-img" src="logos/${esc(logo)}.svg" alt=""></span>`;
+  }
+  return `<span class="logo-chip" style="background:linear-gradient(135deg,#a04fff,#4f7cff)">🔑</span>`;
+}
+async function loadAccountShop() {
+  $('acctDelivered').innerHTML = '';
+  try {
+    const { products } = await api('GET', '/api/account-products');
+    $('acctGrid').innerHTML = products.length ? products.map(p => `
+      <div class="acct-card">
+        <div class="acct-head">
+          ${acctLogo(p)}
+          <div class="acct-title"><b>${esc(p.name)}</b>
+            <div class="muted">${p.available} pcs. · Sold ${p.sold} pieces</div>
+          </div>
+          <div class="acct-price">${fmtUSD(p.priceUsd)}<span class="muted">/pc</span></div>
+        </div>
+        ${p.description ? `<p class="acct-desc">${esc(p.description)}</p>` : ''}
+        <div class="acct-buyrow">
+          <label class="qty-label">Qty <input type="number" id="aqty-${p.id}" value="1" min="1" max="100"></label>
+          <button class="buy" ${p.available < 1 ? 'disabled' : ''} onclick="buyAccount('${p.id}','${esc(p.name)}',${p.priceUsd})">🛒 Buy</button>
+        </div>
+        ${p.available < 1 ? '<div class="warn">Out of stock</div>' : ''}
+      </div>`).join('')
+      : '<div class="card">No accounts for sale right now — check back soon.</div>';
+  } catch (e) { $('acctGrid').innerHTML = `<div class="card">${esc(e.message)}</div>`; }
+  loadMyAccounts();
+}
+async function buyAccount(id, name, priceUsd) {
+  if (!me) { $('authModal').classList.remove('hidden'); return; }
+  const qtyEl = $('aqty-' + id);
+  const qty = Math.max(1, Math.min(100, Math.floor(Number(qtyEl ? qtyEl.value : 1) || 1)));
+  const total = (Number(priceUsd) * qty).toFixed(2);
+  if (!confirm(`Buy ${qty} × ${name} for $${total}?`)) return;
+  try {
+    const { order, items } = await api('POST', '/api/account-products/' + id + '/buy', { qty });
+    $('acctDelivered').innerHTML = `
+      <div class="card acct-deliver">
+        <h3>✅ Your accounts — ${esc(order.productName)} × ${order.qty}</h3>
+        <p class="muted">Delivered instantly · also saved in <b>My Accounts</b> below.</p>
+        <div class="cred-box mono" id="credNow">${items.map(esc).join('<br>')}</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" style="flex:1;min-width:140px" onclick="copyAcctCreds('credNow')">⧉ Copy all</button>
+          <button class="btn btn-outline" style="flex:1;min-width:140px" onclick="downloadAcctFile('credNow','${order.id}')">⬇ Download .txt</button>
+        </div>
+      </div>`;
+    $('acctDelivered').scrollIntoView({ behavior: 'smooth' });
+    await refreshMe(); loadAccountShop();
+  } catch (e) { alert(e.message); }
+}
+function downloadAcctFile(boxId, orderId) {
+  const el = $(boxId);
+  const txt = (el.innerText || el.textContent || '').trim();
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'otpstation-accounts-' + String(orderId).replace(/[^a-zA-Z0-9_-]/g, '') + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+}
+function copyAcctCreds(id) {
+  const el = $(id);
+  const txt = el.innerText || el.textContent;
+  navigator.clipboard.writeText(txt).then(() => alert('Copied ✓')).catch(() => alert('Copy failed — select the text manually.'));
+}
+async function loadMyAccounts() {
+  if (!me) { $('myAccounts').innerHTML = '<div class="card">Log in to see your accounts.</div>'; return; }
+  try {
+    const { orders } = await api('GET', '/api/my-accounts');
+    $('myAccounts').innerHTML = orders.length ? orders.map(o => `
+      <div class="order">
+        <div><b>${esc(o.productName)}</b> × ${o.qty} · ${fmtUSD(o.totalUsd)} <span class="badge done">Delivered</span></div>
+        <div class="row"><span>${new Date(o.createdAt).toLocaleString('en-US')}</span>
+        <button class="link" onclick="toggleAcctCreds('${o.id}')">Show credentials</button></div>
+        <div id="acreds-${o.id}" class="hidden cred-box mono">${o.items.map(esc).join('<br>')}</div>
+      </div>`).join('')
+      : '<div class="card">No accounts purchased yet.</div>';
+  } catch (e) { $('myAccounts').innerHTML = '<div class="card">Could not load.</div>'; }
+}
+function toggleAcctCreds(id) {
+  const el = $('acreds-' + id);
+  el.classList.toggle('hidden');
 }
 
 // ---------- orders ----------
@@ -365,6 +457,34 @@ async function loadAdminPanel(name) {
       : 'No users yet.';
   } catch (e) { $('adminUsers').innerHTML = 'Could not load users.'; }
   }
+  if (name === 'accounts') {
+  // accounts shop: product list + create/edit + stock upload (counts only, never credentials)
+  try {
+    const { products } = await api('GET', '/api/admin/account-products');
+    $('apList').innerHTML = products.length ? products.map(p => `
+      <div class="card ap-prod">
+        <div class="acct-head">
+          ${acctLogo(p)}
+          <div class="acct-title"><b>${esc(p.name)}</b>
+            <div class="muted">${p.available} in stock · ${p.sold} sold · ${p.active ? 'Active' : 'Hidden'}</div>
+          </div>
+          <div class="acct-price">${fmtUSD(p.priceUsd)}<span class="muted">/pc</span></div>
+        </div>
+        <div class="row2">
+          <label>Name <input id="apn-${p.id}" type="text" maxlength="80" value="${esc(p.name)}"></label>
+          <label>Price (USD) <input id="app-${p.id}" type="number" step="0.01" min="0.01" value="${p.priceUsd}"></label>
+        </div>
+        <label class="chk"><input type="checkbox" id="apa-${p.id}" ${p.active ? 'checked' : ''}> Active (visible in shop)</label>
+        <button class="btn btn-outline" onclick="saveAccountProduct('${p.id}')">Save changes</button>
+        <div style="margin-top:10px">
+          <label>Add stock — one account per line <textarea id="aps-${p.id}" rows="4" placeholder="email:password:2fa&#10;one account per line…"></textarea></label>
+          <button class="btn" onclick="uploadAccountStock('${p.id}')">Upload stock</button>
+        </div>
+        <div id="apm-${p.id}" class="msg"></div>
+      </div>`).join('')
+      : '<div class="card">No products yet — create one above.</div>';
+  } catch (e) { $('apList').innerHTML = '<div class="card">Could not load products.</div>'; }
+  }
 }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 async function decideTopup(id, action) {
@@ -390,6 +510,39 @@ $('cSave').onclick = async () => {
   } catch (e) { showMsg('cMsg', e.message, 'err'); }
 };
 
+$('apCreate').onclick = async () => {
+  try {
+    await api('POST', '/api/admin/account-products', {
+      name: $('apName').value.trim(),
+      description: $('apDesc').value.trim(),
+      price_usd: $('apPrice').value,
+      logo: $('apLogo').value.trim()
+    });
+    $('apName').value = ''; $('apDesc').value = ''; $('apPrice').value = ''; $('apLogo').value = '';
+    showMsg('apMsg', 'Product created ✓', 'ok');
+    loadAdminPanel('accounts');
+  } catch (e) { showMsg('apMsg', e.message, 'err'); }
+};
+async function saveAccountProduct(id) {
+  try {
+    await api('PUT', '/api/admin/account-products/' + id, {
+      name: $('apn-' + id).value.trim(),
+      price_usd: $('app-' + id).value,
+      active: $('apa-' + id).checked
+    });
+    showMsg('apm-' + id, 'Saved ✓', 'ok');
+  } catch (e) { showMsg('apm-' + id, e.message, 'err'); }
+}
+async function uploadAccountStock(id) {
+  const lines = $('aps-' + id).value;
+  if (!lines.trim()) { showMsg('apm-' + id, 'Paste at least one account line.', 'err'); return; }
+  try {
+    const { added } = await api('POST', '/api/admin/account-products/' + id + '/stock', { lines });
+    $('aps-' + id).value = '';
+    showMsg('apm-' + id, `Added ${added} accounts to stock ✓`, 'ok');
+    loadAdminPanel('accounts');
+  } catch (e) { showMsg('apm-' + id, e.message, 'err'); }
+}
 function showMsg(id, txt, cls) { const el = $(id); el.textContent = txt; el.className = 'msg ' + cls; }
 
 // ---------- DB backup / restore ----------
