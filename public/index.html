@@ -37,6 +37,12 @@
       </span>
       <span><span class="plate-label">My Numbers</span><br><span class="plate-sub">Active & history</span></span>
     </button>
+    <button class="plate" data-tab="accounts">
+      <span class="plate-icon" style="background:linear-gradient(135deg,#a04fff,#4f7cff)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </span>
+      <span><span class="plate-label">Accounts</span><br><span class="plate-sub">Premium accounts</span></span>
+    </button>
     <button class="plate" data-tab="topup">
       <span class="plate-icon" style="background:linear-gradient(135deg,#ff8a3a,#e02828)">
         <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
@@ -124,6 +130,18 @@
     <div id="orderList"></div>
   </section>
 
+  <!-- ACCOUNTS SHOP -->
+  <section id="tab-accounts" class="tab-page hidden">
+    <div class="section-head">
+      <h2>Premium Accounts</h2>
+      <p>Pay with your balance — the login details are delivered instantly.</p>
+    </div>
+    <div id="acctDelivered"></div>
+    <div id="acctGrid"><span class="muted">Loading…</span></div>
+    <h3>My Accounts</h3>
+    <div id="myAccounts"><span class="muted">Loading…</span></div>
+  </section>
+
   <!-- TOPUP -->
   <section id="tab-topup" class="tab-page hidden">
     <div class="card">
@@ -197,6 +215,12 @@
         </span>
         <span><span class="plate-label">To Review</span><br><span class="plate-sub">Approve top-ups</span></span>
       </button>
+      <button class="plate" data-apanel="accounts">
+        <span class="plate-icon" style="background:linear-gradient(135deg,#a04fff,#4f7cff)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <span><span class="plate-label">Accounts</span><br><span class="plate-sub">Sell accounts</span></span>
+      </button>
       <button class="plate" data-apanel="settings">
         <span class="plate-icon" style="background:linear-gradient(135deg,#8b9bb8,#5a6a8a)">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -208,6 +232,20 @@
     <div id="apanel-users" class="apanel hidden"><div class="card"><h3>👥 Users</h3><div id="adminUsers"><span class="muted">Loading…</span></div></div></div>
     <div id="apanel-awaiting" class="apanel hidden"><div class="card"><h3>⏳ Awaiting payment</h3><div id="adminAwaiting"><span class="muted">Loading…</span></div></div></div>
     <div id="apanel-review" class="apanel hidden"><div class="card"><h3>✅ To review</h3><div id="adminTopups"><span class="muted">Loading…</span></div></div></div>
+    <div id="apanel-accounts" class="apanel hidden">
+      <div class="card">
+        <h3>➕ New product</h3>
+        <label>Product name <input id="apName" type="text" maxlength="80" placeholder="e.g. Facebook Accounts — USA"></label>
+        <label>Description <textarea id="apDesc" rows="3" maxlength="2000" placeholder="What the buyer gets…"></textarea></label>
+        <div class="row2">
+          <label>Price per piece (USD) <input id="apPrice" type="number" step="0.01" min="0.01" placeholder="0.40"></label>
+          <label>Logo (e.g. facebook) <input id="apLogo" type="text" maxlength="60" placeholder="facebook"></label>
+        </div>
+        <button id="apCreate" class="btn">Create product</button>
+        <div id="apMsg" class="msg"></div>
+      </div>
+      <div id="apList"><span class="muted">Loading…</span></div>
+    </div>
     <div id="apanel-settings" class="apanel hidden"><div class="card">
       <h3>⚙️ Settings</h3>
       <label>Profit per number ($) <input id="cFlatFee" type="number" step="0.01" min="0"></label>
