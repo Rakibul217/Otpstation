@@ -239,7 +239,12 @@
         <label>Description <textarea id="apDesc" rows="3" maxlength="2000" placeholder="What the buyer gets…"></textarea></label>
         <div class="row2">
           <label>Price per piece (USD) <input id="apPrice" type="number" step="0.01" min="0.01" placeholder="0.40"></label>
-          <label>Logo (e.g. facebook) <input id="apLogo" type="text" maxlength="60" placeholder="facebook"></label>
+          <label>Logo (e.g. facebook) <input id="apLogo" type="text" maxlength="60" list="apLogoList" placeholder="facebook"></label>
+          <datalist id="apLogoList">
+            <option value="facebook"></option><option value="instagram"></option><option value="tiktok"></option>
+            <option value="youtube"></option><option value="google"></option><option value="netflix"></option>
+            <option value="whatsapp"></option><option value="telegram"></option><option value="imo"></option>
+          </datalist>
         </div>
         <button id="apCreate" class="btn">Create product</button>
         <div id="apMsg" class="msg"></div>
