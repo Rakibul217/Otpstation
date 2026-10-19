@@ -933,3 +933,96 @@ function closeBonusPopup() { $('bonusPopup').classList.add('hidden'); }
 function bonusPopupCta() { closeBonusPopup(); bnavTopup(); }
 
 refreshMe().then(() => { loadServices(); });
+
+// ---------- order alerts: bell rings on new top-up ----------
+const orderAlerts = { on: false, known: new Set(), timer: null, wakeLock: null, audio: null, origTitle: document.title };
+function alertAudio() {
+  if (!orderAlerts.audio) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    orderAlerts.audio = new AC();
+  }
+  if (orderAlerts.audio.state === 'suspended') orderAlerts.audio.resume();
+  return orderAlerts.audio;
+}
+// "kring" chime: bright two-tone bell, repeated
+function bellRing(repeats) {
+  const ctx = alertAudio();
+  if (!ctx) return;
+  const t0 = ctx.currentTime;
+  for (let r = 0; r < (repeats || 3); r++) {
+    [880, 1174.66].forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'triangle'; o.frequency.value = f;
+      const t = t0 + r * 0.7 + i * 0.18;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.5, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t); o.stop(t + 0.65);
+    });
+  }
+}
+function flashTitle(msg) {
+  let n = 0;
+  const iv = setInterval(() => {
+    document.title = (n++ % 2) ? orderAlerts.origTitle : msg;
+    if (n > 11 || !orderAlerts.on) { clearInterval(iv); document.title = orderAlerts.origTitle; }
+  }, 700);
+}
+async function pollOrderAlerts() {
+  try {
+    const { topups } = await api('GET', '/api/admin/topups?status=pending');
+    const fresh = [];
+    (topups || []).forEach(t => {
+      if (!orderAlerts.known.has(t.id)) { orderAlerts.known.add(t.id); fresh.push(t); }
+    });
+    fresh.forEach(t => {
+      bellRing(3);
+      if (navigator.vibrate) navigator.vibrate([250, 120, 250, 120, 500]);
+      flashTitle('🔔 New order: ৳' + (t.amountBdt || '') + '!');
+      const log = $('alertLog');
+      if (log) {
+        const row = document.createElement('div');
+        row.className = 'alert-row';
+        row.innerHTML = `<span>🔔 <b>${esc(t.username || '')}</b> · ৳${t.amountBdt || ''} → $${Number(t.amount).toFixed(2)}<br><span class="muted">${new Date().toLocaleTimeString()}</span></span>
+          <button class="btn btn-sm" onclick="toggleAdminPanel('review')">Review</button>`;
+        log.prepend(row);
+      }
+    });
+  } catch (e) { /* keep polling silently */ }
+}
+async function acquireWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      orderAlerts.wakeLock = await navigator.wakeLock.request('screen');
+      orderAlerts.wakeLock.addEventListener('release', () => { orderAlerts.wakeLock = null; });
+    }
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', () => {
+  if (orderAlerts.on && document.visibilityState === 'visible') acquireWakeLock();
+});
+async function toggleOrderAlerts() {
+  const btn = $('alertToggle'), st = $('alertStatus');
+  if (!orderAlerts.on) {
+    // user gesture: unlock audio now so the bell can ring later
+    alertAudio(); bellRing(1);
+    try {
+      const { topups } = await api('GET', '/api/admin/topups?status=pending');
+      (topups || []).forEach(t => orderAlerts.known.add(t.id));
+    } catch (e) {}
+    orderAlerts.on = true;
+    acquireWakeLock();
+    orderAlerts.timer = setInterval(pollOrderAlerts, 20000);
+    if (btn) { btn.textContent = '🔕 Stop Alerts'; btn.classList.add('ringing'); }
+    if (st) { st.textContent = '🟢 Alerts ON — listening for new orders…'; st.className = 'alert-status on'; }
+  } else {
+    orderAlerts.on = false;
+    clearInterval(orderAlerts.timer); orderAlerts.timer = null;
+    if (orderAlerts.wakeLock) { try { orderAlerts.wakeLock.release(); } catch (e) {} orderAlerts.wakeLock = null; }
+    document.title = orderAlerts.origTitle;
+    if (btn) { btn.textContent = '🔔 Start Alerts'; btn.classList.remove('ringing'); }
+    if (st) { st.textContent = 'Alerts are OFF'; st.className = 'alert-status off'; }
+  }
+}

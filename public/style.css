@@ -418,3 +418,15 @@ textarea:focus{border-color:#4f7cff;box-shadow:0 0 0 3px rgba(79,124,255,.18);ou
 @keyframes bpPop{0%{transform:perspective(700px) rotateX(24deg) scale(.7) translateY(30px);opacity:0}60%{transform:perspective(700px) rotateX(-4deg) scale(1.03) translateY(-4px);opacity:1}100%{transform:perspective(700px) rotateX(0) scale(1) translateY(0);opacity:1}}
 @keyframes bpBounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
 @keyframes bpFade{from{opacity:0}to{opacity:1}}
+
+/* ---------- order alerts ---------- */
+.alert-status{padding:12px 14px;border-radius:12px;font-weight:700;margin:12px 0;text-align:center}
+.alert-status.off{background:rgba(120,130,160,.12);color:var(--muted)}
+.alert-status.on{background:rgba(18,185,129,.14);color:#0a7a52;border:1px solid rgba(18,185,129,.4)}
+.alert-btn{width:100%;padding:14px;font-size:16px}
+.alert-btn.ringing{animation:alertPulse 1.6s ease-in-out infinite}
+@keyframes alertPulse{0%,100%{box-shadow:0 10px 24px rgba(110,90,255,.45),inset 0 2px 0 rgba(255,255,255,.35)}50%{box-shadow:0 10px 34px rgba(245,179,1,.75),inset 0 2px 0 rgba(255,255,255,.35)}}
+.alert-log{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.alert-row{display:flex;justify-content:space-between;align-items:center;gap:10px;background:rgba(245,179,1,.1);border:1px solid rgba(245,179,1,.45);border-radius:12px;padding:10px 12px;animation:bpPop .4s ease}
+.btn-sm{padding:8px 12px;font-size:13px}
+.muted.small{font-size:12px}
