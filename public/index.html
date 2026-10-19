@@ -298,6 +298,19 @@
   </div>
 </div>
 
+<!-- mobile bottom navigation -->
+<nav id="bottomNav" class="bottom-nav" aria-label="Mobile navigation">
+  <button class="bnav-btn" onclick="goHome()">
+    <span class="bnav-icon">🏠</span><span class="bnav-label">Home</span>
+  </button>
+  <button class="bnav-btn bnav-main" onclick="bnavTopup()">
+    <span class="bnav-icon">💰</span><span class="bnav-label">Add Funds</span>
+  </button>
+  <button class="bnav-btn" onclick="bnavAuth()">
+    <span class="bnav-icon" id="bnavAuthIcon">🔑</span><span class="bnav-label" id="bnavAuthLabel">Login</span>
+  </button>
+</nav>
+
 <script src="app.js"></script>
 </body>
 </html>

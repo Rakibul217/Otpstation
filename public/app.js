@@ -33,6 +33,7 @@ async function refreshMe() {
     $('profilePlate').classList.remove('hidden');
     $('plates').classList.remove('hidden');
     initAcctPlates();
+    syncBnavAuth();
   } else {
     $('authArea').innerHTML = `<button class="link" id="loginBtn">Log in / Register</button>`;
     $('loginBtn').onclick = () => { $('authModal').classList.remove('hidden'); };
@@ -40,6 +41,7 @@ async function refreshMe() {
     $('adminPlate').classList.add('hidden');
     $('profilePlate').classList.add('hidden');
     $('plates').classList.add('hidden');
+    syncBnavAuth();
   }
 }
 $('aClose').onclick = () => $('authModal').classList.add('hidden');
@@ -80,6 +82,24 @@ function goHome() {
   if (svc) svc.click();
   else { document.querySelectorAll('.tab-page').forEach(p => p.classList.add('hidden')); $('tab-services').classList.remove('hidden'); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+// ---------- mobile bottom nav ----------
+function bnavTopup() {
+  if (!me) { $('authModal').classList.remove('hidden'); return; }
+  const t = document.querySelector('#plates [data-tab="topup"]');
+  if (t) t.click();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function bnavAuth() {
+  if (me) { const p = document.querySelector('#plates [data-tab="profile"]'); if (p) p.click(); }
+  else $('authModal').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function syncBnavAuth() {
+  const lbl = $('bnavAuthLabel'), ic = $('bnavAuthIcon');
+  if (!lbl || !ic) return;
+  if (me) { lbl.textContent = 'Profile'; ic.textContent = '👤'; }
+  else { lbl.textContent = 'Login'; ic.textContent = '🔑'; }
 }
 document.querySelectorAll('#plates .plate').forEach(b => {
   b.onclick = () => {
