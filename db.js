@@ -30,7 +30,10 @@ function defaultDb() {
     users: [],   // {id, name, username, email, phone, salt, hash, googleId, balance, isAdmin, createdAt}
     orders: [],  // {id, userId, service, serviceName, country, countryName, number, priceUsd, providerId, status, code, createdAt}
     topups: [],  // {id, userId, username, amount, amountBdt, bdtRate, method, senderNumber, trxid, status, createdAt}
-    config: defaultConfig()
+    config: defaultConfig(),
+    accountProducts: [], // {id, name, description, priceUsd, logo, active, createdAt}
+    accountStock: [],    // {id, productId, credential, status:'available'|'sold', soldToUserId, soldAt, createdAt}
+    accountOrders: []    // {id, userId, productId, productName, qty, totalUsd, items[], createdAt}
   };
 }
 
@@ -45,7 +48,11 @@ function save(d) {
 function load() {
   try {
     if (!fs.existsSync(DB_FILE)) { const d = defaultDb(); save(d); return d; }
-    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    const d = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    // forward-fill keys added after this file was created (e.g. accounts shop)
+    const fresh = defaultDb();
+    for (const k of Object.keys(fresh)) if (d[k] === undefined) d[k] = fresh[k];
+    return d;
   } catch (e) {
     const d = defaultDb(); save(d); return d;
   }
@@ -120,6 +127,35 @@ async function createTables() {
       "userId" TEXT,
       "createdAt" BIGINT
     );
+    CREATE TABLE IF NOT EXISTS account_products (
+      id TEXT PRIMARY KEY,
+      name TEXT,
+      description TEXT,
+      "priceUsd" NUMERIC,
+      logo TEXT,
+      active BOOLEAN DEFAULT TRUE,
+      "createdAt" BIGINT
+    );
+    CREATE TABLE IF NOT EXISTS account_stock (
+      id TEXT PRIMARY KEY,
+      "productId" TEXT,
+      credential TEXT,
+      status TEXT DEFAULT 'available',
+      "soldToUserId" TEXT,
+      "soldAt" BIGINT,
+      "createdAt" BIGINT
+    );
+    CREATE INDEX IF NOT EXISTS idx_account_stock_product ON account_stock ("productId", status);
+    CREATE TABLE IF NOT EXISTS account_orders (
+      id TEXT PRIMARY KEY,
+      "userId" TEXT,
+      "productId" TEXT,
+      "productName" TEXT,
+      qty INTEGER,
+      "totalUsd" NUMERIC,
+      items JSONB,
+      "createdAt" BIGINT
+    );
   `);
 }
 
@@ -156,10 +192,31 @@ function mapTopup(r) {
     status: r.status, createdAt: num(r.createdAt)
   };
 }
+function mapAccountProduct(r) {
+  if (!r) return undefined;
+  return {
+    id: r.id, name: r.name || '', description: r.description || '',
+    priceUsd: num(r.priceUsd), logo: r.logo || '',
+    active: !!r.active, createdAt: num(r.createdAt)
+  };
+}
+function mapAccountOrder(r) {
+  if (!r) return undefined;
+  let items = r.items;
+  if (typeof items === 'string') { try { items = JSON.parse(items); } catch (_) { items = []; } }
+  return {
+    id: r.id, userId: r.userId, productId: r.productId, productName: r.productName || '',
+    qty: Number(r.qty) || 0, totalUsd: num(r.totalUsd),
+    items: Array.isArray(items) ? items : [], createdAt: num(r.createdAt)
+  };
+}
 
 const USER_COLS = ['id', 'name', 'username', 'email', 'phone', 'salt', 'hash', 'googleId', 'balance', 'isAdmin', 'createdAt'];
 const ORDER_COLS = ['id', 'userId', 'service', 'serviceName', 'country', 'countryName', 'number', 'priceUsd', 'providerId', 'status', 'code', 'createdAt'];
 const TOPUP_COLS = ['id', 'userId', 'username', 'amount', 'amountBdt', 'bdtRate', 'method', 'trxid', 'senderNumber', 'status', 'createdAt'];
+const ACCOUNT_PRODUCT_COLS = ['id', 'name', 'description', 'priceUsd', 'logo', 'active', 'createdAt'];
+const ACCOUNT_STOCK_COLS = ['id', 'productId', 'credential', 'status', 'soldToUserId', 'soldAt', 'createdAt'];
+const ACCOUNT_ORDER_COLS = ['id', 'userId', 'productId', 'productName', 'qty', 'totalUsd', 'items', 'createdAt'];
 
 function dbVal(v) { return v === undefined ? null : v; }
 function pickCols(obj, cols) {
@@ -220,22 +277,36 @@ async function pgStats() {
   };
 }
 async function pgExport() {
-  const [u, o, t] = await Promise.all([
+  const [u, o, t, ap, as_, ao] = await Promise.all([
     pool.query('SELECT * FROM users ORDER BY "createdAt" ASC, id ASC'),
     pool.query(`SELECT * FROM orders ${NEWEST_FIRST}`),
-    pool.query(`SELECT * FROM topups ${NEWEST_FIRST}`)
+    pool.query(`SELECT * FROM topups ${NEWEST_FIRST}`),
+    pool.query('SELECT * FROM account_products ORDER BY "createdAt" ASC, id ASC'),
+    pool.query('SELECT * FROM account_stock ORDER BY "createdAt" ASC, id ASC'),
+    pool.query(`SELECT * FROM account_orders ${NEWEST_FIRST}`)
   ]);
   return {
     users: u.rows.map(mapUser),
     orders: o.rows.map(mapOrder),
     topups: t.rows.map(mapTopup),
-    config: await pgGetConfig()
+    config: await pgGetConfig(),
+    accountProducts: ap.rows.map(mapAccountProduct),
+    accountStock: as_.rows.map(r => ({
+      id: r.id, productId: r.productId, credential: r.credential, status: r.status,
+      soldToUserId: r.soldToUserId || null, soldAt: r.soldAt === null ? null : num(r.soldAt),
+      createdAt: num(r.createdAt)
+    })),
+    accountOrders: ao.rows.map(mapAccountOrder)
   };
 }
 function validateBackup(data) {
   if (!data || !Array.isArray(data.users) || !Array.isArray(data.orders) ||
       !Array.isArray(data.topups) || typeof data.config !== 'object' || !data.config) {
     throw new Error('Invalid backup file.');
+  }
+  for (const k of ['accountProducts', 'accountStock', 'accountOrders']) {
+    if (data[k] === undefined) data[k] = [];
+    else if (!Array.isArray(data[k])) throw new Error('Invalid backup file.');
   }
 }
 async function pgImport(data) {
@@ -244,6 +315,9 @@ async function pgImport(data) {
   try {
     await client.query('BEGIN');
     const q = (text, params) => client.query(text, params);
+    await q('DELETE FROM account_orders');
+    await q('DELETE FROM account_stock');
+    await q('DELETE FROM account_products');
     await q('DELETE FROM topups');
     await q('DELETE FROM orders');
     await q('DELETE FROM users');
@@ -251,8 +325,80 @@ async function pgImport(data) {
     for (const u of data.users) await pgInsert(q, 'users', USER_COLS, u);
     for (const o of data.orders) await pgInsert(q, 'orders', ORDER_COLS, o);
     for (const t of data.topups) await pgInsert(q, 'topups', TOPUP_COLS, t);
+    for (const p of data.accountProducts) await pgInsert(q, 'account_products', ACCOUNT_PRODUCT_COLS, p);
+    for (const s of data.accountStock) await pgInsert(q, 'account_stock', ACCOUNT_STOCK_COLS, s);
+    for (const o of data.accountOrders) await pgInsert(q, 'account_orders', ACCOUNT_ORDER_COLS, Object.assign({}, o, { items: JSON.stringify(o.items || []) }));
     await q('INSERT INTO config (id, data) VALUES (1, $1)', [JSON.stringify(data.config || {})]);
     await q('COMMIT');
+  } catch (e) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    throw e;
+  } finally {
+    client.release();
+  }
+}
+
+// ---- accounts shop (pg implementations) ----
+async function pgProductStockCounts() {
+  const r = await pool.query(`
+    SELECT "productId",
+      COUNT(*) FILTER (WHERE status = 'available') AS available,
+      COUNT(*) FILTER (WHERE status = 'sold') AS sold
+    FROM account_stock GROUP BY "productId"`);
+  const m = {};
+  for (const row of r.rows) m[row.productId] = { available: Number(row.available), sold: Number(row.sold) };
+  return m;
+}
+function withCounts(products, counts) {
+  return products.map(p => Object.assign({}, p, counts[p.id] || { available: 0, sold: 0 }));
+}
+async function pgAddAccountStock(productId, lines) {
+  if (!lines.length) return 0;
+  const now = Date.now();
+  const values = [], params = [];
+  lines.forEach((line, i) => {
+    const o = i * 6;
+    values.push(`($${o + 1}, $${o + 2}, $${o + 3}, $${o + 4}, $${o + 5}, $${o + 6})`);
+    params.push(uid(), productId, line, 'available', null, now);
+  });
+  await pool.query(
+    `INSERT INTO account_stock (id, "productId", credential, status, "soldToUserId", "createdAt") VALUES ${values.join(', ')}`,
+    params
+  );
+  return lines.length;
+}
+// Atomic buy: locks product + user + stock rows in ONE transaction.
+// Throws a clean Error and changes NOTHING on any failure.
+async function pgBuyAccountStock(productId, userId, qty) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const q = (t, p) => client.query(t, p);
+    const pr = await q('SELECT * FROM account_products WHERE id = $1 FOR UPDATE', [productId]);
+    const product = mapAccountProduct(pr.rows[0]);
+    if (!product) throw new Error('Product not found');
+    if (!product.active) throw new Error('This product is not available right now');
+    const price = num(product.priceUsd);
+    if (!(price > 0)) throw new Error('This product has an invalid price');
+    const ur = await q('SELECT * FROM users WHERE id = $1 FOR UPDATE', [userId]);
+    const user = mapUser(ur.rows[0]);
+    if (!user) throw new Error('User not found');
+    const total = Math.round(price * qty * 10000) / 10000;
+    if (num(user.balance) < total) throw new Error(`Insufficient balance — need $${total.toFixed(2)}`);
+    const sr = await q(
+      `SELECT id, credential FROM account_stock WHERE "productId" = $1 AND status = 'available' ORDER BY "createdAt" ASC, id ASC LIMIT $2 FOR UPDATE SKIP LOCKED`,
+      [productId, qty]
+    );
+    if (sr.rows.length < qty) throw new Error('Not enough stock available');
+    const items = sr.rows.map(r => r.credential);
+    const ids = sr.rows.map(r => r.id);
+    const now = Date.now();
+    await q('UPDATE users SET balance = ROUND((COALESCE(balance, 0) - $2)::numeric, 4) WHERE id = $1', [userId, total]);
+    await q(`UPDATE account_stock SET status = 'sold', "soldToUserId" = $2, "soldAt" = $3 WHERE id = ANY($1)`, [ids, userId, now]);
+    const order = { id: uid(), userId, productId, productName: product.name, qty, totalUsd: total, items, createdAt: now };
+    await pgInsert(q, 'account_orders', ACCOUNT_ORDER_COLS, Object.assign({}, order, { items: JSON.stringify(items) }));
+    await q('COMMIT');
+    return { order, items };
   } catch (e) {
     try { await client.query('ROLLBACK'); } catch (_) {}
     throw e;
@@ -420,6 +566,88 @@ module.exports = {
     return mem().topups.filter(t => t.userId === userId);
   },
 
+  // ---- accounts shop ----
+  createAccountProduct: async ({ name, description, priceUsd, logo }) => {
+    const p = { id: uid(), name, description: description || '', priceUsd, logo: logo || '', active: true, createdAt: Date.now() };
+    if (pgMode) { await pgInsert((t, prm) => pool.query(t, prm), 'account_products', ACCOUNT_PRODUCT_COLS, p); return p; }
+    mem().accountProducts.push(p); save(cache); return p;
+  },
+  getAccountProduct: async (id) => pgMode ? pgGetById('account_products', id, mapAccountProduct) : mem().accountProducts.find(p => p.id === id),
+  listAccountProductsAdmin: async () => {
+    if (pgMode) {
+      const r = await pool.query('SELECT * FROM account_products ORDER BY "createdAt" DESC, id DESC');
+      return withCounts(r.rows.map(mapAccountProduct), await pgProductStockCounts());
+    }
+    const d = mem();
+    const counts = {};
+    for (const s of d.accountStock) {
+      const c = counts[s.productId] || (counts[s.productId] = { available: 0, sold: 0 });
+      if (s.status === 'sold') c.sold++; else c.available++;
+    }
+    return withCounts(d.accountProducts.slice().sort((a, b) => b.createdAt - a.createdAt), counts);
+  },
+  listAccountProductsPublic: async () => {
+    // active products only, with stock counts — credentials NEVER leave the server here
+    const all = await module.exports.listAccountProductsAdmin();
+    return all.filter(p => p.active).map(p => ({
+      id: p.id, name: p.name, description: p.description,
+      priceUsd: p.priceUsd, logo: p.logo,
+      available: p.available, sold: p.sold
+    }));
+  },
+  updateAccountProduct: async (id, patch) => {
+    if (pgMode) return pgUpdate('account_products', ACCOUNT_PRODUCT_COLS, id, patch, mapAccountProduct);
+    const p = mem().accountProducts.find(x => x.id === id);
+    if (p) {
+      for (const k of ['name', 'description', 'priceUsd', 'logo', 'active']) if (patch[k] !== undefined) p[k] = patch[k];
+    }
+    save(cache);
+    return p;
+  },
+  addAccountStock: async (productId, lines) => {
+    if (pgMode) return pgAddAccountStock(productId, lines);
+    const d = mem();
+    const now = Date.now();
+    for (const line of lines) {
+      d.accountStock.push({ id: uid(), productId, credential: line, status: 'available', soldToUserId: null, soldAt: null, createdAt: now });
+    }
+    save(cache);
+    return lines.length;
+  },
+  buyAccountStock: async (productId, userId, qty) => {
+    qty = Math.floor(Number(qty));
+    if (!Number.isInteger(qty) || qty < 1 || qty > 100) throw new Error('Quantity must be 1-100');
+    if (pgMode) return pgBuyAccountStock(productId, userId, qty);
+    // JSON mode: single synchronous pass, one save — effectively atomic
+    const d = mem();
+    const product = d.accountProducts.find(p => p.id === productId);
+    if (!product) throw new Error('Product not found');
+    if (!product.active) throw new Error('This product is not available right now');
+    const price = Number(product.priceUsd);
+    if (!(price > 0)) throw new Error('This product has an invalid price');
+    const user = d.users.find(u => u.id === userId);
+    if (!user) throw new Error('User not found');
+    const total = Math.round(price * qty * 10000) / 10000;
+    if ((user.balance || 0) < total) throw new Error(`Insufficient balance — need $${total.toFixed(2)}`);
+    const rows = d.accountStock.filter(s => s.productId === productId && s.status === 'available').slice(0, qty);
+    if (rows.length < qty) throw new Error('Not enough stock available');
+    const now = Date.now();
+    const items = rows.map(r => r.credential);
+    user.balance = Math.round(((user.balance || 0) - total) * 10000) / 10000;
+    for (const r of rows) { r.status = 'sold'; r.soldToUserId = userId; r.soldAt = now; }
+    const order = { id: uid(), userId, productId, productName: product.name, qty, totalUsd: total, items, createdAt: now };
+    d.accountOrders.unshift(order);
+    save(cache);
+    return { order, items };
+  },
+  myAccountOrders: async (userId) => {
+    if (pgMode) {
+      const r = await pool.query(`SELECT * FROM account_orders WHERE "userId" = $1 ${NEWEST_FIRST}`, [userId]);
+      return r.rows.map(mapAccountOrder);
+    }
+    return mem().accountOrders.filter(o => o.userId === userId);
+  },
+
   stats: async () => {
     if (pgMode) return pgStats();
     const d = mem();
@@ -436,12 +664,18 @@ module.exports = {
   exportJson: async () => {
     if (pgMode) return pgExport();
     const d = mem();
-    return JSON.parse(JSON.stringify({ users: d.users, orders: d.orders, topups: d.topups, config: d.config }));
+    return JSON.parse(JSON.stringify({
+      users: d.users, orders: d.orders, topups: d.topups, config: d.config,
+      accountProducts: d.accountProducts || [], accountStock: d.accountStock || [], accountOrders: d.accountOrders || []
+    }));
   },
   importJson: async (data) => {
     validateBackup(data);
     if (pgMode) { await pgImport(data); return; }
-    cache = { users: data.users, orders: data.orders, topups: data.topups, config: data.config };
+    cache = {
+      users: data.users, orders: data.orders, topups: data.topups, config: data.config,
+      accountProducts: data.accountProducts, accountStock: data.accountStock, accountOrders: data.accountOrders
+    };
     save(cache);
   },
 
