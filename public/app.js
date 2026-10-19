@@ -912,13 +912,24 @@ $('cRestore').onclick = async () => {
     'Numbers in stock for all countries — order now and get your number instantly',
     'OTP not received? Full refund to your balance, automatically',
   ];
+  let wb = {};
   try {
     const info = await api('GET', '/api/payinfo');
-    const wb = info.welcomeBonus || {};
+    wb = info.welcomeBonus || {};
     if (wb.enabled && wb.amount > 0) items.unshift(`🎉 Welcome Bonus: $${wb.amount} FREE credit on your first deposit!`);
   } catch (e) {}
   const half = items.map(t => `<span>${t}</span>`).join('<span class="tick-sep">✦</span>');
   $('tickerTrack').innerHTML = half + '<span class="tick-sep">✦</span>' + half + '<span class="tick-sep">✦</span>';
+  // welcome bonus popup: show once per page load when bonus is enabled
+  if (wb.enabled && wb.amount > 0) {
+    $('bpAmount').textContent = wb.amount;
+    setTimeout(showBonusPopup, 1500);
+  }
 })();
+
+// ---------- welcome bonus popup ----------
+function showBonusPopup() { $('bonusPopup').classList.remove('hidden'); }
+function closeBonusPopup() { $('bonusPopup').classList.add('hidden'); }
+function bonusPopupCta() { closeBonusPopup(); bnavTopup(); }
 
 refreshMe().then(() => { loadServices(); });

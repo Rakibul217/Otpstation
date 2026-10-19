@@ -339,6 +339,28 @@
   </div>
 </div>
 
+<!-- welcome bonus popup -->
+<div id="bonusPopup" class="bonus-popup hidden" role="dialog" aria-label="Welcome bonus" onclick="if(event.target===this)closeBonusPopup()">
+  <div class="bp-card">
+    <button class="bp-close" onclick="closeBonusPopup()" aria-label="Close">✕</button>
+    <div class="bp-gift">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <defs><linearGradient id="bpgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd968"/><stop offset=".5" stop-color="#f5a623"/><stop offset="1" stop-color="#e08600"/></linearGradient></defs>
+        <rect x="10" y="26" width="44" height="30" rx="4" fill="url(#bpgg)"/>
+        <rect x="28" y="26" width="8" height="30" fill="#fff" opacity=".55"/>
+        <rect x="8" y="18" width="48" height="10" rx="3" fill="url(#bpgg)"/>
+        <rect x="28" y="18" width="8" height="10" fill="#fff" opacity=".55"/>
+        <path d="M32 18c-2-8-10-12-14-8s2 8 6 8h8zm0 0c2-8 10-12 14-8s-2 8-6 8h-8z" fill="url(#bpgg)"/>
+      </svg>
+    </div>
+    <div class="bp-title">Welcome Bonus!</div>
+    <div class="bp-amount">$<span id="bpAmount">1</span> FREE</div>
+    <div class="bp-sub">Extra credit on your <b>first deposit</b>.<br>No code needed — auto-added.</div>
+    <button class="bp-cta" onclick="bonusPopupCta()">Add Funds</button>
+    <div class="bp-note">Min deposit ৳625 ($5)</div>
+  </div>
+</div>
+
 <!-- mobile bottom navigation -->
 <nav id="bottomNav" class="bottom-nav" aria-label="Mobile navigation">
   <button class="bnav-btn" onclick="goHome()">
