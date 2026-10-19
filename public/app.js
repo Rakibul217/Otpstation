@@ -332,7 +332,7 @@ async function loadAdminPanel(name) {
   }
   if (name === 'settings') {
   const { config } = await api('GET', '/api/admin/config');
-  $('cMarkup').value = config.markupPercent;
+  $('cFlatFee').value = config.flatFeeUsd || 0;
   $('cProvider').value = config.provider; $('cSite').value = config.siteName;
   $('cBkash').value = config.bkashNumber || '';
   $('cNagad').value = config.nagadNumber || '';
@@ -375,7 +375,7 @@ async function decideTopup(id, action) {
 $('cSave').onclick = async () => {
   try {
     const body = {
-      markupPercent: $('cMarkup').value,
+      flatFeeUsd: $('cFlatFee').value,
       provider: $('cProvider').value, siteName: $('cSite').value,
       bkashNumber: $('cBkash').value.trim(),
       nagadNumber: $('cNagad').value.trim(),
