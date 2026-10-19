@@ -69,12 +69,12 @@ const SERVICES = [
 
 // Popular country flags (country ID -> flag)
 const FLAGS = {
-  '187': '🇺🇸', '16': '🇬🇧', '22': '🇮🇳', '60': '🇧🇩', '6': '🇮🇩',
+  '187': '🇺🇸', '12': '🇺🇸', '16': '🇬🇧', '22': '🇮🇳', '60': '🇧🇩', '6': '🇮🇩',
   '66': '🇵🇰', '10': '🇻🇳', '4': '🇵🇭', '19': '🇳🇬', '36': '🇨🇦',
   '175': '🇦🇺', '43': '🇩🇪', '78': '🇫🇷', '1': '🇺🇦', '7': '🇲🇾',
   '81': '🇳🇵', '53': '🇸🇦', '31': '🇿🇦', '73': '🇧🇷',
 };
-const POPULAR = ['187', '60', '22', '6', '16', '66', '10', '4', '175', '36', '43', '78', '1', '19', '53'];
+// (countries sort purely by price — cheapest available always on top)
 
 function checkError(text) {
   const errors = {
@@ -138,12 +138,9 @@ module.exports = {
         count: info.count,
       });
     }
-    // Popular countries first, then by price
-    out.sort((a, b) => {
-      const pa = POPULAR.indexOf(a.code), pb = POPULAR.indexOf(b.code);
-      if (pa !== -1 || pb !== -1) return (pa === -1 ? 999 : pa) - (pb === -1 ? 999 : pb);
-      return a.baseUsd - b.baseUsd;
-    });
+    // Cheapest first — the cheapest AVAILABLE option is always on top.
+    // When it sells out it drops off automatically; when restocked it jumps back.
+    out.sort((a, b) => a.baseUsd - b.baseUsd);
     return out.slice(0, 60);
   },
 
