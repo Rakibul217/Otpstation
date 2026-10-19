@@ -216,6 +216,12 @@
         </span>
         <span><span class="plate-label">Accounts</span><br><span class="plate-sub">Sell accounts</span></span>
       </button>
+      <button class="plate" data-apanel="chat">
+        <span class="plate-icon" style="background:linear-gradient(135deg,#0ea5e9,#a04fff)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        <span><span class="plate-label">Live Chat</span><br><span class="plate-sub">Support inbox</span></span>
+      </button>
       <button class="plate" data-apanel="settings">
         <span class="plate-icon" style="background:linear-gradient(135deg,#8b9bb8,#5a6a8a)">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -245,6 +251,34 @@
         <div id="apMsg" class="msg"></div>
       </div>
       <div id="apList"><span class="muted">Loading…</span></div>
+    </div>
+    <div id="apanel-chat" class="apanel hidden">
+      <div class="card">
+        <h3>💬 Live Chat</h3>
+        <div id="chatThreads"><span class="muted">Loading…</span></div>
+      </div>
+      <div class="card hidden" id="chatConvoCard">
+        <h4 id="chatConvoTitle">Conversation</h4>
+        <div id="chatConvo" class="chat-msgs" style="max-height:320px"></div>
+        <div class="chat-input-row">
+          <input id="chatReply" maxlength="2000" placeholder="Type reply…" autocomplete="off">
+          <button id="chatReplySend" class="btn">Send</button>
+        </div>
+        <div style="margin-top:8px">
+          <button id="chatCloseBtn" class="btn btn-outline">Close chat</button>
+          <button id="chatReopenBtn" class="btn btn-outline hidden">Reopen chat</button>
+        </div>
+        <div id="chatAdminMsg" class="msg"></div>
+      </div>
+      <div class="card">
+        <h3>🤖 Bot FAQs</h3>
+        <p class="muted">The bot answers instantly when a message contains these keywords (comma-separated).</p>
+        <div id="chatFaqList"><span class="muted">Loading…</span></div>
+        <label>Keywords (comma-separated) <input id="cfKeys" type="text" maxlength="500" placeholder="add fund,top up,টাকা"></label>
+        <label>Answer <textarea id="cfAns" rows="2" maxlength="2000" placeholder="Bot reply…"></textarea></label>
+        <button id="cfAdd" class="btn">Add FAQ</button>
+        <div id="cfMsg" class="msg"></div>
+      </div>
     </div>
     <div id="apanel-settings" class="apanel hidden"><div class="card">
       <h3>⚙️ Settings</h3>
@@ -310,6 +344,17 @@
     <span class="bnav-icon" id="bnavAuthIcon">🔑</span><span class="bnav-label" id="bnavAuthLabel">Login</span>
   </button>
 </nav>
+
+<!-- live chat widget -->
+<button id="chatFab" class="chat-fab" aria-label="Live chat" onclick="toggleChat()">💬</button>
+<div id="chatPanel" class="chat-panel hidden" role="dialog" aria-label="Live chat">
+  <div class="chat-head"><span>💬 Live Chat</span><button id="chatClose" class="link" onclick="toggleChat()">✕</button></div>
+  <div id="chatMsgs" class="chat-msgs"><span class="muted">Loading…</span></div>
+  <div class="chat-input-row">
+    <input id="chatInput" maxlength="2000" placeholder="Type your message…" autocomplete="off">
+    <button id="chatSend" class="btn">Send</button>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>

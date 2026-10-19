@@ -104,6 +104,105 @@ function syncBnavAuth() {
   if (me) { lbl.textContent = 'Profile'; ic.textContent = '👤'; }
   else { lbl.textContent = 'Login'; ic.textContent = '🔑'; }
 }
+// ---------- live chat widget ----------
+let chatThread = null; // {id, token}
+let chatPollTimer = null;
+function chatSenderLabel(sender) {
+  if (sender === 'user') return 'You';
+  if (sender === 'bot') return 'OTPStation Assistant 🤖';
+  if (sender === 'agent') return 'Support 🙋';
+  return 'Support 🙋';
+}
+function chatBubbleHtml(sender, text) {
+  const cls = sender === 'user' ? 'me' : 'them';
+  return `<div class="chat-row ${cls}"><div class="chat-bubble"><b>${chatSenderLabel(sender)}</b><br>${esc(text).replace(/\n/g, '<br>')}</div></div>`;
+}
+function chatScroll() { const box = $('chatMsgs'); box.scrollTop = box.scrollHeight; }
+function chatStored() {
+  try {
+    const id = localStorage.getItem('otp_chat_thread');
+    if (!id) return null;
+    return { id, token: localStorage.getItem('otp_chat_token') || '' };
+  } catch (e) { return null; }
+}
+function chatStore(id, token) {
+  try {
+    localStorage.setItem('otp_chat_thread', id);
+    localStorage.setItem('otp_chat_token', token || '');
+  } catch (e) {}
+}
+function toggleChat() {
+  const panel = $('chatPanel');
+  const opening = panel.classList.contains('hidden');
+  panel.classList.toggle('hidden');
+  if (opening) openChatPanel();
+  else if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
+}
+async function openChatPanel() {
+  chatThread = chatStored();
+  if (!chatThread && me) {
+    // logged-in: start (or resume) the user's thread — no name needed
+    try {
+      const { thread } = await api('POST', '/api/chat/start', {});
+      chatThread = { id: thread.id, token: '' };
+      chatStore(thread.id, '');
+    } catch (e) { $('chatMsgs').innerHTML = chatBubbleHtml('bot', 'Could not start chat: ' + e.message); return; }
+  }
+  if (!chatThread) { renderChatNamePrompt(); return; }
+  await chatRefresh();
+  if (chatPollTimer) clearInterval(chatPollTimer);
+  chatPollTimer = setInterval(chatRefresh, 5000);
+}
+function renderChatNamePrompt() {
+  let name = '';
+  try { name = localStorage.getItem('otp_chat_name') || ''; } catch (e) {}
+  $('chatMsgs').innerHTML = chatBubbleHtml('bot', 'Hi! Welcome to OTPStation support.') +
+    `<div class="chat-row them"><div class="chat-bubble">What's your name?<br>
+     <div style="margin-top:8px;display:flex;gap:6px">
+       <input id="chatNameInput" maxlength="50" placeholder="Your name" value="${esc(name)}" style="margin:0">
+       <button class="btn" onclick="chatStartAsGuest()">Start</button>
+     </div></div></div>`;
+  chatScroll();
+}
+async function chatStartAsGuest() {
+  const inp = $('chatNameInput');
+  const name = (inp ? inp.value : '').trim().slice(0, 50) || 'Guest';
+  try { localStorage.setItem('otp_chat_name', name); } catch (e) {}
+  try {
+    const { thread } = await api('POST', '/api/chat/start', { name });
+    chatThread = { id: thread.id, token: thread.guest_token || '' };
+    chatStore(thread.id, chatThread.token);
+    await chatRefresh();
+    if (chatPollTimer) clearInterval(chatPollTimer);
+    chatPollTimer = setInterval(chatRefresh, 5000);
+  } catch (e) { $('chatMsgs').innerHTML = chatBubbleHtml('bot', 'Could not start chat: ' + e.message); }
+}
+async function chatRefresh() {
+  if (!chatThread || $('chatPanel').classList.contains('hidden')) return;
+  try {
+    const q = new URLSearchParams({ threadId: chatThread.id, token: chatThread.token || '' });
+    const { messages } = await api('GET', '/api/chat/messages?' + q.toString());
+    $('chatMsgs').innerHTML = messages.length
+      ? messages.map(m => chatBubbleHtml(m.sender, m.text)).join('')
+      : chatBubbleHtml('bot', 'Hi! How can I help you today?');
+    chatScroll();
+  } catch (e) { /* keep old messages on transient errors */ }
+}
+async function chatSend() {
+  const inp = $('chatInput');
+  const text = inp.value.trim();
+  if (!text || !chatThread) return;
+  inp.value = '';
+  try {
+    await api('POST', '/api/chat/message', { threadId: chatThread.id, token: chatThread.token || '', text });
+    await chatRefresh();
+  } catch (e) {
+    $('chatMsgs').innerHTML += chatBubbleHtml('bot', 'Could not send: ' + e.message);
+    chatScroll();
+  }
+}
+$('chatSend').onclick = chatSend;
+$('chatInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') chatSend(); });
 document.querySelectorAll('#plates .plate').forEach(b => {
   b.onclick = () => {
     document.querySelectorAll('#plates .plate').forEach(x => x.classList.remove('active'));
@@ -474,8 +573,8 @@ async function toggleAdminPanel(name) {
   panel.classList.remove('hidden');
   const btn = document.querySelector('#adminPlates .plate[data-apanel="' + name + '"]');
   if (btn) btn.classList.add('active');
-  // payment queues always refresh; the rest load once per visit
-  if (name === 'awaiting' || name === 'review' || !adminLoaded[name]) {
+  // payment queues + live chat always refresh; the rest load once per visit
+  if (name === 'awaiting' || name === 'review' || name === 'chat' || !adminLoaded[name]) {
     adminLoaded[name] = true;
     await loadAdminPanel(name);
   }
@@ -563,6 +662,10 @@ async function loadAdminPanel(name) {
       : '<div class="card">No products yet — create one above.</div>';
   } catch (e) { $('apList').innerHTML = '<div class="card">Could not load products.</div>'; }
   }
+  if (name === 'chat') {
+  await loadChatAdminThreads();
+  await loadChatFaqs();
+  }
 }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 async function decideTopup(id, action) {
@@ -629,6 +732,100 @@ async function uploadAccountStock(id) {
     loadAdminPanel('accounts');
   } catch (e) { showMsg('apm-' + id, e.message, 'err'); }
 }
+// ---------- admin: live chat ----------
+let chatAdminThread = null;
+async function loadChatAdminThreads() {
+  try {
+    const { threads } = await api('GET', '/api/admin/chat/threads');
+    $('chatThreads').innerHTML = threads.length ? threads.map(t => `
+      <div class="topup-row" style="cursor:pointer" onclick="openChatThread('${t.id}')">
+        <span><b>${esc(t.displayName || 'Guest')}</b>
+          ${t.status === 'open' ? '<span class="badge awaiting">open</span>' : '<span class="badge done">closed</span>'}
+          ${t.unread ? ` <span class="badge pending">${t.unread} new</span>` : ''}<br>
+          <span class="muted">${esc((t.lastText || '—').slice(0, 90))}</span></span>
+        <span class="muted">${t.updatedAt ? new Date(t.updatedAt).toLocaleString() : ''}</span>
+      </div>`).join('')
+      : 'No chats yet.';
+  } catch (e) { $('chatThreads').innerHTML = 'Could not load chats.'; }
+}
+async function openChatThread(id) {
+  chatAdminThread = id;
+  try {
+    const { thread, messages } = await api('GET', '/api/admin/chat/thread/' + id);
+    $('chatConvoCard').classList.remove('hidden');
+    $('chatConvoTitle').textContent = '💬 ' + (thread.displayName || 'Chat') + (thread.status === 'closed' ? ' (closed)' : '');
+    $('chatConvo').innerHTML = messages.length
+      ? messages.map(m => {
+          const who = m.sender === 'user' ? esc(thread.displayName || 'User')
+            : m.sender === 'bot' ? 'Bot 🤖' : m.sender === 'agent' ? 'Agent 🙋' : 'Admin';
+          const cls = m.sender === 'user' ? 'them' : 'me';
+          return `<div class="chat-row ${cls}"><div class="chat-bubble"><b>${who}</b><br>${esc(m.text).replace(/\n/g, '<br>')}</div></div>`;
+        }).join('')
+      : '<span class="muted">No messages yet.</span>';
+    $('chatConvo').scrollTop = $('chatConvo').scrollHeight;
+    $('chatCloseBtn').classList.toggle('hidden', thread.status !== 'open');
+    $('chatReopenBtn').classList.toggle('hidden', thread.status === 'open');
+  } catch (e) { showMsg('chatAdminMsg', e.message, 'err'); }
+}
+async function chatAdminReply() {
+  const text = $('chatReply').value.trim();
+  if (!text || !chatAdminThread) return;
+  try {
+    await api('POST', '/api/admin/chat/reply', { threadId: chatAdminThread, text });
+    $('chatReply').value = '';
+    showMsg('chatAdminMsg', 'Sent ✓', 'ok');
+    await openChatThread(chatAdminThread);
+    await loadChatAdminThreads();
+  } catch (e) { showMsg('chatAdminMsg', e.message, 'err'); }
+}
+async function chatAdminSetStatus(action) {
+  if (!chatAdminThread) return;
+  if (action === 'close' && !confirm('Close this chat?')) return;
+  try {
+    await api('POST', '/api/admin/chat/' + action + '/' + chatAdminThread, {});
+    await openChatThread(chatAdminThread);
+    await loadChatAdminThreads();
+  } catch (e) { showMsg('chatAdminMsg', e.message, 'err'); }
+}
+async function loadChatFaqs() {
+  try {
+    const { faqs } = await api('GET', '/api/admin/chat/faqs');
+    $('chatFaqList').innerHTML = faqs.length ? faqs.map(f => `
+      <div class="card" style="margin-bottom:8px">
+        <div><b>${esc(f.keywords)}</b>
+          ${f.active ? '<span class="badge done">active</span>' : '<span class="badge awaiting">off</span>'}</div>
+        <div class="muted" style="margin-top:4px">${esc(f.answer)}</div>
+        <div style="margin-top:8px">
+          <button class="btn btn-outline" onclick="toggleChatFaq('${f.id}', ${!f.active})">${f.active ? 'Disable' : 'Enable'}</button>
+          <button class="btn btn-danger" onclick="deleteChatFaq('${f.id}')">Delete</button>
+        </div>
+      </div>`).join('')
+      : 'No FAQs yet.';
+  } catch (e) { $('chatFaqList').innerHTML = 'Could not load FAQs.'; }
+}
+async function toggleChatFaq(id, active) {
+  try { await api('PUT', '/api/admin/chat/faqs/' + id, { active }); loadChatFaqs(); }
+  catch (e) { showMsg('cfMsg', e.message, 'err'); }
+}
+async function deleteChatFaq(id) {
+  if (!confirm('Delete this FAQ?')) return;
+  try { await api('DELETE', '/api/admin/chat/faqs/' + id); loadChatFaqs(); }
+  catch (e) { showMsg('cfMsg', e.message, 'err'); }
+}
+$('chatReplySend').onclick = chatAdminReply;
+$('chatReply').addEventListener('keydown', (e) => { if (e.key === 'Enter') chatAdminReply(); });
+$('chatCloseBtn').onclick = () => chatAdminSetStatus('close');
+$('chatReopenBtn').onclick = () => chatAdminSetStatus('reopen');
+$('cfAdd').onclick = async () => {
+  const keywords = $('cfKeys').value.trim(), answer = $('cfAns').value.trim();
+  if (!keywords || !answer) { showMsg('cfMsg', 'Keywords and answer are required.', 'err'); return; }
+  try {
+    await api('POST', '/api/admin/chat/faqs', { keywords, answer });
+    $('cfKeys').value = ''; $('cfAns').value = '';
+    showMsg('cfMsg', 'FAQ added ✓', 'ok');
+    loadChatFaqs();
+  } catch (e) { showMsg('cfMsg', e.message, 'err'); }
+};
 function showMsg(id, txt, cls) { const el = $(id); el.textContent = txt; el.className = 'msg ' + cls; }
 
 // ---------- DB backup / restore ----------
