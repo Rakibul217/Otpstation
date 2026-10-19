@@ -515,12 +515,16 @@ async function pgListChatThreadsAdmin() {
      LEFT JOIN users u ON u.id = t."userId"
      ORDER BY (t.status = 'open') DESC, t."updatedAt" DESC, t.id DESC`
   );
-  return r.rows.map(row => Object.assign(mapChatThread(row), {
-    displayName: row.uUsername ? (row.uName || row.uUsername) : (row.guestName || 'Guest'),
-    username: row.uUsername || null,
-    lastText: row.lastText || '', lastSender: row.lastSender || null,
-    lastAt: row.lastAt === null ? null : num(row.lastAt), unread: Number(row.unread) || 0
-  }));
+  return r.rows.map(row => {
+    const t = mapChatThread(row);
+    delete t.guestToken; // never expose guest tokens in list views
+    return Object.assign(t, {
+      displayName: row.uUsername ? (row.uName || row.uUsername) : (row.guestName || 'Guest'),
+      username: row.uUsername || null,
+      lastText: row.lastText || '', lastSender: row.lastSender || null,
+      lastAt: row.lastAt === null ? null : num(row.lastAt), unread: Number(row.unread) || 0
+    });
+  });
 }
 // Open threads whose latest message is from 'user' (nobody answered yet).
 async function pgPendingChatThreads() {
@@ -535,10 +539,14 @@ async function pgPendingChatThreads() {
   return r.rows
     .filter(row => row.lastSender === 'user')
     .sort((a, b) => num(a.updatedAt) - num(b.updatedAt))
-    .map(row => ({
-      thread: mapChatThread(row),
-      lastMessage: { sender: row.lastSender, text: row.lastText || '', createdAt: num(row.lastAt) }
-    }));
+    .map(row => {
+      const t = mapChatThread(row);
+      delete t.guestToken; // never expose guest tokens in the pending queue
+      return {
+        thread: t,
+        lastMessage: { sender: row.lastSender, text: row.lastText || '', createdAt: num(row.lastAt) }
+      };
+    });
 }
 async function pgListChatFaqs() {
   const r = await pool.query('SELECT * FROM chat_faqs ORDER BY "createdAt" ASC, id ASC');
