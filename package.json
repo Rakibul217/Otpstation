@@ -1,1 +1,14 @@
-{"dependencies":{"ethers":"^6.17.0","express":"^4.19.2"},"description":"OTP selling website MVP (Grizzly SMS style) - BD Bazar OTP","main":"server.js","name":"bd-bazar-otp-website","scripts":{"start":"node server.js"},"version":"0.1.0"}
+{
+  "dependencies": {
+    "ethers": "^6.17.0",
+    "express": "^4.19.2",
+    "pg": "^8.11.3"
+  },
+  "description": "OTP selling website MVP (Grizzly SMS style) - BD Bazar OTP",
+  "main": "server.js",
+  "name": "bd-bazar-otp-website",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "0.1.0"
+}
