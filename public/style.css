@@ -197,6 +197,10 @@ label{font-size:14px;display:block;margin:8px 0;color:var(--muted)}
   box-shadow:0 6px 20px rgba(120,140,200,.3),var(--inset);backdrop-filter:blur(10px)}
 .btn-outline::after{display:none}
 .btn-outline:hover{transform:translateY(-2px)}
+.btn-danger{background:rgba(255,235,235,.8);border:1.5px solid rgba(230,80,80,.45);color:#d33;
+  box-shadow:0 6px 20px rgba(220,100,100,.25),var(--inset);backdrop-filter:blur(10px);margin-left:8px}
+.btn-danger::after{display:none}
+.btn-danger:hover{transform:translateY(-2px)}
 .stats{display:flex;gap:28px;margin-top:26px;flex-wrap:wrap}
 .stat b{display:block;font-size:24px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .stat span{font-size:13px;color:var(--muted)}
