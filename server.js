@@ -419,6 +419,14 @@ app.put('/api/admin/account-products/:id', requireAuth, requireAdmin, async (req
     res.json({ product });
   } catch (e) { res.status(400).json({ error: e.message }); }
 });
+app.delete('/api/admin/account-products/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const product = await db.getAccountProduct(req.params.id);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    await db.deleteAccountProduct(req.params.id);
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 app.post('/api/admin/account-products/:id/stock', requireAuth, requireAdmin, async (req, res) => {
   try {
     const product = await db.getAccountProduct(req.params.id);
