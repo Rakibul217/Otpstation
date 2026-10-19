@@ -150,6 +150,9 @@ app.get('/api/history', requireAuth, async (req, res) => {
     else if (t.status === 'rejected') items.push({ label: 'Top-up rejected', amount: amt, at: t.createdAt, kind: 'none' });
     else items.push({ label: t.status === 'pending' ? 'Top-up pending review' : 'Top-up awaiting payment', amount: amt, at: t.createdAt, kind: 'none' });
   }
+  for (const b of await db.userBonuses(u.id)) {
+    items.push({ label: b.label || 'Bonus', amount: Number(b.amount) || 0, at: b.createdAt, kind: 'credit' });
+  }
   for (const o of await db.userOrders(u.id)) {
     const amt = Number(o.priceUsd) || 0;
     const what = `${o.serviceName || o.service}${o.number ? ' — ' + o.number : ''}`;
@@ -340,7 +343,8 @@ app.get('/api/payinfo', async (req, res) => {
   const methods = [];
   if (c.bkashNumber) methods.push({ id: 'bkash', name: 'bKash', number: c.bkashNumber });
   if (c.nagadNumber) methods.push({ id: 'nagad', name: 'Nagad', number: c.nagadNumber });
-  res.json({ methods, bdtRate: rate, minBdt: Math.ceil(MIN_USD * rate), maxBdt: MAX_BDT, minUsd: MIN_USD });
+  res.json({ methods, bdtRate: rate, minBdt: Math.ceil(MIN_USD * rate), maxBdt: MAX_BDT, minUsd: MIN_USD,
+    welcomeBonus: { enabled: c.welcomeBonusEnabled !== false, amount: Number(c.welcomeBonusUsd) || 0 } });
 });
 
 // Submit a top-up: { method: 'bkash'|'nagad', amountBdt, senderNumber, trxid }
@@ -613,6 +617,23 @@ app.post('/api/admin/topups/:id', requireAuth, requireAdmin, async (req, res) =>
   if (req.body.action === 'approve') {
     await db.updateTopup(t.id, { status: 'approved' });
     await db.addBalance(t.userId, t.amount);
+    // Welcome bonus: $X free on first approved deposit (once per user)
+    let bonusGiven = 0;
+    try {
+      const cfg = await db.getConfig();
+      const bonusUsd = Number(cfg.welcomeBonusUsd) || 0;
+      if (cfg.welcomeBonusEnabled !== false && bonusUsd > 0 && !(await db.hasWelcomeBonus(t.userId))) {
+        const limit = Number(cfg.welcomeBonusLimit) || 0;
+        const given = Number(cfg.welcomeBonusGiven) || 0;
+        if (limit === 0 || given < limit) {
+          await db.addBonus({ userId: t.userId, amount: bonusUsd, kind: 'welcome', label: '🎁 Welcome bonus — first deposit' });
+          await db.addBalance(t.userId, bonusUsd);
+          await db.setConfig({ welcomeBonusGiven: given + 1 });
+          bonusGiven = bonusUsd;
+        }
+      }
+    } catch (e) { console.error('[bonus]', e.message); }
+    return res.json({ ok: true, bonus: bonusGiven });
   } else {
     await db.updateTopup(t.id, { status: 'rejected' });
   }
@@ -731,10 +752,13 @@ app.get('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
   res.json({ config: { ...c, bkashSet: !!c.bkashNumber, nagadSet: !!c.nagadNumber } });
 });
 app.post('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
-  const { markupPercent, flatFeeUsd, provider, siteName, bkashNumber, nagadNumber, bdtRate, googleClientId, googleClientSecret, baseUrl } = req.body || {};
+  const { markupPercent, flatFeeUsd, provider, siteName, bkashNumber, nagadNumber, bdtRate, googleClientId, googleClientSecret, baseUrl, welcomeBonusUsd, welcomeBonusEnabled, welcomeBonusLimit } = req.body || {};
   const patch = {};
   if (markupPercent !== undefined) patch.markupPercent = Math.max(0, Math.min(500, Number(markupPercent) || 0));
   if (flatFeeUsd !== undefined) patch.flatFeeUsd = Math.max(0, Math.min(10, Number(flatFeeUsd) || 0));
+  if (welcomeBonusUsd !== undefined) patch.welcomeBonusUsd = Math.max(0, Math.min(100, Number(welcomeBonusUsd) || 0));
+  if (welcomeBonusEnabled !== undefined) patch.welcomeBonusEnabled = !!welcomeBonusEnabled;
+  if (welcomeBonusLimit !== undefined) patch.welcomeBonusLimit = Math.max(0, Math.min(100000, Math.floor(Number(welcomeBonusLimit) || 0)));
   if (provider) patch.provider = provider;
   if (siteName) patch.siteName = String(siteName).slice(0, 40);
   if (bkashNumber !== undefined) {

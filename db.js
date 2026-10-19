@@ -22,7 +22,9 @@ function defaultConfig() {
     // Manual bKash/Nagad top-ups — admin's personal numbers + BDT→USD rate
     bkashNumber: '', nagadNumber: '', bdtRate: 125,
     // Google OAuth ("Continue with Google") — set in Admin → Settings
-    googleClientId: '', googleClientSecret: '', baseUrl: ''
+    googleClientId: '', googleClientSecret: '', baseUrl: '',
+    // Welcome bonus: $X free credit on first approved deposit (once per user)
+    welcomeBonusUsd: 1, welcomeBonusEnabled: true, welcomeBonusLimit: 0, welcomeBonusGiven: 0
   };
 }
 function defaultDb() {
@@ -36,7 +38,8 @@ function defaultDb() {
     accountOrders: [],   // {id, userId, productId, productName, qty, totalUsd, items[], createdAt}
     chatThreads: [],  // {id, userId|null, guestName, guestToken, status:'open'|'closed', createdAt, updatedAt}
     chatMessages: [],  // {id, threadId, sender:'user'|'bot'|'agent'|'admin', text, createdAt}
-    chatFaqs: []       // {id, keywords, answer, active, createdAt}
+    chatFaqs: [],       // {id, keywords, answer, active, createdAt}
+    bonuses: []        // {id, userId, amount, kind:'welcome', label, createdAt}
   };
 }
 
@@ -184,6 +187,14 @@ async function createTables() {
       active BOOLEAN DEFAULT TRUE,
       "createdAt" BIGINT
     );
+    CREATE TABLE IF NOT EXISTS bonuses (
+      id TEXT PRIMARY KEY,
+      "userId" TEXT,
+      amount NUMERIC DEFAULT 0,
+      kind TEXT,
+      label TEXT,
+      "createdAt" BIGINT
+    );
   `);
 }
 
@@ -264,6 +275,20 @@ const ACCOUNT_ORDER_COLS = ['id', 'userId', 'productId', 'productName', 'qty', '
 const CHAT_THREAD_COLS = ['id', 'userId', 'guestName', 'guestToken', 'status', 'createdAt', 'updatedAt'];
 const CHAT_MESSAGE_COLS = ['id', 'threadId', 'sender', 'text', 'createdAt'];
 const CHAT_FAQ_COLS = ['id', 'keywords', 'answer', 'active', 'createdAt'];
+const BONUS_COLS = ['id', 'userId', 'amount', 'kind', 'label', 'createdAt'];
+function mapBonus(r) {
+  if (!r) return undefined;
+  return { id: r.id, userId: r.userId, amount: num(r.amount), kind: r.kind || '', label: r.label || '', createdAt: num(r.createdAt) };
+}
+async function pgAddBonus({ userId, amount, kind, label }) {
+  const b = { id: uid(), userId, amount, kind: kind || '', label: label || '', createdAt: Date.now() };
+  await pgInsert((q, p) => pool.query(q, p), 'bonuses', BONUS_COLS, b);
+  return b;
+}
+async function pgUserBonuses(userId) {
+  const r = await pool.query('SELECT * FROM bonuses WHERE "userId" = $1 ORDER BY "createdAt" DESC', [userId]);
+  return r.rows.map(mapBonus);
+}
 
 function dbVal(v) { return v === undefined ? null : v; }
 function pickCols(obj, cols) {
@@ -324,7 +349,7 @@ async function pgStats() {
   };
 }
 async function pgExport() {
-  const [u, o, t, ap, as_, ao, ct, cm, cf] = await Promise.all([
+  const [u, o, t, ap, as_, ao, ct, cm, cf, bn] = await Promise.all([
     pool.query('SELECT * FROM users ORDER BY "createdAt" ASC, id ASC'),
     pool.query(`SELECT * FROM orders ${NEWEST_FIRST}`),
     pool.query(`SELECT * FROM topups ${NEWEST_FIRST}`),
@@ -333,7 +358,8 @@ async function pgExport() {
     pool.query(`SELECT * FROM account_orders ${NEWEST_FIRST}`),
     pool.query('SELECT * FROM chat_threads ORDER BY "createdAt" ASC, id ASC'),
     pool.query('SELECT * FROM chat_messages ORDER BY "createdAt" ASC, id ASC'),
-    pool.query('SELECT * FROM chat_faqs ORDER BY "createdAt" ASC, id ASC')
+    pool.query('SELECT * FROM chat_faqs ORDER BY "createdAt" ASC, id ASC'),
+    pool.query('SELECT * FROM bonuses ORDER BY "createdAt" ASC, id ASC')
   ]);
   return {
     users: u.rows.map(mapUser),
@@ -349,7 +375,8 @@ async function pgExport() {
     accountOrders: ao.rows.map(mapAccountOrder),
     chatThreads: ct.rows.map(mapChatThread),
     chatMessages: cm.rows.map(mapChatMessage),
-    chatFaqs: cf.rows.map(mapChatFaq)
+    chatFaqs: cf.rows.map(mapChatFaq),
+    bonuses: bn.rows.map(mapBonus)
   };
 }
 function validateBackup(data) {
@@ -357,7 +384,7 @@ function validateBackup(data) {
       !Array.isArray(data.topups) || typeof data.config !== 'object' || !data.config) {
     throw new Error('Invalid backup file.');
   }
-  for (const k of ['accountProducts', 'accountStock', 'accountOrders', 'chatThreads', 'chatMessages', 'chatFaqs']) {
+  for (const k of ['accountProducts', 'accountStock', 'accountOrders', 'chatThreads', 'chatMessages', 'chatFaqs', 'bonuses']) {
     if (data[k] === undefined) data[k] = [];
     else if (!Array.isArray(data[k])) throw new Error('Invalid backup file.');
   }
@@ -387,6 +414,8 @@ async function pgImport(data) {
     for (const ct of data.chatThreads) await pgInsert(q, 'chat_threads', CHAT_THREAD_COLS, ct);
     for (const cm of data.chatMessages) await pgInsert(q, 'chat_messages', CHAT_MESSAGE_COLS, cm);
     for (const cf of data.chatFaqs) await pgInsert(q, 'chat_faqs', CHAT_FAQ_COLS, cf);
+    await q('DELETE FROM bonuses');
+    for (const b of data.bonuses || []) await pgInsert(q, 'bonuses', BONUS_COLS, b);
     await q('INSERT INTO config (id, data) VALUES (1, $1)', [JSON.stringify(data.config || {})]);
     await q('COMMIT');
   } catch (e) {
@@ -989,6 +1018,21 @@ module.exports = {
     save(cache);
     return f;
   },
+
+  // ---- bonuses ----
+  addBonus: async ({ userId, amount, kind, label }) => {
+    if (pgMode) return pgAddBonus({ userId, amount, kind, label });
+    const b = { id: uid(), userId, amount, kind: kind || '', label: label || '', createdAt: Date.now() };
+    const m = mem(); m.bonuses = m.bonuses || []; m.bonuses.push(b); save(cache); return b;
+  },
+  userBonuses: async (userId) => {
+    if (pgMode) return pgUserBonuses(userId);
+    return (mem().bonuses || []).filter(b => b.userId === userId).slice().sort((a, b) => b.createdAt - a.createdAt);
+  },
+  hasWelcomeBonus: async (userId) => {
+    if (pgMode) { const r = await pool.query('SELECT 1 FROM bonuses WHERE "userId" = $1 AND kind = $2 LIMIT 1', [userId, 'welcome']); return r.rows.length > 0; }
+    return (mem().bonuses || []).some(b => b.userId === userId && b.kind === 'welcome');
+  },
   deleteChatFaq: async (id) => {
     if (pgMode) return pgDeleteChatFaq(id);
     const d = mem();
@@ -1016,7 +1060,8 @@ module.exports = {
     return JSON.parse(JSON.stringify({
       users: d.users, orders: d.orders, topups: d.topups, config: d.config,
       accountProducts: d.accountProducts || [], accountStock: d.accountStock || [], accountOrders: d.accountOrders || [],
-      chatThreads: d.chatThreads || [], chatMessages: d.chatMessages || [], chatFaqs: d.chatFaqs || []
+      chatThreads: d.chatThreads || [], chatMessages: d.chatMessages || [], chatFaqs: d.chatFaqs || [],
+      bonuses: d.bonuses || []
     }));
   },
   importJson: async (data) => {
@@ -1025,7 +1070,8 @@ module.exports = {
     cache = {
       users: data.users, orders: data.orders, topups: data.topups, config: data.config,
       accountProducts: data.accountProducts, accountStock: data.accountStock, accountOrders: data.accountOrders,
-      chatThreads: data.chatThreads, chatMessages: data.chatMessages, chatFaqs: data.chatFaqs
+      chatThreads: data.chatThreads, chatMessages: data.chatMessages, chatFaqs: data.chatFaqs,
+      bonuses: data.bonuses || []
     };
     save(cache);
   },
