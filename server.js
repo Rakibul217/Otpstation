@@ -314,14 +314,14 @@ app.get('/api/orders/:id', requireAuth, async (req, res) => {
   res.json({ order: await db.getOrder(o.id) });
 });
 
-// Grizzly policy: a number can only be cancelled 2 minutes after purchase.
-const CANCEL_MIN_MS = 2 * 60 * 1000;
+// Grizzly policy: a number can only be cancelled 5 minutes after purchase.
+const CANCEL_MIN_MS = 5 * 60 * 1000;
 app.post('/api/orders/:id/cancel', requireAuth, async (req, res) => {
   const o = await db.getOrder(req.params.id);
   if (!o || o.userId !== req.user.id) return res.status(404).json({ error: 'Order not found' });
   if (o.status !== 'waiting') return res.status(400).json({ error: 'This order cannot be cancelled' });
   if (Date.now() - o.createdAt < CANCEL_MIN_MS)
-    return res.status(400).json({ error: 'You can cancel this number 2 minutes after purchase (Grizzly policy)' });
+    return res.status(400).json({ error: 'You can cancel this number 5 minutes after purchase (Grizzly policy)' });
   try { await (await getProvider()).cancel(o.providerId); } catch (e) {}
   await db.updateOrder(o.id, { status: 'cancelled' });
   await db.addBalance(o.userId, o.priceUsd);
