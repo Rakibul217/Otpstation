@@ -604,6 +604,23 @@ module.exports = {
     save(cache);
     return p;
   },
+  deleteAccountProduct: async (id) => {
+    if (pgMode) {
+      const client = await pool.connect();
+      try {
+        await client.query('BEGIN');
+        await client.query('DELETE FROM account_stock WHERE "productId" = $1', [id]);
+        await client.query('DELETE FROM account_products WHERE id = $1', [id]);
+        await client.query('COMMIT');
+      } catch (e) { await client.query('ROLLBACK'); throw e; } finally { client.release(); }
+      return true;
+    }
+    const d = mem();
+    d.accountProducts = d.accountProducts.filter(x => x.id !== id);
+    d.accountStock = d.accountStock.filter(s => s.productId !== id);
+    save(cache);
+    return true;
+  },
   addAccountStock: async (productId, lines) => {
     if (pgMode) return pgAddAccountStock(productId, lines);
     const d = mem();
