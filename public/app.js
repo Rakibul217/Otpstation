@@ -32,6 +32,7 @@ async function refreshMe() {
     $('adminPlate').classList.toggle('hidden', !me.isAdmin);
     $('profilePlate').classList.remove('hidden');
     $('plates').classList.remove('hidden');
+    initAcctPlates();
   } else {
     $('authArea').innerHTML = `<button class="link" id="loginBtn">Log in / Register</button>`;
     $('loginBtn').onclick = () => { $('authModal').classList.remove('hidden'); };
@@ -146,14 +147,41 @@ function acctServiceName(key) {
   if (key === 'other') return 'Other Accounts';
   return key.charAt(0).toUpperCase() + key.slice(1);
 }
-function acctServiceTileLogo(key) {
-  if (key === 'other') return `<span class="logo-chip" style="background:linear-gradient(135deg,#a04fff,#4f7cff)">🔑</span>`;
-  return `<span class="logo-chip" style="background:${ACCT_BRAND[key] || '#4f7cff'}"><img class="logo-img" src="logos/${esc(key)}.svg" alt=""></span>`;
+function renderAcctServicePlates(products) {
+  const c = $('acctServicePlates');
+  if (!c) return;
+  c.innerHTML = '';
+  const groups = {};
+  for (const p of products) { const k = acctServiceKeyOf(p); (groups[k] = groups[k] || []).push(p); }
+  for (const k of Object.keys(groups).sort()) {
+    const avail = groups[k].reduce((s, p) => s + (p.available || 0), 0);
+    const b = document.createElement('button');
+    b.className = 'plate' + (acctServiceKey === k ? ' active' : '');
+    const iconBg = ACCT_BRAND[k] || 'linear-gradient(135deg,#a04fff,#4f7cff)';
+    const iconInner = k === 'other' ? '🔑' : `<img src="logos/${esc(k)}.svg" alt="" style="width:30px;height:30px;display:block">`;
+    b.innerHTML = `<span class="plate-icon" style="background:${iconBg};display:flex;align-items:center;justify-content:center;font-size:22px">${iconInner}</span>
+      <span><span class="plate-label">${esc(acctServiceName(k))}</span><br><span class="plate-sub">${avail} pcs. available</span></span>`;
+    b.onclick = () => openAcctService(k);
+    c.appendChild(b);
+  }
 }
-function selectAcctService(key) {
+function openAcctService(key) {
   acctServiceKey = key;
   $('acctDelivered').innerHTML = '';
+  $('acctTitle').textContent = acctServiceName(key) + ' Accounts';
+  document.querySelectorAll('#plates .plate').forEach(x => x.classList.remove('active'));
+  renderAcctServicePlates(window._acctProducts || []);
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.add('hidden'));
+  $('tab-accounts').classList.remove('hidden');
   loadAccountShop();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+async function initAcctPlates() {
+  try {
+    const { products } = await api('GET', '/api/account-products');
+    window._acctProducts = products;
+    renderAcctServicePlates(products);
+  } catch (e) { /* shop unavailable — plates stay empty */ }
 }
 function acctProductCard(p) {
   return `
@@ -176,22 +204,16 @@ function acctProductCard(p) {
 async function loadAccountShop() {
   try {
     const { products } = await api('GET', '/api/account-products');
-    if (!products.length) {
-      $('acctGrid').innerHTML = '<div class="card">No accounts for sale right now — check back soon.</div>';
-    } else if (!acctServiceKey) {
-      const groups = {};
-      for (const p of products) { const k = acctServiceKeyOf(p); (groups[k] = groups[k] || []).push(p); }
-      const keys = Object.keys(groups).sort();
-      $('acctGrid').innerHTML = '<div class="grid">' + keys.map(k => {
-        const avail = groups[k].reduce((s, p) => s + (p.available || 0), 0);
-        return `<div class="svc" onclick="selectAcctService('${esc(k)}')">${acctServiceTileLogo(k)}${esc(acctServiceName(k))}<span class="pr">${avail} pcs. available</span></div>`;
-      }).join('') + '</div>';
-    } else {
-      const list = products.filter(p => acctServiceKeyOf(p) === acctServiceKey);
-      $('acctGrid').innerHTML = `<button class="btn btn-outline" style="margin-bottom:12px" onclick="selectAcctService(null)">← All services</button>` +
-        (list.length ? list.map(acctProductCard).join('')
-          : '<div class="card">No products in this service right now.</div>');
+    window._acctProducts = products;
+    renderAcctServicePlates(products);
+    if (!acctServiceKey) {
+      $('acctGrid').innerHTML = '<div class="card">Choose a service above to see its accounts.</div>';
+      return;
     }
+    const list = products.filter(p => acctServiceKeyOf(p) === acctServiceKey);
+    $('acctTitle').textContent = acctServiceName(acctServiceKey || 'other') + ' Accounts';
+    $('acctGrid').innerHTML = list.length ? list.map(acctProductCard).join('')
+      : '<div class="card">No accounts for sale right now — check back soon.</div>';
   } catch (e) { $('acctGrid').innerHTML = `<div class="card">${esc(e.message)}</div>`; }
   loadMyAccounts();
 }
