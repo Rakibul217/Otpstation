@@ -474,8 +474,10 @@ async function loadAdminPanel(name) {
           <label>Name <input id="apn-${p.id}" type="text" maxlength="80" value="${esc(p.name)}"></label>
           <label>Price (USD) <input id="app-${p.id}" type="number" step="0.01" min="0.01" value="${p.priceUsd}"></label>
         </div>
+        <label>Description <textarea id="apd-${p.id}" rows="2" maxlength="2000">${esc(p.description || '')}</textarea></label>
         <label class="chk"><input type="checkbox" id="apa-${p.id}" ${p.active ? 'checked' : ''}> Active (visible in shop)</label>
         <button class="btn btn-outline" onclick="saveAccountProduct('${p.id}')">Save changes</button>
+        <button class="btn btn-danger" onclick="deleteAccountProduct('${p.id}', '${esc(p.name).replace(/'/g, "\\'")}')">Delete</button>
         <div style="margin-top:10px">
           <label>Add stock — one account per line <textarea id="aps-${p.id}" rows="4" placeholder="email:password:2fa&#10;one account per line…"></textarea></label>
           <button class="btn" onclick="uploadAccountStock('${p.id}')">Upload stock</button>
@@ -527,10 +529,18 @@ async function saveAccountProduct(id) {
   try {
     await api('PUT', '/api/admin/account-products/' + id, {
       name: $('apn-' + id).value.trim(),
+      description: $('apd-' + id).value.trim(),
       price_usd: $('app-' + id).value,
       active: $('apa-' + id).checked
     });
     showMsg('apm-' + id, 'Saved ✓', 'ok');
+  } catch (e) { showMsg('apm-' + id, e.message, 'err'); }
+}
+async function deleteAccountProduct(id, name) {
+  if (!confirm('Delete "' + name + '" and its unsold stock? Past orders are kept.')) return;
+  try {
+    await api('DELETE', '/api/admin/account-products/' + id);
+    loadAdminPanel('accounts');
   } catch (e) { showMsg('apm-' + id, e.message, 'err'); }
 }
 async function uploadAccountStock(id) {
