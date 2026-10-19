@@ -271,14 +271,19 @@ app.get('/api/countries', async (req, res) => {
 
 app.post('/api/orders', requireAuth, async (req, res) => {
   try {
-    const { service, country } = req.body || {};
+    const { service, country, expectedPrice } = req.body || {};
     const p = await getProvider();
     const countries = await p.getCountries(service);
     const c = countries.find(x => x.code === country);
-    if (!c) return res.status(400).json({ error: 'Country not found' });
+    if (!c) return res.status(400).json({ error: 'Just sold out — please choose another country', soldOut: true });
     const services = await p.getServices();
     const s = services.find(x => x.code === service) || { name: service };
     const price = await priceUSD(c.baseUsd);
+    // Price-shift guard: Grizzly's live price moved since the user saw the list —
+    // stop the stale buy so the customer never pays a price they didn't confirm.
+    if (expectedPrice !== undefined && Math.abs(Number(expectedPrice) - price) > 0.005) {
+      return res.status(409).json({ error: 'Price just changed — please try again', priceChanged: true, priceUsd: price });
+    }
     const me = await db.findUserById(req.user.id);
     if (me.balance < price) return res.status(400).json({ error: `Insufficient balance — need ${fmtMoney(price)}, have ${fmtMoney(me.balance)}` });
     const bought = await p.buyNumber(service, country);
@@ -309,10 +314,14 @@ app.get('/api/orders/:id', requireAuth, async (req, res) => {
   res.json({ order: await db.getOrder(o.id) });
 });
 
+// Grizzly policy: a number can only be cancelled 2 minutes after purchase.
+const CANCEL_MIN_MS = 2 * 60 * 1000;
 app.post('/api/orders/:id/cancel', requireAuth, async (req, res) => {
   const o = await db.getOrder(req.params.id);
   if (!o || o.userId !== req.user.id) return res.status(404).json({ error: 'Order not found' });
   if (o.status !== 'waiting') return res.status(400).json({ error: 'This order cannot be cancelled' });
+  if (Date.now() - o.createdAt < CANCEL_MIN_MS)
+    return res.status(400).json({ error: 'You can cancel this number 2 minutes after purchase (Grizzly policy)' });
   try { await (await getProvider()).cancel(o.providerId); } catch (e) {}
   await db.updateOrder(o.id, { status: 'cancelled' });
   await db.addBalance(o.userId, o.priceUsd);
