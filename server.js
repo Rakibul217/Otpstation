@@ -462,6 +462,111 @@ app.get('/api/my-accounts', requireAuth, async (req, res) => {
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// ---------------- live chat ----------------
+// Floating widget on the site. Guests chat with a random token; logged-in
+// users are matched by session. A keyword bot answers FAQs instantly; anything
+// else waits for the support agent (polled via /api/internal/chat/*).
+async function chatAccess(req, thread) {
+  if (!thread) return false;
+  if (thread.userId) {
+    const u = await getSessionUser(req);
+    return !!(u && u.id === thread.userId);
+  }
+  const token = (req.body && req.body.token) || req.query.token || '';
+  return !!(thread.guestToken && token && token === thread.guestToken);
+}
+function scoreChatFaq(faq, text) {
+  const t = String(text).toLowerCase();
+  let hits = 0;
+  for (const kw of String(faq.keywords || '').split(',')) {
+    const k = kw.trim().toLowerCase();
+    if (k && t.includes(k)) hits++;
+  }
+  return hits;
+}
+
+// Start (or resume) a chat. Guests get a guest_token they must send back.
+app.post('/api/chat/start', async (req, res) => {
+  try {
+    const u = await getSessionUser(req);
+    if (u) {
+      let thread = await db.findOpenChatThreadByUser(u.id);
+      if (!thread) thread = await db.createChatThread({ userId: u.id, guestName: '', guestToken: null });
+      return res.json({ thread: { id: thread.id, status: thread.status } });
+    }
+    const name = String((req.body || {}).name || '').trim().slice(0, 50) || 'Guest';
+    const thread = await db.createChatThread({
+      userId: null, guestName: name, guestToken: crypto.randomBytes(16).toString('hex')
+    });
+    res.json({ thread: { id: thread.id, guest_token: thread.guestToken, status: thread.status } });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Send a user message; the FAQ bot may answer instantly.
+app.post('/api/chat/message', async (req, res) => {
+  try {
+    const { threadId, text } = req.body || {};
+    const thread = await db.getChatThread(threadId);
+    if (!thread) return res.status(404).json({ error: 'Chat not found' });
+    if (!(await chatAccess(req, thread))) return res.status(403).json({ error: 'Not your chat' });
+    if (thread.status !== 'open') return res.status(400).json({ error: 'This chat is closed' });
+    const msg = String(text || '').trim().slice(0, 2000);
+    if (!msg) return res.status(400).json({ error: 'Message is empty' });
+    await db.addChatMessage(thread.id, 'user', msg);
+    // FAQ bot: highest keyword-hit count wins (>=1 hit); tie -> earliest FAQ
+    let best = null, bestScore = 0;
+    for (const faq of await db.listChatFaqs()) {
+      if (!faq.active) continue;
+      const s = scoreChatFaq(faq, msg);
+      if (s > bestScore) { bestScore = s; best = faq; }
+    }
+    if (best) {
+      await db.addChatMessage(thread.id, 'bot', best.answer);
+      return res.json({ botReply: best.answer });
+    }
+    res.json({});
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.get('/api/chat/messages', async (req, res) => {
+  try {
+    const thread = await db.getChatThread(req.query.threadId);
+    if (!thread) return res.status(404).json({ error: 'Chat not found' });
+    if (!(await chatAccess(req, thread))) return res.status(403).json({ error: 'Not your chat' });
+    const messages = await db.listChatMessages(thread.id);
+    res.json({ messages: messages.map(m => ({ id: m.id, sender: m.sender, text: m.text, createdAt: m.createdAt })) });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ---------------- internal agent endpoints ----------------
+// Used by the support-agent poller (not the browser). Auth: X-Agent-Token must
+// equal CHAT_AGENT_TOKEN. If the env var is unset, these endpoints are disabled.
+function requireAgent(req, res, next) {
+  const expected = process.env.CHAT_AGENT_TOKEN;
+  if (!expected) return res.status(503).json({ error: 'Agent endpoint disabled' });
+  const got = req.get('X-Agent-Token') || '';
+  if (got.length !== expected.length ||
+      !crypto.timingSafeEqual(Buffer.from(got), Buffer.from(expected)))
+    return res.status(401).json({ error: 'Bad agent token' });
+  next();
+}
+// Open threads whose latest message is from the user (nobody answered yet).
+app.get('/api/internal/chat/pending', requireAgent, async (req, res) => {
+  try { res.json({ pending: await db.pendingChatThreads() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/internal/chat/reply', requireAgent, async (req, res) => {
+  try {
+    const { threadId, text } = req.body || {};
+    const thread = await db.getChatThread(threadId);
+    if (!thread) return res.status(404).json({ error: 'Chat not found' });
+    const msg = String(text || '').trim().slice(0, 2000);
+    if (!msg) return res.status(400).json({ error: 'Message is empty' });
+    const message = await db.addChatMessage(thread.id, 'agent', msg);
+    res.json({ ok: true, message: { id: message.id, sender: message.sender, text: message.text, createdAt: message.createdAt } });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 // ---------------- admin ----------------
 app.get('/api/admin/stats', requireAuth, requireAdmin, async (req, res) => {
   const s = await db.stats();
@@ -503,6 +608,92 @@ app.post('/api/admin/topups/:id', requireAuth, requireAdmin, async (req, res) =>
     await db.updateTopup(t.id, { status: 'rejected' });
   }
   res.json({ ok: true });
+});
+
+// ---------------- admin: live chat ----------------
+app.get('/api/admin/chat/threads', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const threads = await db.listChatThreadsAdmin();
+    res.json({
+      threads: threads.map(t => ({
+        id: t.id, status: t.status, displayName: t.displayName, username: t.username,
+        createdAt: t.createdAt, updatedAt: t.updatedAt,
+        lastText: t.lastText, lastSender: t.lastSender, lastAt: t.lastAt, unread: t.unread
+      }))
+    });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.get('/api/admin/chat/thread/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const thread = await db.getChatThread(req.params.id);
+    if (!thread) return res.status(404).json({ error: 'Chat not found' });
+    let displayName = thread.guestName || 'Guest';
+    if (thread.userId) {
+      const u = await db.findUserById(thread.userId);
+      displayName = u ? (u.name || u.username) : 'User';
+    }
+    const messages = await db.listChatMessages(thread.id);
+    res.json({
+      thread: { id: thread.id, status: thread.status, displayName, createdAt: thread.createdAt, updatedAt: thread.updatedAt },
+      messages: messages.map(m => ({ id: m.id, sender: m.sender, text: m.text, createdAt: m.createdAt }))
+    });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/admin/chat/reply', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const { threadId, text } = req.body || {};
+    const thread = await db.getChatThread(threadId);
+    if (!thread) return res.status(404).json({ error: 'Chat not found' });
+    const msg = String(text || '').trim().slice(0, 2000);
+    if (!msg) return res.status(400).json({ error: 'Message is empty' });
+    const message = await db.addChatMessage(thread.id, 'admin', msg);
+    res.json({ ok: true, message: { id: message.id, sender: message.sender, text: message.text, createdAt: message.createdAt } });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/admin/chat/close/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const thread = await db.updateChatThread(req.params.id, { status: 'closed' });
+    if (!thread) return res.status(404).json({ error: 'Chat not found' });
+    res.json({ ok: true, status: thread.status });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/admin/chat/reopen/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const thread = await db.updateChatThread(req.params.id, { status: 'open' });
+    if (!thread) return res.status(404).json({ error: 'Chat not found' });
+    res.json({ ok: true, status: thread.status });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+// FAQ manager (bot answers)
+app.get('/api/admin/chat/faqs', requireAuth, requireAdmin, async (req, res) => {
+  try { res.json({ faqs: await db.listChatFaqs() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/admin/chat/faqs', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const keywords = String((req.body || {}).keywords || '').trim().slice(0, 500);
+    const answer = String((req.body || {}).answer || '').trim().slice(0, 2000);
+    if (!keywords || !answer) return res.status(400).json({ error: 'Keywords and answer are required' });
+    const faq = await db.createChatFaq({ keywords, answer, active: true });
+    res.json({ faq });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.put('/api/admin/chat/faqs/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const patch = {};
+    if ((req.body || {}).keywords !== undefined) patch.keywords = String(req.body.keywords).trim().slice(0, 500);
+    if ((req.body || {}).answer !== undefined) patch.answer = String(req.body.answer).trim().slice(0, 2000);
+    if ((req.body || {}).active !== undefined) patch.active = !!req.body.active;
+    if (!patch.keywords && !patch.answer && patch.active === undefined)
+      return res.status(400).json({ error: 'Nothing to update' });
+    const faq = await db.updateChatFaq(req.params.id, patch);
+    if (!faq) return res.status(404).json({ error: 'FAQ not found' });
+    res.json({ faq });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.delete('/api/admin/chat/faqs/:id', requireAuth, requireAdmin, async (req, res) => {
+  try { await db.deleteChatFaq(req.params.id); res.json({ ok: true }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // DB backup / restore — essential on hosts with an ephemeral disk (e.g. Render free),

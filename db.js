@@ -33,7 +33,10 @@ function defaultDb() {
     config: defaultConfig(),
     accountProducts: [], // {id, name, description, priceUsd, logo, active, createdAt}
     accountStock: [],    // {id, productId, credential, status:'available'|'sold', soldToUserId, soldAt, createdAt}
-    accountOrders: []    // {id, userId, productId, productName, qty, totalUsd, items[], createdAt}
+    accountOrders: [],   // {id, userId, productId, productName, qty, totalUsd, items[], createdAt}
+    chatThreads: [],  // {id, userId|null, guestName, guestToken, status:'open'|'closed', createdAt, updatedAt}
+    chatMessages: [],  // {id, threadId, sender:'user'|'bot'|'agent'|'admin', text, createdAt}
+    chatFaqs: []       // {id, keywords, answer, active, createdAt}
   };
 }
 
@@ -156,6 +159,31 @@ async function createTables() {
       items JSONB,
       "createdAt" BIGINT
     );
+    CREATE TABLE IF NOT EXISTS chat_threads (
+      id TEXT PRIMARY KEY,
+      "userId" TEXT,
+      "guestName" TEXT,
+      "guestToken" TEXT,
+      status TEXT DEFAULT 'open',
+      "createdAt" BIGINT,
+      "updatedAt" BIGINT
+    );
+    CREATE INDEX IF NOT EXISTS idx_chat_threads_user ON chat_threads ("userId", status);
+    CREATE TABLE IF NOT EXISTS chat_messages (
+      id TEXT PRIMARY KEY,
+      "threadId" TEXT,
+      sender TEXT,
+      "text" TEXT,
+      "createdAt" BIGINT
+    );
+    CREATE INDEX IF NOT EXISTS idx_chat_messages_thread ON chat_messages ("threadId", "createdAt");
+    CREATE TABLE IF NOT EXISTS chat_faqs (
+      id TEXT PRIMARY KEY,
+      keywords TEXT,
+      answer TEXT,
+      active BOOLEAN DEFAULT TRUE,
+      "createdAt" BIGINT
+    );
   `);
 }
 
@@ -210,6 +238,22 @@ function mapAccountOrder(r) {
     items: Array.isArray(items) ? items : [], createdAt: num(r.createdAt)
   };
 }
+function mapChatThread(r) {
+  if (!r) return undefined;
+  return {
+    id: r.id, userId: r.userId || null, guestName: r.guestName || '',
+    guestToken: r.guestToken || null, status: r.status || 'open',
+    createdAt: num(r.createdAt), updatedAt: num(r.updatedAt)
+  };
+}
+function mapChatMessage(r) {
+  if (!r) return undefined;
+  return { id: r.id, threadId: r.threadId, sender: r.sender, text: r.text || '', createdAt: num(r.createdAt) };
+}
+function mapChatFaq(r) {
+  if (!r) return undefined;
+  return { id: r.id, keywords: r.keywords || '', answer: r.answer || '', active: !!r.active, createdAt: num(r.createdAt) };
+}
 
 const USER_COLS = ['id', 'name', 'username', 'email', 'phone', 'salt', 'hash', 'googleId', 'balance', 'isAdmin', 'createdAt'];
 const ORDER_COLS = ['id', 'userId', 'service', 'serviceName', 'country', 'countryName', 'number', 'priceUsd', 'providerId', 'status', 'code', 'createdAt'];
@@ -217,6 +261,9 @@ const TOPUP_COLS = ['id', 'userId', 'username', 'amount', 'amountBdt', 'bdtRate'
 const ACCOUNT_PRODUCT_COLS = ['id', 'name', 'description', 'priceUsd', 'logo', 'active', 'createdAt'];
 const ACCOUNT_STOCK_COLS = ['id', 'productId', 'credential', 'status', 'soldToUserId', 'soldAt', 'createdAt'];
 const ACCOUNT_ORDER_COLS = ['id', 'userId', 'productId', 'productName', 'qty', 'totalUsd', 'items', 'createdAt'];
+const CHAT_THREAD_COLS = ['id', 'userId', 'guestName', 'guestToken', 'status', 'createdAt', 'updatedAt'];
+const CHAT_MESSAGE_COLS = ['id', 'threadId', 'sender', 'text', 'createdAt'];
+const CHAT_FAQ_COLS = ['id', 'keywords', 'answer', 'active', 'createdAt'];
 
 function dbVal(v) { return v === undefined ? null : v; }
 function pickCols(obj, cols) {
@@ -277,13 +324,16 @@ async function pgStats() {
   };
 }
 async function pgExport() {
-  const [u, o, t, ap, as_, ao] = await Promise.all([
+  const [u, o, t, ap, as_, ao, ct, cm, cf] = await Promise.all([
     pool.query('SELECT * FROM users ORDER BY "createdAt" ASC, id ASC'),
     pool.query(`SELECT * FROM orders ${NEWEST_FIRST}`),
     pool.query(`SELECT * FROM topups ${NEWEST_FIRST}`),
     pool.query('SELECT * FROM account_products ORDER BY "createdAt" ASC, id ASC'),
     pool.query('SELECT * FROM account_stock ORDER BY "createdAt" ASC, id ASC'),
-    pool.query(`SELECT * FROM account_orders ${NEWEST_FIRST}`)
+    pool.query(`SELECT * FROM account_orders ${NEWEST_FIRST}`),
+    pool.query('SELECT * FROM chat_threads ORDER BY "createdAt" ASC, id ASC'),
+    pool.query('SELECT * FROM chat_messages ORDER BY "createdAt" ASC, id ASC'),
+    pool.query('SELECT * FROM chat_faqs ORDER BY "createdAt" ASC, id ASC')
   ]);
   return {
     users: u.rows.map(mapUser),
@@ -296,7 +346,10 @@ async function pgExport() {
       soldToUserId: r.soldToUserId || null, soldAt: r.soldAt === null ? null : num(r.soldAt),
       createdAt: num(r.createdAt)
     })),
-    accountOrders: ao.rows.map(mapAccountOrder)
+    accountOrders: ao.rows.map(mapAccountOrder),
+    chatThreads: ct.rows.map(mapChatThread),
+    chatMessages: cm.rows.map(mapChatMessage),
+    chatFaqs: cf.rows.map(mapChatFaq)
   };
 }
 function validateBackup(data) {
@@ -304,7 +357,7 @@ function validateBackup(data) {
       !Array.isArray(data.topups) || typeof data.config !== 'object' || !data.config) {
     throw new Error('Invalid backup file.');
   }
-  for (const k of ['accountProducts', 'accountStock', 'accountOrders']) {
+  for (const k of ['accountProducts', 'accountStock', 'accountOrders', 'chatThreads', 'chatMessages', 'chatFaqs']) {
     if (data[k] === undefined) data[k] = [];
     else if (!Array.isArray(data[k])) throw new Error('Invalid backup file.');
   }
@@ -315,6 +368,9 @@ async function pgImport(data) {
   try {
     await client.query('BEGIN');
     const q = (text, params) => client.query(text, params);
+    await q('DELETE FROM chat_faqs');
+    await q('DELETE FROM chat_messages');
+    await q('DELETE FROM chat_threads');
     await q('DELETE FROM account_orders');
     await q('DELETE FROM account_stock');
     await q('DELETE FROM account_products');
@@ -328,6 +384,9 @@ async function pgImport(data) {
     for (const p of data.accountProducts) await pgInsert(q, 'account_products', ACCOUNT_PRODUCT_COLS, p);
     for (const s of data.accountStock) await pgInsert(q, 'account_stock', ACCOUNT_STOCK_COLS, s);
     for (const o of data.accountOrders) await pgInsert(q, 'account_orders', ACCOUNT_ORDER_COLS, Object.assign({}, o, { items: JSON.stringify(o.items || []) }));
+    for (const ct of data.chatThreads) await pgInsert(q, 'chat_threads', CHAT_THREAD_COLS, ct);
+    for (const cm of data.chatMessages) await pgInsert(q, 'chat_messages', CHAT_MESSAGE_COLS, cm);
+    for (const cf of data.chatFaqs) await pgInsert(q, 'chat_faqs', CHAT_FAQ_COLS, cf);
     await q('INSERT INTO config (id, data) VALUES (1, $1)', [JSON.stringify(data.config || {})]);
     await q('COMMIT');
   } catch (e) {
@@ -407,7 +466,149 @@ async function pgBuyAccountStock(productId, userId, qty) {
   }
 }
 
+// ---- live chat (pg implementations) ----
+async function pgCreateChatThread({ userId, guestName, guestToken }) {
+  const now = Date.now();
+  const t = {
+    id: uid(), userId: userId || null, guestName: guestName || '',
+    guestToken: guestToken || null, status: 'open', createdAt: now, updatedAt: now
+  };
+  await pgInsert((q, p) => pool.query(q, p), 'chat_threads', CHAT_THREAD_COLS, t);
+  return t;
+}
+async function pgFindOpenChatThreadByUser(userId) {
+  const r = await pool.query(
+    `SELECT * FROM chat_threads WHERE "userId" = $1 AND status = 'open' ORDER BY "updatedAt" DESC, id DESC LIMIT 1`,
+    [userId]
+  );
+  return mapChatThread(r.rows[0]);
+}
+async function pgUpdateChatThread(id, patch) {
+  return pgUpdate('chat_threads', CHAT_THREAD_COLS, id, patch, mapChatThread);
+}
+async function pgAddChatMessage(threadId, sender, text) {
+  const m = { id: uid(), threadId, sender, text, createdAt: Date.now() };
+  await pgInsert((q, p) => pool.query(q, p), 'chat_messages', CHAT_MESSAGE_COLS, m);
+  await pool.query('UPDATE chat_threads SET "updatedAt" = $2 WHERE id = $1', [threadId, m.createdAt]);
+  return m;
+}
+async function pgListChatMessages(threadId) {
+  const r = await pool.query(
+    `SELECT * FROM chat_messages WHERE "threadId" = $1 ORDER BY "createdAt" ASC, id ASC`,
+    [threadId]
+  );
+  return r.rows.map(mapChatMessage);
+}
+// Admin thread list: open first, newest first, with last-message preview + unread count
+// (user messages after the last bot/agent/admin message).
+async function pgListChatThreadsAdmin() {
+  const r = await pool.query(
+    `SELECT t.*, u.username AS "uUsername", u.name AS "uName",
+      (SELECT m."text" FROM chat_messages m WHERE m."threadId" = t.id ORDER BY m."createdAt" DESC, m.id DESC LIMIT 1) AS "lastText",
+      (SELECT m.sender FROM chat_messages m WHERE m."threadId" = t.id ORDER BY m."createdAt" DESC, m.id DESC LIMIT 1) AS "lastSender",
+      (SELECT MAX(m."createdAt") FROM chat_messages m WHERE m."threadId" = t.id) AS "lastAt",
+      (SELECT COUNT(*) FROM chat_messages m2 WHERE m2."threadId" = t.id AND m2.sender = 'user'
+        AND m2."createdAt" > COALESCE(
+          (SELECT MAX(m3."createdAt") FROM chat_messages m3 WHERE m3."threadId" = t.id AND m3.sender IN ('bot','agent','admin')),
+          0)) AS unread
+     FROM chat_threads t
+     LEFT JOIN users u ON u.id = t."userId"
+     ORDER BY (t.status = 'open') DESC, t."updatedAt" DESC, t.id DESC`
+  );
+  return r.rows.map(row => Object.assign(mapChatThread(row), {
+    displayName: row.uUsername ? (row.uName || row.uUsername) : (row.guestName || 'Guest'),
+    username: row.uUsername || null,
+    lastText: row.lastText || '', lastSender: row.lastSender || null,
+    lastAt: row.lastAt === null ? null : num(row.lastAt), unread: Number(row.unread) || 0
+  }));
+}
+// Open threads whose latest message is from 'user' (nobody answered yet).
+async function pgPendingChatThreads() {
+  const r = await pool.query(
+    `SELECT DISTINCT ON (t.id) t.*,
+       m.sender AS "lastSender", m."text" AS "lastText", m."createdAt" AS "lastAt"
+     FROM chat_threads t
+     JOIN chat_messages m ON m."threadId" = t.id
+     WHERE t.status = 'open'
+     ORDER BY t.id, m."createdAt" DESC, m.id DESC`
+  );
+  return r.rows
+    .filter(row => row.lastSender === 'user')
+    .sort((a, b) => num(a.updatedAt) - num(b.updatedAt))
+    .map(row => ({
+      thread: mapChatThread(row),
+      lastMessage: { sender: row.lastSender, text: row.lastText || '', createdAt: num(row.lastAt) }
+    }));
+}
+async function pgListChatFaqs() {
+  const r = await pool.query('SELECT * FROM chat_faqs ORDER BY "createdAt" ASC, id ASC');
+  return r.rows.map(mapChatFaq);
+}
+async function pgCreateChatFaq({ keywords, answer, active }) {
+  const f = { id: uid(), keywords, answer, active: active !== false, createdAt: Date.now() };
+  await pgInsert((q, p) => pool.query(q, p), 'chat_faqs', CHAT_FAQ_COLS, f);
+  return f;
+}
+async function pgUpdateChatFaq(id, patch) {
+  return pgUpdate('chat_faqs', CHAT_FAQ_COLS, id, patch, mapChatFaq);
+}
+async function pgDeleteChatFaq(id) {
+  await pool.query('DELETE FROM chat_faqs WHERE id = $1', [id]);
+  return true;
+}
+async function pgChatFaqCount() {
+  const r = await pool.query('SELECT COUNT(*) AS c FROM chat_faqs');
+  return Number(r.rows[0].c);
+}
+
 // ---- startup ----
+// Starter bot answers for the live-chat widget. Seeded once (only when the
+// FAQ table is empty) so restarts never duplicate them. Admin can edit all of
+// these in Admin → Live Chat.
+const CHAT_FAQ_SEED = [
+  {
+    keywords: 'add fund,top up,topup,recharge,deposit,টাকা,বিকাশ,নগদ',
+    answer: 'To add funds: tap Add Funds → choose bKash or Nagad → Send Money to 01324836536 → submit the TrxID and your sender number. Admin approves within a short time and your balance is credited in USD.'
+  },
+  {
+    keywords: 'minimum,min,maximum,max,limit,মিনিমাম',
+    answer: 'Minimum top-up is ৳625 ($5) and maximum is ৳50,000 per request.'
+  },
+  {
+    keywords: 'buy number,buy otp,how to buy,number kinbo,নম্বর',
+    answer: 'Go to Services → pick a service and country → Buy. You get a number instantly and the SMS code arrives automatically.'
+  },
+  {
+    keywords: 'price,rate,cost,দাম,প্রাইস',
+    answer: 'Each number costs the provider rate plus a flat $0.08 service fee. The exact price is shown before you buy.'
+  },
+  {
+    keywords: 'number empty,no number,empty,স্টক',
+    answer: "'Number empty' means that service has no numbers in stock right now. Please try again later."
+  },
+  {
+    keywords: 'facebook account,account buy,premium account,অ্যাকাউন্ট',
+    answer: 'Tap the Facebook plate → choose a product → select quantity → Buy. Login details are delivered instantly on screen and saved under My Accounts.'
+  },
+  {
+    keywords: 'payment,bkash,nagad,pay,পেমেন্ট',
+    answer: 'We accept bKash and Nagad via manual Send Money to 01324836536. Online/card payments are not available.'
+  },
+  {
+    keywords: 'login,password,forgot,পাসওয়ার্ড,লগইন',
+    answer: "If you forgot your password, use Profile → Change password after logging in. If you cannot log in at all, tell me your username here and I'll help."
+  }
+];
+async function seedChatFaqs() {
+  const count = pgMode ? await pgChatFaqCount() : mem().chatFaqs.length;
+  if (count > 0) return;
+  for (const f of CHAT_FAQ_SEED) {
+    if (pgMode) await pgCreateChatFaq({ keywords: f.keywords, answer: f.answer, active: true });
+    else mem().chatFaqs.push({ id: uid(), keywords: f.keywords, answer: f.answer, active: true, createdAt: Date.now() });
+  }
+  if (!pgMode) save(cache);
+  console.log('[db] Seeded ' + CHAT_FAQ_SEED.length + ' chat FAQs');
+}
 async function ensureSeed() {
   const admin = await module.exports.findUserByName('admin');
   if (!admin) {
@@ -418,6 +619,7 @@ async function ensureSeed() {
     });
     console.log('Seed admin created -> username: admin / password: admin123 (change it after first login!)');
   }
+  await seedChatFaqs();
 }
 
 async function init() {
@@ -665,6 +867,128 @@ module.exports = {
     return mem().accountOrders.filter(o => o.userId === userId);
   },
 
+  // ---- live chat ----
+  createChatThread: async ({ userId, guestName, guestToken }) => {
+    if (pgMode) return pgCreateChatThread({ userId, guestName, guestToken });
+    const now = Date.now();
+    const t = {
+      id: uid(), userId: userId || null, guestName: guestName || '',
+      guestToken: guestToken || null, status: 'open', createdAt: now, updatedAt: now
+    };
+    mem().chatThreads.push(t); save(cache); return t;
+  },
+  getChatThread: async (id) => pgMode
+    ? pgGetById('chat_threads', id, mapChatThread)
+    : mem().chatThreads.find(t => t.id === id),
+  findOpenChatThreadByUser: async (userId) => {
+    if (pgMode) return pgFindOpenChatThreadByUser(userId);
+    return mem().chatThreads
+      .filter(t => t.userId === userId && t.status === 'open')
+      .sort((a, b) => b.updatedAt - a.updatedAt || (a.id < b.id ? 1 : -1))[0];
+  },
+  updateChatThread: async (id, patch) => {
+    if (pgMode) return pgUpdateChatThread(id, patch);
+    const t = mem().chatThreads.find(x => x.id === id);
+    if (t) {
+      for (const k of ['status']) if (patch[k] !== undefined) t[k] = patch[k];
+      t.updatedAt = Date.now();
+    }
+    save(cache);
+    return t;
+  },
+  addChatMessage: async (threadId, sender, text) => {
+    if (pgMode) return pgAddChatMessage(threadId, sender, text);
+    const now = Date.now();
+    const m = { id: uid(), threadId, sender, text, createdAt: now };
+    mem().chatMessages.push(m);
+    const t = mem().chatThreads.find(x => x.id === threadId);
+    if (t) t.updatedAt = now;
+    save(cache);
+    return m;
+  },
+  listChatMessages: async (threadId) => {
+    if (pgMode) return pgListChatMessages(threadId);
+    return mem().chatMessages
+      .filter(m => m.threadId === threadId)
+      .sort((a, b) => a.createdAt - b.createdAt || (a.id < b.id ? -1 : 1));
+  },
+  // Admin: open first, newest first; last-message preview + unread count.
+  // Never includes guestToken or emails.
+  listChatThreadsAdmin: async () => {
+    if (pgMode) return pgListChatThreadsAdmin();
+    const d = mem();
+    const byThread = {};
+    for (const m of d.chatMessages) (byThread[m.threadId] = byThread[m.threadId] || []).push(m);
+    const usersById = {};
+    for (const u of d.users) usersById[u.id] = u;
+    const out = d.chatThreads.map(t => {
+      const msgs = (byThread[t.id] || []).sort((a, b) => a.createdAt - b.createdAt || (a.id < b.id ? -1 : 1));
+      const last = msgs[msgs.length - 1];
+      let lastStaffAt = 0;
+      for (const m of msgs) if (m.sender !== 'user' && m.createdAt > lastStaffAt) lastStaffAt = m.createdAt;
+      const unread = msgs.filter(m => m.sender === 'user' && m.createdAt > lastStaffAt).length;
+      const u = t.userId ? usersById[t.userId] : null;
+      return {
+        id: t.id, userId: t.userId, status: t.status,
+        displayName: u ? (u.name || u.username) : (t.guestName || 'Guest'),
+        username: u ? u.username : null,
+        createdAt: t.createdAt, updatedAt: t.updatedAt,
+        lastText: last ? last.text : '', lastSender: last ? last.sender : null,
+        lastAt: last ? last.createdAt : null, unread
+      };
+    });
+    out.sort((a, b) => (a.status === 'open' ? 0 : 1) - (b.status === 'open' ? 0 : 1)
+      || b.updatedAt - a.updatedAt || (a.id < b.id ? -1 : 1));
+    return out;
+  },
+  pendingChatThreads: async () => {
+    if (pgMode) return pgPendingChatThreads();
+    const d = mem();
+    const out = [];
+    for (const t of d.chatThreads.filter(x => x.status === 'open')) {
+      const msgs = d.chatMessages
+        .filter(m => m.threadId === t.id)
+        .sort((a, b) => a.createdAt - b.createdAt || (a.id < b.id ? -1 : 1));
+      const last = msgs[msgs.length - 1];
+      if (last && last.sender === 'user') {
+        out.push({
+          thread: {
+            id: t.id, userId: t.userId, guestName: t.guestName,
+            status: t.status, createdAt: t.createdAt, updatedAt: t.updatedAt
+          },
+          lastMessage: { sender: last.sender, text: last.text, createdAt: last.createdAt }
+        });
+      }
+    }
+    out.sort((a, b) => a.thread.updatedAt - b.thread.updatedAt);
+    return out;
+  },
+  listChatFaqs: async () => {
+    if (pgMode) return pgListChatFaqs();
+    return mem().chatFaqs.slice().sort((a, b) => a.createdAt - b.createdAt || (a.id < b.id ? -1 : 1));
+  },
+  createChatFaq: async ({ keywords, answer, active }) => {
+    if (pgMode) return pgCreateChatFaq({ keywords, answer, active });
+    const f = { id: uid(), keywords, answer, active: active !== false, createdAt: Date.now() };
+    mem().chatFaqs.push(f); save(cache); return f;
+  },
+  updateChatFaq: async (id, patch) => {
+    if (pgMode) return pgUpdateChatFaq(id, patch);
+    const f = mem().chatFaqs.find(x => x.id === id);
+    if (f) {
+      for (const k of ['keywords', 'answer', 'active']) if (patch[k] !== undefined) f[k] = patch[k];
+    }
+    save(cache);
+    return f;
+  },
+  deleteChatFaq: async (id) => {
+    if (pgMode) return pgDeleteChatFaq(id);
+    const d = mem();
+    d.chatFaqs = d.chatFaqs.filter(x => x.id !== id);
+    save(cache);
+    return true;
+  },
+
   stats: async () => {
     if (pgMode) return pgStats();
     const d = mem();
@@ -683,7 +1007,8 @@ module.exports = {
     const d = mem();
     return JSON.parse(JSON.stringify({
       users: d.users, orders: d.orders, topups: d.topups, config: d.config,
-      accountProducts: d.accountProducts || [], accountStock: d.accountStock || [], accountOrders: d.accountOrders || []
+      accountProducts: d.accountProducts || [], accountStock: d.accountStock || [], accountOrders: d.accountOrders || [],
+      chatThreads: d.chatThreads || [], chatMessages: d.chatMessages || [], chatFaqs: d.chatFaqs || []
     }));
   },
   importJson: async (data) => {
@@ -691,7 +1016,8 @@ module.exports = {
     if (pgMode) { await pgImport(data); return; }
     cache = {
       users: data.users, orders: data.orders, topups: data.topups, config: data.config,
-      accountProducts: data.accountProducts, accountStock: data.accountStock, accountOrders: data.accountOrders
+      accountProducts: data.accountProducts, accountStock: data.accountStock, accountOrders: data.accountOrders,
+      chatThreads: data.chatThreads, chatMessages: data.chatMessages, chatFaqs: data.chatFaqs
     };
     save(cache);
   },
