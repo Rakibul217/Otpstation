@@ -434,8 +434,8 @@ async function loadOrders() {
   }
 }
 function statusEn(s) { return { waiting: 'Waiting', done: 'Done', cancelled: 'Cancelled' }[s] || s; }
-// Grizzly policy: cancel unlocks 2 minutes after purchase — same as Grizzly's own site.
-const CANCEL_MIN_MS = 2 * 60 * 1000;
+// Grizzly policy: cancel unlocks 5 minutes after purchase — same as Grizzly's own site.
+const CANCEL_MIN_MS = 5 * 60 * 1000;
 function tickCancelSlots() {
   document.querySelectorAll('.cancel-slot').forEach(el => {
     const age = Date.now() - Number(el.dataset.created || 0);
