@@ -170,6 +170,12 @@ select option{background:#fff}
 .modal-box h3{margin-bottom:12px;color:var(--text)}
 /* auth modal always dead-center (beats the catalog sheet's flex-end rule below) */
 #authModal{align-items:center;justify-content:center}
+/* auth modal footer actions — big, friendly tap targets */
+#authModal .link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;
+  padding:12px 15px;margin:14px 8px 0 0;font-size:15px;border-radius:14px;white-space:nowrap;transition:transform .1s ease}
+#authModal #aSwitch{background:rgba(79,124,255,.13);color:#4f7cff;font-weight:800}
+#authModal #aClose{background:rgba(120,130,180,.18);color:var(--text);font-weight:700}
+#authModal .link:active{transform:scale(.96)}
 label{font-size:14px;display:block;margin:8px 0;color:var(--muted)}
 
 /* auth modal extras */
