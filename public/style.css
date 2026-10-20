@@ -444,17 +444,17 @@ textarea:focus{border-color:#4f7cff;box-shadow:0 0 0 3px rgba(79,124,255,.18);ou
 /* round 3D service selector + full-catalog modal */
 .svc-pill{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:32px;cursor:pointer;
   background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1.5px solid rgba(255,140,0,.55);box-shadow:0 12px 32px rgba(255,140,0,.16),var(--inset);
+  border:1.5px solid rgba(79,124,255,.55);box-shadow:0 12px 32px rgba(79,124,255,.20),var(--inset);
   margin:4px 0 18px;font-weight:700;font-size:16px;color:var(--text);position:relative;overflow:hidden}
 .svc-pill::after{content:'';position:absolute;top:0;left:-90%;width:55%;height:100%;
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg)}
 .svc-pill:active{transform:scale(.98)}
-.pill-star{width:38px;height:38px;border-radius:14px;background:linear-gradient(135deg,#ff9a3c,#ff6b00);
+.pill-star{width:38px;height:38px;border-radius:14px;background:linear-gradient(135deg,#4f7cff,#a04fff);
   display:flex;align-items:center;justify-content:center;color:#fff;font-size:19px;flex:none;
-  box-shadow:0 4px 14px rgba(255,107,0,.45),inset 0 2px 0 rgba(255,255,255,.35)}
+  box-shadow:0 4px 14px rgba(79,124,255,.45),inset 0 2px 0 rgba(255,255,255,.35)}
 .pill-text{flex:1;color:var(--muted);font-weight:600}
-.pill-count{background:linear-gradient(135deg,#ff9a3c,#ff6b00);color:#fff;font-size:12px;font-weight:800;
-  padding:7px 13px;border-radius:15px;white-space:nowrap;box-shadow:0 4px 12px rgba(255,107,0,.35)}
+.pill-count{background:linear-gradient(135deg,#4f7cff,#a04fff);color:#fff;font-size:12px;font-weight:800;
+  padding:7px 13px;border-radius:15px;white-space:nowrap;box-shadow:0 4px 12px rgba(79,124,255,.35)}
 .pop-label{font-weight:800;font-size:13px;margin:2px 2px 12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
 .modal{position:fixed;inset:0;z-index:60;background:rgba(8,12,30,.55);backdrop-filter:blur(6px);
   -webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center}

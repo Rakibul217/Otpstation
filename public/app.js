@@ -377,6 +377,10 @@ async function loadServices() {
     }
   } catch (e) { $('serviceGrid').innerHTML = `<div class="card">${e.message}</div>`; }
 }
+function svcTile(s) {
+  const pr = s.fromPrice != null ? 'from ' + fmtUSD(s.fromPrice) : 'live price ›';
+  return `<div class="svc" data-code="${esc(s.code)}" data-name="${esc(s.name)}"><span class="logo-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${esc(s.name)}"></span>${esc(s.name)}<span class="pr">${pr}</span></div>`;
+}
 function svcRow(s) {
   const chip = s.ext
     ? `<span class="row-chip letter" style="background:${s.color}">${esc(((s.name || '?').trim()[0] || '?').toUpperCase())}${s.icon ? `<img class="svc-icon" src="${s.icon}" alt="" loading="lazy" onerror="this.remove()">` : ''}</span>`
