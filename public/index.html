@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://otpstation.com/og-image.png">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261020">
 </head>
 <body>
 
@@ -373,8 +373,8 @@
         Continue with Google
       </button>
     </div>
-    <button id="aSwitch" class="link">Create a new account</button>
-    <button id="aClose" class="link">Close</button>
+    <button id="aSwitch" class="link" onclick="setAuthMode(authMode === 'login' ? 'register' : 'login')">Create a new account</button>
+    <button id="aClose" class="link" onclick="document.getElementById('authModal').classList.add('hidden')">Close</button>
     <div id="aMsg" class="msg"></div>
   </div>
 </div>
@@ -425,6 +425,6 @@
   </div>
 </div>
 
-<script src="app.js"></script>
+<script src="app.js?v=20261020"></script>
 </body>
 </html>
