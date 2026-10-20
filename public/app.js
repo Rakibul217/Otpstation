@@ -346,9 +346,11 @@ async function loadServices() {
   try {
     const { services } = await api('GET', '/api/services');
     allServices = services;
-    renderServices('');
-    const si = $('serviceSearch');
-    if (si && !si.dataset.wired) { si.dataset.wired = '1'; si.addEventListener('input', () => renderServices(si.value)); }
+    const cnt = $('serviceCount');
+    if (cnt) cnt.textContent = '🔍 ' + allServices.length.toLocaleString() + ' services';
+    // Homepage shows the POPULAR services only — the full catalog lives
+    // inside the round search selector (less scrolling, find anything).
+    $('serviceGrid').innerHTML = allServices.filter(s => !s.ext).map(svcTile).join('');
     const grid = $('serviceGrid');
     if (grid && !grid.dataset.wired) {
       grid.dataset.wired = '1';
@@ -357,21 +359,48 @@ async function loadServices() {
         if (t && t.dataset.code) openService(t.dataset.code, t.dataset.name);
       });
     }
+    const pill = $('servicePill');
+    if (pill && !pill.dataset.wired) {
+      pill.dataset.wired = '1';
+      pill.addEventListener('click', openServiceModal);
+    }
+    const mx = $('serviceModalX');
+    if (mx && !mx.dataset.wired) {
+      mx.dataset.wired = '1';
+      mx.addEventListener('click', closeServiceModal);
+      $('serviceModal').addEventListener('click', e => { if (e.target.id === 'serviceModal') closeServiceModal(); });
+      $('modalServiceSearch').addEventListener('input', () => renderModalList($('modalServiceSearch').value));
+      $('modalServiceList').addEventListener('click', e => {
+        const t = e.target.closest('.svc-row');
+        if (t && t.dataset.code) { closeServiceModal(); openService(t.dataset.code, t.dataset.name); }
+      });
+    }
   } catch (e) { $('serviceGrid').innerHTML = `<div class="card">${e.message}</div>`; }
 }
-function svcTile(s) {
-  const icon = s.ext
-    ? `<span class="logo-chip letter" style="background:${s.color}">${esc(((s.name || '?').trim()[0] || '?').toUpperCase())}${s.icon ? `<img class="svc-icon" src="${s.icon}" alt="" loading="lazy" onerror="this.remove()">` : ''}</span>`
-    : `<span class="logo-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${esc(s.name)}"></span>`;
-  const pr = s.fromPrice != null ? 'from ' + fmtUSD(s.fromPrice) : 'live price ›';
-  return `<div class="svc" data-code="${esc(s.code)}" data-name="${esc(s.name)}">${icon}${esc(s.name)}<span class="pr">${pr}</span></div>`;
+function svcRow(s) {
+  const chip = s.ext
+    ? `<span class="row-chip letter" style="background:${s.color}">${esc(((s.name || '?').trim()[0] || '?').toUpperCase())}${s.icon ? `<img class="svc-icon" src="${s.icon}" alt="" loading="lazy" onerror="this.remove()">` : ''}</span>`
+    : `<span class="row-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${esc(s.name)}"></span>`;
+  return `<div class="svc-row" data-code="${esc(s.code)}" data-name="${esc(s.name)}">${chip}<span class="row-name">${esc(s.name)}</span></div>`;
 }
-function renderServices(q) {
+function renderModalList(q) {
   const query = (q || '').trim().toLowerCase();
   const list = query ? allServices.filter(s => s.name.toLowerCase().includes(query)) : allServices;
-  $('serviceGrid').innerHTML = list.length
-    ? list.map(svcTile).join('')
-    : '<div class="card">No service matches your search. Try another name.</div>';
+  const box = $('modalServiceList');
+  if (!list.length) { box.innerHTML = '<div class="modal-more">No service matches your search. Try another name.</div>'; return; }
+  const shown = list.slice(0, 150);
+  box.innerHTML = shown.map(svcRow).join('') + (list.length > 150 ? `<div class="modal-more">Showing 150 of ${list.length.toLocaleString()} — type more letters to narrow it down.</div>` : '');
+}
+function openServiceModal() {
+  const m = $('serviceModal');
+  m.hidden = false;
+  $('modalServiceSearch').value = '';
+  renderModalList('');
+  document.body.style.overflow = 'hidden';
+}
+function closeServiceModal() {
+  $('serviceModal').hidden = true;
+  document.body.style.overflow = '';
 }
 let currentService = null;
 let currentCountries = [];
