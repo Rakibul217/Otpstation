@@ -479,3 +479,11 @@ textarea:focus{border-color:#4f7cff;box-shadow:0 0 0 3px rgba(79,124,255,.18);ou
 .svc-icon{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#fff}
 .row-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .modal-more{text-align:center;color:var(--muted);font-size:13px;padding:12px 6px}
+
+/* compact serial services box */
+.svc-box{background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--card-border);border-radius:22px;box-shadow:var(--shadow),var(--inset);
+  padding:14px 12px 10px;margin:4px 0 18px}
+.svc-box .search-box{margin:0 0 10px}
+.svc-list-inline{max-height:60vh;overflow-y:auto;display:flex;flex-direction:column;gap:2px;padding-bottom:6px}
+.svc-list-inline .svc-row{content-visibility:auto;contain-intrinsic-size:auto 58px}

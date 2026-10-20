@@ -107,21 +107,10 @@
       <h2>Which service do you need a number for?</h2>
       <p>Pick a service, then choose a country below and hit Buy — that's it, the number is yours.</p>
     </div>
-    <!-- SERVICES: round 3D service selector + popular grid -->
-    <div class="svc-pill" id="servicePill" role="button" tabindex="0" aria-label="Choose a service">
-      <span class="pill-star">★</span>
-      <span class="pill-text">Choose a service</span>
-      <span class="pill-count" id="serviceCount">🔍 2,000+ services</span>
-    </div>
-    <div class="pop-label">Popular services</div>
-    <div id="serviceGrid" class="grid"></div>
-
-    <div id="serviceModal" class="modal" hidden>
-      <div class="modal-card">
-        <div class="modal-head"><span>★ Choose a service</span><button class="modal-x" id="serviceModalX" aria-label="Close">✕</button></div>
-        <input id="modalServiceSearch" class="search-box" type="text" placeholder="🔍 Search all services… (e.g. eBay, Steam, Viber)" autocomplete="off">
-        <div id="modalServiceList" class="svc-list"></div>
-      </div>
+    <!-- SERVICES: compact serial list box (popular first) -->
+    <div class="svc-box" id="svcBox">
+      <input id="svcSearch" class="search-box" type="text" placeholder="🔍 Search 2,000+ services…" autocomplete="off">
+      <div id="serviceList" class="svc-list-inline"></div>
     </div>
 
     <div id="countryBox" class="hidden">

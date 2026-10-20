@@ -346,40 +346,21 @@ async function loadServices() {
   try {
     const { services } = await api('GET', '/api/services');
     allServices = services;
-    const cnt = $('serviceCount');
-    if (cnt) cnt.textContent = '🔍 ' + allServices.length.toLocaleString() + ' services';
-    // Homepage shows the POPULAR services only — the full catalog lives
-    // inside the round search selector (less scrolling, find anything).
-    $('serviceGrid').innerHTML = allServices.filter(s => !s.ext).map(svcTile).join('');
-    const grid = $('serviceGrid');
-    if (grid && !grid.dataset.wired) {
-      grid.dataset.wired = '1';
-      grid.addEventListener('click', e => {
-        const t = e.target.closest('.svc');
+    renderServiceList('');
+    const si = $('svcSearch');
+    if (si) {
+      si.placeholder = '🔍 Search ' + allServices.length.toLocaleString() + ' services…';
+      if (!si.dataset.wired) { si.dataset.wired = '1'; si.addEventListener('input', () => renderServiceList(si.value)); }
+    }
+    const list = $('serviceList');
+    if (list && !list.dataset.wired) {
+      list.dataset.wired = '1';
+      list.addEventListener('click', e => {
+        const t = e.target.closest('.svc-row');
         if (t && t.dataset.code) openService(t.dataset.code, t.dataset.name);
       });
     }
-    const pill = $('servicePill');
-    if (pill && !pill.dataset.wired) {
-      pill.dataset.wired = '1';
-      pill.addEventListener('click', openServiceModal);
-    }
-    const mx = $('serviceModalX');
-    if (mx && !mx.dataset.wired) {
-      mx.dataset.wired = '1';
-      mx.addEventListener('click', closeServiceModal);
-      $('serviceModal').addEventListener('click', e => { if (e.target.id === 'serviceModal') closeServiceModal(); });
-      $('modalServiceSearch').addEventListener('input', () => renderModalList($('modalServiceSearch').value));
-      $('modalServiceList').addEventListener('click', e => {
-        const t = e.target.closest('.svc-row');
-        if (t && t.dataset.code) { closeServiceModal(); openService(t.dataset.code, t.dataset.name); }
-      });
-    }
-  } catch (e) { $('serviceGrid').innerHTML = `<div class="card">${e.message}</div>`; }
-}
-function svcTile(s) {
-  const pr = s.fromPrice != null ? 'from ' + fmtUSD(s.fromPrice) : 'live price ›';
-  return `<div class="svc" data-code="${esc(s.code)}" data-name="${esc(s.name)}"><span class="logo-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${esc(s.name)}"></span>${esc(s.name)}<span class="pr">${pr}</span></div>`;
+  } catch (e) { $('serviceList').innerHTML = `<div class="card">${e.message}</div>`; }
 }
 function svcRow(s) {
   const chip = s.ext
@@ -387,24 +368,12 @@ function svcRow(s) {
     : `<span class="row-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${esc(s.name)}"></span>`;
   return `<div class="svc-row" data-code="${esc(s.code)}" data-name="${esc(s.name)}">${chip}<span class="row-name">${esc(s.name)}</span></div>`;
 }
-function renderModalList(q) {
+function renderServiceList(q) {
   const query = (q || '').trim().toLowerCase();
   const list = query ? allServices.filter(s => s.name.toLowerCase().includes(query)) : allServices;
-  const box = $('modalServiceList');
-  if (!list.length) { box.innerHTML = '<div class="modal-more">No service matches your search. Try another name.</div>'; return; }
-  const shown = list.slice(0, 150);
-  box.innerHTML = shown.map(svcRow).join('') + (list.length > 150 ? `<div class="modal-more">Showing 150 of ${list.length.toLocaleString()} — type more letters to narrow it down.</div>` : '');
-}
-function openServiceModal() {
-  const m = $('serviceModal');
-  m.hidden = false;
-  $('modalServiceSearch').value = '';
-  renderModalList('');
-  document.body.style.overflow = 'hidden';
-}
-function closeServiceModal() {
-  $('serviceModal').hidden = true;
-  document.body.style.overflow = '';
+  $('serviceList').innerHTML = list.length
+    ? list.map(svcRow).join('')
+    : '<div class="modal-more">No service matches your search. Try another name.</div>';
 }
 let currentService = null;
 let currentCountries = [];
@@ -424,7 +393,7 @@ function renderCountries() {
 }
 async function openService(code, name) {
   currentService = { code, name };
-  $('serviceGrid').classList.add('hidden');
+  $('svcBox').classList.add('hidden');
   $('countryBox').classList.remove('hidden');
   $('countryTitle').textContent = name + ' — choose country';
   $('countrySearch').value = '';
@@ -434,7 +403,7 @@ async function openService(code, name) {
   renderCountries();
 }
 $('countrySearch').addEventListener('input', renderCountries);
-$('backBtn').onclick = () => { $('countryBox').classList.add('hidden'); $('serviceGrid').classList.remove('hidden'); };
+$('backBtn').onclick = () => { $('countryBox').classList.add('hidden'); $('svcBox').classList.remove('hidden'); };
 
 async function buyNumber(service, country, priceLabel, priceUsd) {
   if (!me) { $('authModal').classList.remove('hidden'); return; }
