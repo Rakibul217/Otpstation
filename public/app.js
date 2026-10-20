@@ -172,6 +172,28 @@ function chatStore(id, token) {
     localStorage.setItem('otp_chat_token', token || '');
   } catch (e) {}
 }
+// The stored thread can belong to another user/guest on this device
+// (e.g. switched accounts) — drop it and start a fresh thread.
+let chatRestarting = false;
+function chatClearStored() {
+  try { localStorage.removeItem('otp_chat_thread'); localStorage.removeItem('otp_chat_token'); } catch (e) {}
+  chatThread = null; chatLastSeenId = 0;
+}
+async function chatRestartWith(pendingText) {
+  if (chatRestarting) return;
+  chatRestarting = true;
+  try {
+    chatClearStored();
+    await openChatPanel(); // starts a fresh thread for me / guest
+    if (pendingText && chatThread) {
+      await api('POST', '/api/chat/message', { threadId: chatThread.id, token: chatThread.token || '', text: pendingText });
+      await chatRefresh();
+    }
+  } catch (e) {
+    $('chatMsgs').innerHTML = chatBubbleHtml('bot', 'Could not send: ' + e.message);
+    chatScroll();
+  } finally { chatRestarting = false; }
+}
 function toggleChat() {
   const panel = $('chatPanel');
   const opening = panel.classList.contains('hidden');
@@ -241,7 +263,10 @@ async function chatRefresh() {
       ? messages.map(m => chatBubbleHtml(m.sender, m.text)).join('')
       : chatBubbleHtml('bot', 'Hi! How can I help you today?');
     chatScroll();
-  } catch (e) { /* keep old messages on transient errors */ }
+  } catch (e) {
+    if (e.message === 'Not your chat') chatRestartWith(); // stale thread → fresh start
+    /* keep old messages on transient errors */
+  }
 }
 // Watch silently for replies on page load (returning visitor with a stored thread)
 if (chatStored()) { chatThread = chatStored(); ensureChatBg(); }
@@ -254,6 +279,7 @@ async function chatSend() {
     await api('POST', '/api/chat/message', { threadId: chatThread.id, token: chatThread.token || '', text });
     await chatRefresh();
   } catch (e) {
+    if (e.message === 'Not your chat') { await chatRestartWith(text); return; }
     $('chatMsgs').innerHTML += chatBubbleHtml('bot', 'Could not send: ' + e.message);
     chatScroll();
   }
