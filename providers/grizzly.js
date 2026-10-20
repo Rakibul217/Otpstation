@@ -65,6 +65,19 @@ const SERVICES = [
   { code: 'go', name: 'YouTube',    logo: 'youtube' },
   { code: 'tik', name: 'TikTok',    logo: 'tiktok' },
   { code: 'im', name: 'imo',        logo: 'imo' },
+  { code: 'am', name: 'Amazon',     logo: 'amazon' },
+  { code: 'nf', name: 'Netflix',    logo: 'netflix' },
+  { code: 'ds', name: 'Discord',    logo: 'discord' },
+  { code: 'tw', name: 'Twitter / X', logo: 'twitter' },
+  { code: 'sc', name: 'Snapchat',   logo: 'snapchat' },
+  { code: 'pp', name: 'PayPal',     logo: 'paypal' },
+  { code: 'ub', name: 'Uber',       logo: 'uber' },
+  { code: 'dr', name: 'ChatGPT',    logo: 'openai' },
+  { code: 'mm', name: 'Microsoft',  logo: 'microsoft' },
+  { code: 'me', name: 'Line',       logo: 'line' },
+  { code: 'bn', name: 'Binance',    logo: 'binance' },
+  { code: 'wx', name: 'Apple',      logo: 'apple' },
+  { code: 'oi', name: 'Tinder',     logo: 'tinder' },
 ];
 
 // Popular country flags (country ID -> flag)
