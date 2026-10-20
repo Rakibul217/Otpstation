@@ -653,6 +653,11 @@ async function loadAdminPanel(name) {
   $('cSmsOn').value = config.smsAutoApprove ? '1' : '0';
   $('cSmsUrl').value = location.origin + '/api/payment-webhook';
   $('cSmsSecret').value = config.smsWebhookSecret || '(turn On + Save to generate)';
+  $('cSmsBal').value = config.smsBalanceCheck ? '1' : '0';
+  const lb = config.smsLastBalances || {};
+  $('cSmsBalances').textContent = (lb.bkash != null || lb.nagad != null)
+    ? `Last seen — bKash: ৳${lb.bkash ?? '–'}, Nagad: ৳${lb.nagad ?? '–'}.`
+    : 'No balance seen yet — arrives with the first forwarded SMS.';
   $('cGoogleId').value = config.googleClientId || '';
   $('cGoogleSecret').value = config.googleClientSecret ? '•••••••• (set — paste a new one to replace)' : '';
   $('cGoogleSecret').placeholder = config.googleClientSecret ? '' : 'GOCSPX-…';
@@ -734,7 +739,8 @@ $('cSave').onclick = async () => {
       welcomeBonusUsd: $('cBonusUsd').value,
       welcomeBonusEnabled: $('cBonusOn').value === '1',
       welcomeBonusLimit: $('cBonusLimit').value,
-      smsAutoApprove: $('cSmsOn').value === '1'
+      smsAutoApprove: $('cSmsOn').value === '1',
+      smsBalanceCheck: $('cSmsBal').value === '1'
     };
     body.googleClientId = $('cGoogleId').value.trim();
     const gSec = $('cGoogleSecret').value.trim();
