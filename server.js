@@ -8,6 +8,7 @@ const db = require('./db');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ---------------- session (stored in Postgres when DATABASE_URL is set, else in-memory) ----------------
@@ -669,11 +670,16 @@ function smsMethod(sender) {
   return null;
 }
 
-// SMS webhook: phone forwarder POSTs { secret, sender, message } → auto-approve matching pending top-up
-app.post('/api/payment-webhook', async (req, res) => {
+// SMS webhook: phone forwarder calls this → auto-approve matching pending top-up.
+// Accepts GET or POST, JSON or form-encoded. Field aliases for app compatibility:
+//   secret | sender/from | message/text/body
+async function handlePaymentWebhook(req, res) {
   try {
     const cfg = await db.getConfig();
-    const { secret, sender, message } = req.body || {};
+    const b = req.body || {}, q = req.query || {};
+    const secret = b.secret || q.secret;
+    const sender = b.sender || b.from || q.sender || q.from || '';
+    const message = b.message || b.text || b.body || q.message || q.text || q.body || '';
     if (!cfg.smsAutoApprove || !cfg.smsWebhookSecret || secret !== cfg.smsWebhookSecret)
       return res.status(403).json({ ok: false, reason: 'forbidden' });
     const { trxid, amountBdt, balance } = parsePaymentSms(message);
@@ -704,7 +710,9 @@ app.post('/api/payment-webhook', async (req, res) => {
     console.log(`[sms-auto] topup ${t.id} (${t.username}, ৳${t.amountBdt}) auto-approved${already ? ' (already done)' : ''}`);
     res.json({ ok: true, credited: already ? 0 : t.amount, bonus });
   } catch (e) { console.error('[sms-webhook]', e.message); res.status(500).json({ ok: false }); }
-});
+}
+app.post('/api/payment-webhook', handlePaymentWebhook);
+app.get('/api/payment-webhook', handlePaymentWebhook);
 
 // Regenerate the SMS webhook secret (admin)
 app.post('/api/admin/sms-secret', requireAuth, requireAdmin, async (req, res) => {
