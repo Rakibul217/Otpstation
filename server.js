@@ -778,6 +778,31 @@ app.get('/api/admin/topups', requireAuth, requireAdmin, async (req, res) => {
   const list = status === 'awaiting' ? await db.topupsByStatus('awaiting') : await db.topupsByStatus(status);
   res.json({ topups: list });
 });
+// ---------------- live presence (in-memory; resets on redeploy) ----------------
+const presence = new Map(); // vizId -> { lastSeen, username|null }
+app.post('/api/heartbeat', async (req, res) => {
+  try {
+    const viz = String((req.body && req.body.viz) || '').slice(0, 64);
+    if (!viz) return res.status(400).json({ error: 'viz required' });
+    const u = await getSessionUser(req).catch(() => null);
+    presence.set(viz, { lastSeen: Date.now(), username: u ? u.username : null });
+    if (presence.size > 500) { const cut = Date.now() - 3 * 60 * 1000; for (const [k, v] of presence) if (v.lastSeen < cut) presence.delete(k); }
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: 'heartbeat failed' }); }
+});
+app.get('/api/admin/online', requireAuth, requireAdmin, (req, res) => {
+  const now = Date.now(), cut = now - 2 * 60 * 1000;
+  let total = 0, guests = 0; const users = [];
+  for (const [k, v] of presence) {
+    if (v.lastSeen < cut) { presence.delete(k); continue; }
+    total++;
+    if (v.username) users.push({ username: v.username, secondsAgo: Math.round((now - v.lastSeen) / 1000) });
+    else guests++;
+  }
+  users.sort((a, b) => a.secondsAgo - b.secondsAgo);
+  res.json({ online: total, loggedIn: users.length, guests, users });
+});
+
 // Full user list with profile + activity details (password hashes never sent)
 app.get('/api/admin/users', requireAuth, requireAdmin, async (req, res) => {
   const users = [];
