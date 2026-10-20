@@ -108,7 +108,10 @@ function syncBnavAuth() {
 // ---------- live chat widget ----------
 let chatThread = null; // {id, token}
 let chatPollTimer = null;
-let chatLastSeenId = 0; // highest message id we've seen — drives the reply ping
+// NOTE: chat message ids are random hex strings (uid()), NOT numbers —
+// never compare them with Number(). Fresh-message detection uses a seen-set.
+let chatSeenIds = new Set(); // ids we've already seen — drives the reply ping
+let chatLastSeenId = ''; // last seen message id (string), sent to the SSE stream
 let chatBgTimer = null; // background watch: replies ping even with the panel closed
 // ---------- soft notification ping (chat reply, OTP arrival) ----------
 // Uses the same Web Audio unlock as the order-alerts bell (alertAudio).
@@ -177,7 +180,7 @@ function chatStore(id, token) {
 let chatRestarting = false;
 function chatClearStored() {
   try { localStorage.removeItem('otp_chat_thread'); localStorage.removeItem('otp_chat_token'); } catch (e) {}
-  chatThread = null; chatLastSeenId = 0;
+  chatThread = null; chatSeenIds = new Set(); chatLastSeenId = '';
 }
 async function chatRestartWith(pendingText) {
   if (chatRestarting) return;
@@ -199,7 +202,10 @@ function toggleChat() {
   const opening = panel.classList.contains('hidden');
   panel.classList.toggle('hidden');
   if (opening) { chatFabDot(false); openChatPanel(); }
-  else if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
+  else {
+    if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
+    chatStreamStop();
+  }
 }
 async function openChatPanel() {
   chatThread = chatStored();
@@ -214,6 +220,7 @@ async function openChatPanel() {
   if (!chatThread) { renderChatNamePrompt(); return; }
   await chatRefresh();
   ensureChatBg();
+  chatStreamStart();
   if (chatPollTimer) clearInterval(chatPollTimer);
   chatPollTimer = setInterval(chatRefresh, 5000);
 }
@@ -238,6 +245,7 @@ async function chatStartAsGuest() {
     chatStore(thread.id, chatThread.token);
     await chatRefresh();
     ensureChatBg();
+    chatStreamStart();
     if (chatPollTimer) clearInterval(chatPollTimer);
     chatPollTimer = setInterval(chatRefresh, 5000);
   } catch (e) { $('chatMsgs').innerHTML = chatBubbleHtml('bot', 'Could not start chat: ' + e.message); }
@@ -247,17 +255,17 @@ async function chatRefresh() {
   try {
     const q = new URLSearchParams({ threadId: chatThread.id, token: chatThread.token || '' });
     const { messages } = await api('GET', '/api/chat/messages?' + q.toString());
-    const lastId = messages.length ? Number(messages[messages.length - 1].id) || 0 : 0;
-    if (chatLastSeenId && lastId > chatLastSeenId) {
-      // New messages arrived — ping if support replied
-      const fresh = messages.filter(m => Number(m.id) > chatLastSeenId);
-      if (fresh.some(m => m.sender === 'agent' || m.sender === 'admin')) {
-        pingSound();
-        chatFabDot(true);
-        flashTitleOnce('💬 OTPStation Support replied!');
-      }
+    const lastIdStr = messages.length ? String(messages[messages.length - 1].id) : '';
+    const isFirst = chatSeenIds.size === 0;
+    const fresh = isFirst ? [] : messages.filter(m => !chatSeenIds.has(String(m.id)));
+    messages.forEach(m => chatSeenIds.add(String(m.id)));
+    chatLastSeenId = lastIdStr || chatLastSeenId;
+    if (fresh.some(m => m.sender === 'agent' || m.sender === 'admin')) {
+      // New reply from support
+      pingSound();
+      chatFabDot(true);
+      flashTitleOnce('💬 OTPStation Support replied!');
     }
-    chatLastSeenId = Math.max(chatLastSeenId, lastId);
     if ($('chatPanel').classList.contains('hidden')) return;
     $('chatMsgs').innerHTML = messages.length
       ? messages.map(m => chatBubbleHtml(m.sender, m.text)).join('')
@@ -267,6 +275,36 @@ async function chatRefresh() {
     if (e.message === 'Not your chat') chatRestartWith(); // stale thread → fresh start
     /* keep old messages on transient errors */
   }
+}
+// ---------- instant delivery: Server-Sent Events ----------
+// Pushes new messages the moment they arrive — no more waiting for the next poll.
+let chatES = null;
+function chatStreamStop() { if (chatES) { try { chatES.close(); } catch (e) {} chatES = null; } }
+function chatStreamStart() {
+  chatStreamStop();
+  if (!chatThread || typeof EventSource === 'undefined') return;
+  try {
+    const q = new URLSearchParams({ threadId: chatThread.id, token: chatThread.token || '', since: chatLastSeenId || '' });
+    const es = new EventSource('/api/chat/stream?' + q.toString());
+    chatES = es;
+    es.onmessage = (ev) => {
+      let d; try { d = JSON.parse(ev.data); } catch (e) { return; }
+      const msgs = d.messages || [];
+      if (!msgs.length) return;
+      const panelHidden = $('chatPanel').classList.contains('hidden');
+      msgs.forEach(m => {
+        const id = String(m.id);
+        if (chatSeenIds.has(id)) return;
+        chatSeenIds.add(id); chatLastSeenId = id;
+        if (!panelHidden) $('chatMsgs').insertAdjacentHTML('beforeend', chatBubbleHtml(m.sender, m.text));
+      });
+      if (!panelHidden) chatScroll();
+      if (msgs.some(m => m.sender === 'agent' || m.sender === 'admin')) {
+        pingSound(); chatFabDot(true); flashTitleOnce('💬 OTPStation Support replied!');
+      }
+    };
+    // EventSource auto-reconnects on drop; the 15s background poll stays as a safety net.
+  } catch (e) {}
 }
 // Watch silently for replies on page load (returning visitor with a stored thread)
 if (chatStored()) { chatThread = chatStored(); ensureChatBg(); }
@@ -912,7 +950,7 @@ function chatAdminWatch() {
         if (chatAdminThread) await openChatThread(chatAdminThread);
       }
     } catch (e) {}
-  }, 20000);
+  }, 10000);
 }
 // ---------- admin: live chat ----------
 let chatAdminThread = null;
@@ -930,24 +968,47 @@ async function loadChatAdminThreads() {
       : 'No chats yet.';
   } catch (e) { $('chatThreads').innerHTML = 'Could not load chats.'; }
 }
+function renderAdminConvo(thread, messages) {
+  $('chatConvoCard').classList.remove('hidden');
+  $('chatConvoTitle').textContent = '💬 ' + (thread.displayName || 'Chat') + (thread.status === 'closed' ? ' (closed)' : '');
+  $('chatConvo').innerHTML = messages.length
+    ? messages.map(m => {
+        const who = m.sender === 'user' ? esc(thread.displayName || 'User')
+          : m.sender === 'bot' ? 'Bot 🤖' : m.sender === 'agent' ? 'Agent 🙋' : 'Admin';
+        const cls = m.sender === 'user' ? 'them' : 'me';
+        return `<div class="chat-row ${cls}"><div class="chat-bubble"><b>${who}</b><br>${esc(m.text).replace(/\n/g, '<br>')}</div></div>`;
+      }).join('')
+    : '<span class="muted">No messages yet.</span>';
+  $('chatConvo').scrollTop = $('chatConvo').scrollHeight;
+  $('chatCloseBtn').classList.toggle('hidden', thread.status !== 'open');
+  $('chatReopenBtn').classList.toggle('hidden', thread.status === 'open');
+}
 async function openChatThread(id) {
   chatAdminThread = id;
   try {
     const { thread, messages } = await api('GET', '/api/admin/chat/thread/' + id);
-    $('chatConvoCard').classList.remove('hidden');
-    $('chatConvoTitle').textContent = '💬 ' + (thread.displayName || 'Chat') + (thread.status === 'closed' ? ' (closed)' : '');
-    $('chatConvo').innerHTML = messages.length
-      ? messages.map(m => {
-          const who = m.sender === 'user' ? esc(thread.displayName || 'User')
-            : m.sender === 'bot' ? 'Bot 🤖' : m.sender === 'agent' ? 'Agent 🙋' : 'Admin';
-          const cls = m.sender === 'user' ? 'them' : 'me';
-          return `<div class="chat-row ${cls}"><div class="chat-bubble"><b>${who}</b><br>${esc(m.text).replace(/\n/g, '<br>')}</div></div>`;
-        }).join('')
-      : '<span class="muted">No messages yet.</span>';
-    $('chatConvo').scrollTop = $('chatConvo').scrollHeight;
-    $('chatCloseBtn').classList.toggle('hidden', thread.status !== 'open');
-    $('chatReopenBtn').classList.toggle('hidden', thread.status === 'open');
+    renderAdminConvo(thread, messages);
+    adminChatStreamStart(id, messages.length ? String(messages[messages.length - 1].id) : '');
   } catch (e) { showMsg('chatAdminMsg', e.message, 'err'); }
+}
+// Instant delivery for the open admin conversation — new customer
+// messages appear the moment they arrive, no polling delay.
+let adminChatES = null;
+function adminChatStreamStop() { if (adminChatES) { try { adminChatES.close(); } catch (e) {} adminChatES = null; } }
+function adminChatStreamStart(id, since) {
+  adminChatStreamStop();
+  if (typeof EventSource === 'undefined') return;
+  try {
+    const es = new EventSource('/api/admin/chat/stream/' + id + '?since=' + encodeURIComponent(since || ''));
+    adminChatES = es;
+    es.onmessage = async () => {
+      if (chatAdminThread !== id) return;
+      try {
+        const { thread, messages } = await api('GET', '/api/admin/chat/thread/' + id);
+        renderAdminConvo(thread, messages);
+      } catch (e) {}
+    };
+  } catch (e) {}
 }
 async function chatAdminReply() {
   const text = $('chatReply').value.trim();
