@@ -291,7 +291,7 @@
         <div id="chatConvo" class="chat-msgs" style="max-height:320px"></div>
         <div class="chat-input-row">
           <input id="chatReply" maxlength="2000" placeholder="Type reply…" autocomplete="off">
-          <button id="chatReplySend" class="btn">Send</button>
+          <button id="chatReplySend" class="chat-send-btn" aria-label="Send">➤</button>
         </div>
         <div style="margin-top:8px">
           <button id="chatCloseBtn" class="btn btn-outline">Close chat</button>
@@ -411,13 +411,13 @@
 </nav>
 
 <!-- live chat widget -->
-<button id="chatFab" class="chat-fab" aria-label="Live chat" onclick="toggleChat()">💬</button>
+<button id="chatFab" class="chat-fab" aria-label="Live chat" onclick="toggleChat()">💬<span id="chatFabDot" class="chat-dot hidden"></span></button>
 <div id="chatPanel" class="chat-panel hidden" role="dialog" aria-label="Live chat">
   <div class="chat-head"><span>💬 Live Chat</span><button id="chatClose" class="link" onclick="toggleChat()">✕</button></div>
   <div id="chatMsgs" class="chat-msgs"><span class="muted">Loading…</span></div>
   <div class="chat-input-row">
     <input id="chatInput" maxlength="2000" placeholder="Type your message…" autocomplete="off">
-    <button id="chatSend" class="btn">Send</button>
+    <button id="chatSend" class="chat-send-btn" aria-label="Send">➤</button>
   </div>
 </div>
 
