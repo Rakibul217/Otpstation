@@ -346,7 +346,7 @@ async function loadServices() {
     const { services } = await api('GET', '/api/services');
     $('serviceGrid').innerHTML = services.map(s => `
       <div class="svc" onclick="openService('${s.code}','${s.name}')">
-        <span class="logo-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${s.name}"></span>${s.name}<span class="pr">from ${fmtUSD(s.fromPrice)}</span>
+        <span class="logo-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${s.name}"></span>${s.name}<span class="pr">${s.fromPrice != null ? 'from ' + fmtUSD(s.fromPrice) : 'tap for prices'}</span>
       </div>`).join('');
   } catch (e) { $('serviceGrid').innerHTML = `<div class="card">${e.message}</div>`; }
 }
