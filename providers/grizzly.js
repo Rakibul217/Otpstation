@@ -63,22 +63,47 @@ const SERVICES = [
   { code: 'ig', name: 'Instagram',   logo: 'instagram' },
   { code: 'go', name: 'Google',     logo: 'google' },
   { code: 'go', name: 'YouTube',    logo: 'youtube' },
-  { code: 'tik', name: 'TikTok',    logo: 'tiktok' },
+  { code: 'lf', name: 'TikTok',     logo: 'tiktok' },
   { code: 'im', name: 'imo',        logo: 'imo' },
   { code: 'am', name: 'Amazon',     logo: 'amazon' },
   { code: 'nf', name: 'Netflix',    logo: 'netflix' },
   { code: 'ds', name: 'Discord',    logo: 'discord' },
   { code: 'tw', name: 'Twitter / X', logo: 'twitter' },
-  { code: 'sc', name: 'Snapchat',   logo: 'snapchat' },
-  { code: 'pp', name: 'PayPal',     logo: 'paypal' },
+  { code: 'fu', name: 'Snapchat',   logo: 'snapchat' },
+  { code: 'ts', name: 'PayPal',     logo: 'paypal' },
   { code: 'ub', name: 'Uber',       logo: 'uber' },
   { code: 'dr', name: 'ChatGPT',    logo: 'openai' },
   { code: 'mm', name: 'Microsoft',  logo: 'microsoft' },
   { code: 'me', name: 'Line',       logo: 'line' },
-  { code: 'bn', name: 'Binance',    logo: 'binance' },
   { code: 'wx', name: 'Apple',      logo: 'apple' },
-  { code: 'oi', name: 'Tinder',     logo: 'tinder' },
 ];
+
+// Full Grizzly catalog (long tail, built from Grizzly's own catalog API,
+// filtered to services that actually have stock on the handler API).
+// Each entry: { code, name, icon, cat }. `ext: true` marks long-tail entries.
+const CATALOG = require('./grizzly-catalog.json');
+const ICON_BASE = 'https://grizzlysms.com/api/storage/image/';
+
+function fullServices() {
+  const out = SERVICES.map(s => ({ ...s }));
+  for (const c of CATALOG) {
+    if (out.some(s => s.code === c.code)) continue;
+    out.push({
+      code: c.code,
+      name: c.name,
+      logo: 'letter',
+      ext: true,
+      icon: c.icon ? ICON_BASE + c.icon + '_fit-crop_w-64_h-64.webp' : null,
+      color: 'hsl(' + (hashHue(c.name)) + ', 65%, 48%)'
+    });
+  }
+  return out;
+}
+function hashHue(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360;
+  return h;
+}
 
 // Popular country flags (country ID -> flag)
 const FLAGS = {
@@ -134,7 +159,7 @@ async function getCountryNames() {
 module.exports = {
   name: 'grizzly',
 
-  async getServices() { return SERVICES; },
+  async getServices() { return fullServices(); },
 
   async getCountries(service) {
     const [prices, names] = await Promise.all([getPricesFor(service), getCountryNames()]);

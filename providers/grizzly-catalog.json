@@ -1,0 +1,12128 @@
+[
+ {
+  "code": "wp",
+  "name": "163СOM",
+  "icon": 15983,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "hn",
+  "name": "1688",
+  "icon": 364,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "lv69",
+  "name": "17live",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahs",
+  "name": "1and1",
+  "icon": 49877,
+  "cat": "Other services"
+ },
+ {
+  "code": "wj",
+  "name": "1xbet",
+  "icon": 361,
+  "cat": "Betting"
+ },
+ {
+  "code": "lh",
+  "name": "24betting",
+  "icon": 15973,
+  "cat": "Betting"
+ },
+ {
+  "code": "apd",
+  "name": "2dehands",
+  "icon": 49452,
+  "cat": "Other services"
+ },
+ {
+  "code": "blx",
+  "name": "2ememain",
+  "icon": 58193,
+  "cat": "Other services"
+ },
+ {
+  "code": "bug",
+  "name": "2GO",
+  "icon": 58261,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayo",
+  "name": "360Kredi",
+  "icon": 49474,
+  "cat": "Other services"
+ },
+ {
+  "code": "auw",
+  "name": "3Fun",
+  "icon": 49279,
+  "cat": "Other services"
+ },
+ {
+  "code": "hk",
+  "name": "4Fun",
+  "icon": 4159,
+  "cat": "Social media"
+ },
+ {
+  "code": "fl",
+  "name": "4FunLite",
+  "icon": 12463,
+  "cat": "Social media"
+ },
+ {
+  "code": "exch",
+  "name": "51Exch",
+  "icon": 47215,
+  "cat": "Other services"
+ },
+ {
+  "code": "aws",
+  "name": "7-Eleven",
+  "icon": 49212,
+  "cat": "Other services"
+ },
+ {
+  "code": "jak",
+  "name": "789Jackpot",
+  "icon": 74139,
+  "cat": "Betting"
+ },
+ {
+  "code": "cm69",
+  "name": "8888.com",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ll",
+  "name": "888casino",
+  "icon": 15987,
+  "cat": "Betting"
+ },
+ {
+  "code": "brv",
+  "name": "999 md",
+  "icon": 58287,
+  "cat": "Other services"
+ },
+ {
+  "code": "fw",
+  "name": "99acres",
+  "icon": 16064,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "ki",
+  "name": "99app",
+  "icon": 12103,
+  "cat": "Taxi"
+ },
+ {
+  "code": "nng",
+  "name": "99Gift",
+  "icon": 73906,
+  "cat": "Other services"
+ },
+ {
+  "code": "wm",
+  "name": "99Speed",
+  "icon": 50231,
+  "cat": "Other services"
+ },
+ {
+  "code": "acv",
+  "name": "A23",
+  "icon": 49957,
+  "cat": "Other services"
+ },
+ {
+  "code": "aec",
+  "name": "AaHIRA Fashion",
+  "icon": 50134,
+  "cat": "The shops"
+ },
+ {
+  "code": "ags",
+  "name": "Abbott",
+  "icon": 49665,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgp",
+  "name": "Accuindex",
+  "icon": 49230,
+  "cat": "Other services"
+ },
+ {
+  "code": "rh",
+  "name": "Ace2Three",
+  "icon": 16068,
+  "cat": "Other services"
+ },
+ {
+  "code": "bma",
+  "name": "Acerta e Recicla",
+  "icon": 58456,
+  "cat": "Other services"
+ },
+ {
+  "code": "cim",
+  "name": "Acima",
+  "icon": 58922,
+  "cat": "Other services"
+ },
+ {
+  "code": "amf",
+  "name": "Acko",
+  "icon": 50110,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxh",
+  "name": "Acordo Certo",
+  "icon": 59503,
+  "cat": "Other services"
+ },
+ {
+  "code": "asw",
+  "name": "ACSON",
+  "icon": 50249,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbe",
+  "name": "ACU Pay",
+  "icon": 63661,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ko",
+  "name": "AdaKami",
+  "icon": 16071,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdo",
+  "name": "AdaModal",
+  "icon": 50167,
+  "cat": "Other services"
+ },
+ {
+  "code": "bq",
+  "name": "Adani",
+  "icon": 49784,
+  "cat": "Other services"
+ },
+ {
+  "code": "arq",
+  "name": "Adapundi",
+  "icon": 50191,
+  "cat": "Other services"
+ },
+ {
+  "code": "add",
+  "name": "Adda52",
+  "icon": 60057,
+  "cat": "Other services"
+ },
+ {
+  "code": "adi",
+  "name": "Adityabirla",
+  "icon": 64554,
+  "cat": "Other services"
+ },
+ {
+  "code": "bst",
+  "name": "AdmiralBet",
+  "icon": 58186,
+  "cat": "Betting"
+ },
+ {
+  "code": "byh",
+  "name": "Adobe",
+  "icon": 60604,
+  "cat": "Other services"
+ },
+ {
+  "code": "cav",
+  "name": "Adspay",
+  "icon": 63209,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "agw",
+  "name": "Adverts",
+  "icon": 50085,
+  "cat": "Other services"
+ },
+ {
+  "code": "n68f",
+  "name": "AEON",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bow",
+  "name": "Affirm",
+  "icon": 58351,
+  "cat": "Other services"
+ },
+ {
+  "code": "aip",
+  "name": "AfreecaTV",
+  "icon": 50152,
+  "cat": "Other services"
+ },
+ {
+  "code": "bah",
+  "name": "Afriex",
+  "icon": 50136,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_ag",
+  "name": "Agoda",
+  "icon": 12383,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "cs",
+  "name": "AgriDevelop",
+  "icon": 16080,
+  "cat": "Other services"
+ },
+ {
+  "code": "qu",
+  "name": "Agroinform",
+  "icon": 16083,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsm",
+  "name": "Ahlan",
+  "icon": 58173,
+  "cat": "Other services"
+ },
+ {
+  "code": "cah",
+  "name": "AhoraCrypto",
+  "icon": 62832,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "hy68",
+  "name": "AHOY",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "axv",
+  "name": "AIA 友邦保險",
+  "icon": 49458,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbi",
+  "name": "Aiqfome",
+  "icon": 49385,
+  "cat": "Other services"
+ },
+ {
+  "code": "atz",
+  "name": "Air India",
+  "icon": 49372,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsy",
+  "name": "Air Miles",
+  "icon": 58397,
+  "cat": "Other services"
+ },
+ {
+  "code": "hjr",
+  "name": "AirAsia",
+  "icon": 74153,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqa",
+  "name": "AirAsia MOVE",
+  "icon": 58203,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnp",
+  "name": "Airba Fresh",
+  "icon": 58151,
+  "cat": "Other services"
+ },
+ {
+  "code": "uk",
+  "name": "Airbnb",
+  "icon": 355,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "byd",
+  "name": "Airtasker",
+  "icon": 60372,
+  "cat": "Other services"
+ },
+ {
+  "code": "zl",
+  "name": "Airtel",
+  "icon": 4127,
+  "cat": "Other services"
+ },
+ {
+  "code": "acy",
+  "name": "Airtime",
+  "icon": 49626,
+  "cat": "Other services"
+ },
+ {
+  "code": "apt",
+  "name": "Airwallex",
+  "icon": 49371,
+  "cat": "Other services"
+ },
+ {
+  "code": "wv",
+  "name": "AIS",
+  "icon": 16086,
+  "cat": "Other services"
+ },
+ {
+  "code": "axs",
+  "name": "AIS PLAY",
+  "icon": 49746,
+  "cat": "Other services"
+ },
+ {
+  "code": "aia",
+  "name": "AiSensy",
+  "icon": 73199,
+  "cat": "Other services"
+ },
+ {
+  "code": "asp",
+  "name": "AIStudentPack",
+  "icon": 69618,
+  "cat": "Other services"
+ },
+ {
+  "code": "jj",
+  "name": "Aitu",
+  "icon": 49630,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgc",
+  "name": "AJIO",
+  "icon": 49843,
+  "cat": "Other services"
+ },
+ {
+  "code": "rf",
+  "name": "Akudo",
+  "icon": 16089,
+  "cat": "Other services"
+ },
+ {
+  "code": "tm",
+  "name": "Akulaku",
+  "icon": 16090,
+  "cat": "Other services"
+ },
+ {
+  "code": "axy",
+  "name": "Alcon",
+  "icon": 50021,
+  "cat": "Other services"
+ },
+ {
+  "code": "btt",
+  "name": "Alfa",
+  "icon": 16099,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgt",
+  "name": "Alfamidi",
+  "icon": 49434,
+  "cat": "Other services"
+ },
+ {
+  "code": "lp",
+  "name": "Algida",
+  "icon": 16102,
+  "cat": "Other services"
+ },
+ {
+  "code": "ab",
+  "name": "Alibaba",
+  "icon": 352,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "hx",
+  "name": "AliExpress",
+  "icon": 7112,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "aul",
+  "name": "Alignable",
+  "icon": 49227,
+  "cat": "Other services"
+ },
+ {
+  "code": "hw",
+  "name": "AliPay",
+  "icon": 349,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "hwhk",
+  "name": "AlipayHK",
+  "icon": 57422,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ajy",
+  "name": "All Access",
+  "icon": 49332,
+  "cat": "Other services"
+ },
+ {
+  "code": "bad",
+  "name": "ALL IT",
+  "icon": 50235,
+  "cat": "Other services"
+ },
+ {
+  "code": "yn",
+  "name": "Allegro",
+  "icon": 15702,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "gr_sb",
+  "name": "ALLES Bonus",
+  "icon": 7215,
+  "cat": "The shops"
+ },
+ {
+  "code": "bnx",
+  "name": "Allianz",
+  "icon": 58379,
+  "cat": "Other services"
+ },
+ {
+  "code": "aeo",
+  "name": "Allofresh",
+  "icon": 49519,
+  "cat": "Other services"
+ },
+ {
+  "code": "byu",
+  "name": "Allpay",
+  "icon": 60925,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "alj",
+  "name": "AllwynStore",
+  "icon": 68224,
+  "cat": "The shops"
+ },
+ {
+  "code": "axw",
+  "name": "Allē",
+  "icon": 49592,
+  "cat": "Other services"
+ },
+ {
+  "code": "azb",
+  "name": "AlphaI",
+  "icon": 49938,
+  "cat": "Other services"
+ },
+ {
+  "code": "lphc",
+  "name": "Alphaicon",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "awi",
+  "name": "ALY",
+  "icon": 50061,
+  "cat": "Other services"
+ },
+ {
+  "code": "btx",
+  "name": "Amap 高德地图",
+  "icon": 58118,
+  "cat": "Other services"
+ },
+ {
+  "code": "kbd",
+  "name": "AMAR",
+  "icon": 74219,
+  "cat": "Betting"
+ },
+ {
+  "code": "bsv",
+  "name": "AmarthaFin",
+  "icon": 58190,
+  "cat": "Other services"
+ },
+ {
+  "code": "yo",
+  "name": "Amasia",
+  "icon": 11976,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzk",
+  "name": "Amaze Super App",
+  "icon": 62785,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwq",
+  "name": "AmazingTalker",
+  "icon": 58982,
+  "cat": "Other services"
+ },
+ {
+  "code": "byi",
+  "name": "Ambassadoribet",
+  "icon": 60843,
+  "cat": "Betting"
+ },
+ {
+  "code": "afi",
+  "name": "Ame Digital",
+  "icon": 49704,
+  "cat": "Other services"
+ },
+ {
+  "code": "aha",
+  "name": "Angel One",
+  "icon": 50156,
+  "cat": "Other services"
+ },
+ {
+  "code": "ani",
+  "name": "Anibis",
+  "icon": 68367,
+  "cat": "Other services"
+ },
+ {
+  "code": "alg",
+  "name": "Ankama",
+  "icon": 50062,
+  "cat": "Other services"
+ },
+ {
+  "code": "byw",
+  "name": "Annoncelight",
+  "icon": 61597,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfx",
+  "name": "ANTHE AAKASH",
+  "icon": 49633,
+  "cat": "Other services"
+ },
+ {
+  "code": "aob",
+  "name": "Anthropic",
+  "icon": 49539,
+  "cat": "Other services"
+ },
+ {
+  "code": "ot",
+  "name": "AnyOther",
+  "icon": 71647,
+  "cat": "Other services"
+ },
+ {
+  "code": "pm",
+  "name": "AOL",
+  "icon": 343,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "apv",
+  "name": "ApnaMart",
+  "icon": 74011,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "oop",
+  "name": "Apollo 247",
+  "icon": 15699,
+  "cat": "Other services"
+ },
+ {
+  "code": "ml",
+  "name": "ApostaGanha",
+  "icon": 16112,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhh",
+  "name": "Appen",
+  "icon": 49525,
+  "cat": "Other services"
+ },
+ {
+  "code": "ouu",
+  "name": "Aqua Ludo",
+  "icon": 15510,
+  "cat": "Other services"
+ },
+ {
+  "code": "aco",
+  "name": "AR Lens",
+  "icon": 50169,
+  "cat": "Other services"
+ },
+ {
+  "code": "atk",
+  "name": "ARCH",
+  "icon": 49917,
+  "cat": "Other services"
+ },
+ {
+  "code": "abt",
+  "name": "ArenaPlus",
+  "icon": 15952,
+  "cat": "Betting"
+ },
+ {
+  "code": "blq",
+  "name": "Ari10",
+  "icon": 58424,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_st",
+  "name": "Artstation",
+  "icon": 12373,
+  "cat": "Social media"
+ },
+ {
+  "code": "arw",
+  "name": "ASA",
+  "icon": 49710,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqr",
+  "name": "ASAAS",
+  "icon": 58450,
+  "cat": "Other services"
+ },
+ {
+  "code": "hs",
+  "name": "Asda",
+  "icon": 49361,
+  "cat": "Other services"
+ },
+ {
+  "code": "asg",
+  "name": "Asetku",
+  "icon": 49725,
+  "cat": "Other services"
+ },
+ {
+  "code": "atf",
+  "name": "Asharfi Design",
+  "icon": 49648,
+  "cat": "Other services"
+ },
+ {
+  "code": "lmd",
+  "name": "Ashley Madison",
+  "icon": 68860,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajp",
+  "name": "AsiaMiles",
+  "icon": 49915,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayb",
+  "name": "AsianDating",
+  "icon": 49254,
+  "cat": "Dating"
+ },
+ {
+  "code": "bpi",
+  "name": "Askable",
+  "icon": 58257,
+  "cat": "Other services"
+ },
+ {
+  "code": "sb69",
+  "name": "ASOBO",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "acq",
+  "name": "Astha Tea",
+  "icon": 49979,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgy",
+  "name": "Astro",
+  "icon": 49469,
+  "cat": "Other services"
+ },
+ {
+  "code": "asc",
+  "name": "Astrochat",
+  "icon": 72365,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr",
+  "name": "Astropay",
+  "icon": 49420,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "buj",
+  "name": "ASVLA",
+  "icon": 58126,
+  "cat": "Other services"
+ },
+ {
+  "code": "apn",
+  "name": "ATB-Market",
+  "icon": 73998,
+  "cat": "The shops"
+ },
+ {
+  "code": "bhl",
+  "name": "Ati su",
+  "icon": 49238,
+  "cat": "Other services"
+ },
+ {
+  "code": "awq",
+  "name": "Atlas Earth",
+  "icon": 49998,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_as",
+  "name": "Atlasbus.by",
+  "icon": 12370,
+  "cat": "Other services"
+ },
+ {
+  "code": "anl",
+  "name": "AttaPoll",
+  "icon": 50007,
+  "cat": "Other services"
+ },
+ {
+  "code": "aox",
+  "name": "Aukro",
+  "icon": 50003,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_au",
+  "name": "Aura",
+  "icon": 59181,
+  "cat": "Other services"
+ },
+ {
+  "code": "rir",
+  "name": "Auspost",
+  "icon": 69565,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccy",
+  "name": "Authentify",
+  "icon": 72927,
+  "cat": "Other services"
+ },
+ {
+  "code": "ata",
+  "name": "Authy",
+  "icon": 49948,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbl",
+  "name": "Autodesk",
+  "icon": 50052,
+  "cat": "Other services"
+ },
+ {
+  "code": "aej",
+  "name": "Autoru",
+  "icon": 49292,
+  "cat": "Other services"
+ },
+ {
+  "code": "art",
+  "name": "Autotrader",
+  "icon": 69253,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "avt",
+  "name": "Aviata.kz",
+  "icon": 14277,
+  "cat": "Other services"
+ },
+ {
+  "code": "fff",
+  "name": "Avon",
+  "icon": 16121,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_aw",
+  "name": "AWS Amazon",
+  "icon": 12422,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "bgk",
+  "name": "AXS",
+  "icon": 49908,
+  "cat": "Other services"
+ },
+ {
+  "code": "aaw",
+  "name": "Aya Bank",
+  "icon": 16129,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "gr_ur",
+  "name": "Azure",
+  "icon": 12425,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "qv",
+  "name": "Badoo",
+  "icon": 7133,
+  "cat": "Dating"
+ },
+ {
+  "code": "bin",
+  "name": "Baggins Coffee",
+  "icon": 50047,
+  "cat": "Food"
+ },
+ {
+  "code": "can",
+  "name": "BAGI",
+  "icon": 63105,
+  "cat": "Other services"
+ },
+ {
+  "code": "li",
+  "name": "Baidu",
+  "icon": 12093,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "agq",
+  "name": "Bajaj Finserv",
+  "icon": 15396,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ktr",
+  "name": "Baly",
+  "icon": 74196,
+  "cat": "Taxi"
+ },
+ {
+  "code": "ajf",
+  "name": "Bananatok",
+  "icon": 50060,
+  "cat": "Other services"
+ },
+ {
+  "code": "hl",
+  "name": "Band",
+  "icon": 49435,
+  "cat": "Other services"
+ },
+ {
+  "code": "axk",
+  "name": "BandinginAja",
+  "icon": 49659,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajd",
+  "name": "Bankera",
+  "icon": 50026,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "apw",
+  "name": "Bankiros",
+  "icon": 49320,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "vc",
+  "name": "Banqi",
+  "icon": 49450,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxg",
+  "name": "BAT",
+  "icon": 59506,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwj",
+  "name": "Bata",
+  "icon": 58194,
+  "cat": "Other services"
+ },
+ {
+  "code": "bt",
+  "name": "Battle",
+  "icon": 7145,
+  "cat": "Games"
+ },
+ {
+  "code": "cak",
+  "name": "Bazaraki",
+  "icon": 63103,
+  "cat": "Other services"
+ },
+ {
+  "code": "cb",
+  "name": "Bazos",
+  "icon": 49147,
+  "cat": "Other services"
+ },
+ {
+  "code": "cao",
+  "name": "BBVA",
+  "icon": 63184,
+  "cat": "Other services"
+ },
+ {
+  "code": "alu",
+  "name": "BC Game",
+  "icon": 49582,
+  "cat": "Betting"
+ },
+ {
+  "code": "att",
+  "name": "BCD travel",
+  "icon": 50066,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbc",
+  "name": "BCW",
+  "icon": 63664,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_bf",
+  "name": "Beanfun",
+  "icon": 13984,
+  "cat": "Games"
+ },
+ {
+  "code": "aar",
+  "name": "Bearwww",
+  "icon": 49860,
+  "cat": "Other services"
+ },
+ {
+  "code": "aly",
+  "name": "Bebeclub",
+  "icon": 49487,
+  "cat": "Other services"
+ },
+ {
+  "code": "acx",
+  "name": "Beboo",
+  "icon": 15746,
+  "cat": "Dating"
+ },
+ {
+  "code": "biz",
+  "name": "BeCharge",
+  "icon": 50211,
+  "cat": "Other services"
+ },
+ {
+  "code": "abd",
+  "name": "BeeBoo",
+  "icon": 46144,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfl",
+  "name": "Beebop Circus",
+  "icon": 49755,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqm",
+  "name": "Beebs",
+  "icon": 58283,
+  "cat": "Other services"
+ },
+ {
+  "code": "aze",
+  "name": "Beehiiv",
+  "icon": 50025,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcd",
+  "name": "Belanjayuk",
+  "icon": 50049,
+  "cat": "Other services"
+ },
+ {
+  "code": "um",
+  "name": "Belwest",
+  "icon": 49847,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdx",
+  "name": "Benjamin",
+  "icon": 49683,
+  "cat": "Other services"
+ },
+ {
+  "code": "ck",
+  "name": "BeReal",
+  "icon": 49470,
+  "cat": "Other services"
+ },
+ {
+  "code": "awk",
+  "name": "Bereke Bank",
+  "icon": 49543,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ie",
+  "name": "Bet365",
+  "icon": 11956,
+  "cat": "Betting"
+ },
+ {
+  "code": "agl",
+  "name": "Betano",
+  "icon": 49157,
+  "cat": "Other services"
+ },
+ {
+  "code": "ete",
+  "name": "Betexc",
+  "icon": 70751,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmj",
+  "name": "Betflag",
+  "icon": 58387,
+  "cat": "Other services"
+ },
+ {
+  "code": "grw",
+  "name": "BETIM",
+  "icon": 74213,
+  "cat": "Betting"
+ },
+ {
+  "code": "ngd",
+  "name": "Betine",
+  "icon": 74187,
+  "cat": "Betting"
+ },
+ {
+  "code": "gr_bt",
+  "name": "Betinin",
+  "icon": 59166,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhm",
+  "name": "BETL",
+  "icon": 50017,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkn",
+  "name": "Betlive",
+  "icon": 58247,
+  "cat": "Other services"
+ },
+ {
+  "code": "jfa",
+  "name": "Betmartin",
+  "icon": 74194,
+  "cat": "Betting"
+ },
+ {
+  "code": "aqs",
+  "name": "BetOnRed",
+  "icon": 49921,
+  "cat": "Other services"
+ },
+ {
+  "code": "ras",
+  "name": "Betorspin",
+  "icon": 74004,
+  "cat": "Betting"
+ },
+ {
+  "code": "btv",
+  "name": "Betvet",
+  "icon": 15695,
+  "cat": "Betting"
+ },
+ {
+  "code": "uta",
+  "name": "BEUTEA",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "gas",
+  "name": "Bharatgas",
+  "icon": 70133,
+  "cat": "Other services"
+ },
+ {
+  "code": "aab",
+  "name": "BharatPe",
+  "icon": 63691,
+  "cat": "Other services"
+ },
+ {
+  "code": "rol",
+  "name": "BharatPetroleum",
+  "icon": 63756,
+  "cat": "Other services"
+ },
+ {
+  "code": "skr",
+  "name": "Bhaskar",
+  "icon": 60042,
+  "cat": "Other services"
+ },
+ {
+  "code": "zn",
+  "name": "Biedronka",
+  "icon": 49486,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzb",
+  "name": "Big Cash",
+  "icon": 62334,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aqj",
+  "name": "BigBasket",
+  "icon": 50278,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_bl",
+  "name": "Biglion",
+  "icon": 7142,
+  "cat": "Other services"
+ },
+ {
+  "code": "bl",
+  "name": "BIGO LIVE",
+  "icon": 6448,
+  "cat": "Social media"
+ },
+ {
+  "code": "beo",
+  "name": "BigPay",
+  "icon": 49235,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "asv",
+  "name": "Bilderlings",
+  "icon": 49682,
+  "cat": "Other services"
+ },
+ {
+  "code": "bila",
+  "name": "BiletiniAl",
+  "icon": 73812,
+  "cat": "Other services"
+ },
+ {
+  "code": "zs",
+  "name": "Bilibili",
+  "icon": 4162,
+  "cat": "Social media"
+ },
+ {
+  "code": "bkw",
+  "name": "Bilkraft",
+  "icon": 58299,
+  "cat": "Other services"
+ },
+ {
+  "code": "ri",
+  "name": "BillMill",
+  "icon": 50097,
+  "cat": "Other services"
+ },
+ {
+  "code": "llu",
+  "name": "Billu",
+  "icon": 60011,
+  "cat": "Other services"
+ },
+ {
+  "code": "uv",
+  "name": "BinBin",
+  "icon": 49358,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhs",
+  "name": "Bingo Cash",
+  "icon": 49889,
+  "cat": "Betting"
+ },
+ {
+  "code": "jhg",
+  "name": "Bingo Stars",
+  "icon": 69554,
+  "cat": "Betting"
+ },
+ {
+  "code": "bva",
+  "name": "Bingo101",
+  "icon": 58238,
+  "cat": "Other services"
+ },
+ {
+  "code": "bea",
+  "name": "Binmo",
+  "icon": 50048,
+  "cat": "Other services"
+ },
+ {
+  "code": "ww",
+  "name": "BIP",
+  "icon": 50293,
+  "cat": "Messengers"
+ },
+ {
+  "code": "el",
+  "name": "Bisu",
+  "icon": 50292,
+  "cat": "Other services"
+ },
+ {
+  "code": "qk",
+  "name": "Bit",
+  "icon": 49876,
+  "cat": "Other services"
+ },
+ {
+  "code": "pt",
+  "name": "Bitaqaty",
+  "icon": 49589,
+  "cat": "Other services"
+ },
+ {
+  "code": "lt",
+  "name": "BitClout",
+  "icon": 340,
+  "cat": "Social media"
+ },
+ {
+  "code": "ny",
+  "name": "BitcoinBon",
+  "icon": 49627,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bxe",
+  "name": "Bitexen",
+  "icon": 59505,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahq",
+  "name": "Bitget",
+  "icon": 49773,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bor",
+  "name": "Bitpanda",
+  "icon": 58363,
+  "cat": "Other services"
+ },
+ {
+  "code": "ht",
+  "name": "Bitso",
+  "icon": 50144,
+  "cat": "Other services"
+ },
+ {
+  "code": "ave",
+  "name": "BizneX",
+  "icon": 49880,
+  "cat": "Other services"
+ },
+ {
+  "code": "ryj",
+  "name": "Bizom",
+  "icon": 74017,
+  "cat": "Other services"
+ },
+ {
+  "code": "bar",
+  "name": "BJP",
+  "icon": 50088,
+  "cat": "Other services"
+ },
+ {
+  "code": "aud",
+  "name": "bkSMS",
+  "icon": 49457,
+  "cat": "Other services"
+ },
+ {
+  "code": "ua",
+  "name": "Blablacar",
+  "icon": 627,
+  "cat": "Taxi"
+ },
+ {
+  "code": "bll",
+  "name": "Black GSM",
+  "icon": 58214,
+  "cat": "Other services"
+ },
+ {
+  "code": "btf",
+  "name": "Blackbird",
+  "icon": 58400,
+  "cat": "Other services"
+ },
+ {
+  "code": "anp",
+  "name": "Blackcatcard",
+  "icon": 49749,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "akq",
+  "name": "Blank Street",
+  "icon": 50024,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqz",
+  "name": "BlazeTech",
+  "icon": 49802,
+  "cat": "Other services"
+ },
+ {
+  "code": "fk",
+  "name": "Blibli",
+  "icon": 15897,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "ahk",
+  "name": "BlinBeri",
+  "icon": 49568,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbt",
+  "name": "Blink",
+  "icon": 49920,
+  "cat": "Other services"
+ },
+ {
+  "code": "ban",
+  "name": "BLINK by BonusLink",
+  "icon": 49594,
+  "cat": "Other services"
+ },
+ {
+  "code": "lin",
+  "name": "Blinkit",
+  "icon": 65567,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpp",
+  "name": "Bliq",
+  "icon": 58419,
+  "cat": "Other services"
+ },
+ {
+  "code": "bz",
+  "name": "Blizzard - Battle.Net",
+  "icon": 231,
+  "cat": "Games"
+ },
+ {
+  "code": "awt",
+  "name": "BlockDag",
+  "icon": 49384,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgm",
+  "name": "BlockPicks",
+  "icon": 49793,
+  "cat": "Other services"
+ },
+ {
+  "code": "qn",
+  "name": "Blued",
+  "icon": 49531,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccm",
+  "name": "Blueticket",
+  "icon": 64298,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajr",
+  "name": "Boku",
+  "icon": 49507,
+  "cat": "Other services"
+ },
+ {
+  "code": "asn",
+  "name": "Boletomovil",
+  "icon": 49650,
+  "cat": "Other services"
+ },
+ {
+  "code": "tx",
+  "name": "Bolt",
+  "icon": 4115,
+  "cat": "Taxi"
+ },
+ {
+  "code": "acp",
+  "name": "BonusLink",
+  "icon": 49579,
+  "cat": "Other services"
+ },
+ {
+  "code": "akg",
+  "name": "Book My Play",
+  "icon": 49883,
+  "cat": "Other services"
+ },
+ {
+  "code": "aed",
+  "name": "Booking.com",
+  "icon": 49533,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "oms",
+  "name": "Bookmyshow",
+  "icon": 64545,
+  "cat": "Other services"
+ },
+ {
+  "code": "bez",
+  "name": "Boom Market",
+  "icon": 49429,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bfu",
+  "name": "Boostra",
+  "icon": 49758,
+  "cat": "Other services"
+ },
+ {
+  "code": "adr",
+  "name": "Boosty",
+  "icon": 50272,
+  "cat": "Other services"
+ },
+ {
+  "code": "bts6",
+  "name": "Boots",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "cad",
+  "name": "BOSS Revolution",
+  "icon": 62835,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_ob",
+  "name": "Botim",
+  "icon": 12435,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bwz",
+  "name": "Box Coupon",
+  "icon": 59395,
+  "cat": "Other services"
+ },
+ {
+  "code": "blw",
+  "name": "BP",
+  "icon": 58310,
+  "cat": "Other services"
+ },
+ {
+  "code": "bu",
+  "name": "BP — club",
+  "icon": 7148,
+  "cat": "Other services"
+ },
+ {
+  "code": "blj",
+  "name": "Brace",
+  "icon": 58335,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbe",
+  "name": "Branch",
+  "icon": 49936,
+  "cat": "Other services"
+ },
+ {
+  "code": "vo",
+  "name": "Brand20ua",
+  "icon": 49924,
+  "cat": "Other services"
+ },
+ {
+  "code": "beu",
+  "name": "BRAX",
+  "icon": 50294,
+  "cat": "Other services"
+ },
+ {
+  "code": "mhh",
+  "name": "Brevistay",
+  "icon": 68276,
+  "cat": "Other services"
+ },
+ {
+  "code": "aiz",
+  "name": "Brevo",
+  "icon": 49367,
+  "cat": "Other services"
+ },
+ {
+  "code": "gmy",
+  "name": "BridgeMoney",
+  "icon": 70324,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "avl",
+  "name": "BRImo BRI",
+  "icon": 49369,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcv",
+  "name": "Britannia",
+  "icon": 50247,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_br",
+  "name": "Broadblue",
+  "icon": 12350,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcu",
+  "name": "BT One",
+  "icon": 49839,
+  "cat": "Other services"
+ },
+ {
+  "code": "brd",
+  "name": "Budgett ru",
+  "icon": 58259,
+  "cat": "Other services"
+ },
+ {
+  "code": "zt",
+  "name": "Budweiser",
+  "icon": 49264,
+  "cat": "Other services"
+ },
+ {
+  "code": "bf",
+  "name": "Buff.163",
+  "icon": 7136,
+  "cat": "Games"
+ },
+ {
+  "code": "atd",
+  "name": "BUKA",
+  "icon": 50077,
+  "cat": "Other services"
+ },
+ {
+  "code": "kh",
+  "name": "Bukalapak",
+  "icon": 49376,
+  "cat": "Other services"
+ },
+ {
+  "code": "mo",
+  "name": "Bumble",
+  "icon": 71641,
+  "cat": "Dating"
+ },
+ {
+  "code": "avc",
+  "name": "Bunches",
+  "icon": 49985,
+  "cat": "Other services"
+ },
+ {
+  "code": "bngk",
+  "name": "Bungkus",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahe",
+  "name": "Bunq",
+  "icon": 49466,
+  "cat": "Other services"
+ },
+ {
+  "code": "bce",
+  "name": "BUSQO",
+  "icon": 49658,
+  "cat": "Other services"
+ },
+ {
+  "code": "thu",
+  "name": "Buy&Ship",
+  "icon": 68019,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfs",
+  "name": "BUYBUYGO",
+  "icon": 50054,
+  "cat": "Other services"
+ },
+ {
+  "code": "abn",
+  "name": "Bybit",
+  "icon": 49163,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "iu",
+  "name": "Bykea",
+  "icon": 49760,
+  "cat": "Other services"
+ },
+ {
+  "code": "abi",
+  "name": "BytePlus",
+  "icon": 49664,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayx",
+  "name": "C24 Bank",
+  "icon": 50163,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bzn",
+  "name": "CA Club",
+  "icon": 62783,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnk",
+  "name": "CAAI",
+  "icon": 58322,
+  "cat": "Other services"
+ },
+ {
+  "code": "adp",
+  "name": "Cabify",
+  "icon": 50280,
+  "cat": "Taxi"
+ },
+ {
+  "code": "anh",
+  "name": "Cadbury",
+  "icon": 49577,
+  "cat": "Other services"
+ },
+ {
+  "code": "cadd",
+  "name": "Caddy",
+  "icon": 73334,
+  "cat": "Other services"
+ },
+ {
+  "code": "uo",
+  "name": "CafeBazaar",
+  "icon": 49862,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bqo",
+  "name": "Caffe Nero",
+  "icon": 58382,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqi",
+  "name": "Cairon Fashion",
+  "icon": 50171,
+  "cat": "The shops"
+ },
+ {
+  "code": "gw",
+  "name": "CallApp",
+  "icon": 12138,
+  "cat": "Messengers"
+ },
+ {
+  "code": "anm",
+  "name": "CaltexGO",
+  "icon": 49309,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmx",
+  "name": "Canal RCN",
+  "icon": 58428,
+  "cat": "Other services"
+ },
+ {
+  "code": "ls",
+  "name": "Careem",
+  "icon": 337,
+  "cat": "Taxi"
+ },
+ {
+  "code": "gj",
+  "name": "Carousell",
+  "icon": 49149,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "apf",
+  "name": "Carrefour",
+  "icon": 49252,
+  "cat": "The shops"
+ },
+ {
+  "code": "brc",
+  "name": "Casa it",
+  "icon": 58433,
+  "cat": "Other services"
+ },
+ {
+  "code": "it",
+  "name": "CashApp",
+  "icon": 49406,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ant",
+  "name": "Cashew",
+  "icon": 50239,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "oy",
+  "name": "CashFly",
+  "icon": 49869,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "cha",
+  "name": "Cashify",
+  "icon": 73897,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "ii",
+  "name": "CashKaro",
+  "icon": 49558,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ld",
+  "name": "Cashmine",
+  "icon": 50215,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aqn",
+  "name": "CashMyPic",
+  "icon": 49804,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "cshw",
+  "name": "Cashwalk",
+  "icon": 46917,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "boo",
+  "name": "Casino Plus",
+  "icon": 58183,
+  "cat": "Betting"
+ },
+ {
+  "code": "bos",
+  "name": "Casino Portugal",
+  "icon": 58206,
+  "cat": "Betting"
+ },
+ {
+  "code": "pc",
+  "name": "Casino/Bet/Gambling",
+  "icon": 15965,
+  "cat": "Betting"
+ },
+ {
+  "code": "alz",
+  "name": "CasinoAndFriends",
+  "icon": 49588,
+  "cat": "Betting"
+ },
+ {
+  "code": "wd",
+  "name": "CasinoPlus",
+  "icon": 58119,
+  "cat": "Betting"
+ },
+ {
+  "code": "ho",
+  "name": "Cathay",
+  "icon": 49471,
+  "cat": "Other services"
+ },
+ {
+  "code": "arm",
+  "name": "Cathay Pacific",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "pq",
+  "name": "CDkeys",
+  "icon": 50290,
+  "cat": "Other services"
+ },
+ {
+  "code": "ix",
+  "name": "Celcoin",
+  "icon": 50269,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ctr",
+  "name": "CenturyLink",
+  "icon": 58925,
+  "cat": "Other services"
+ },
+ {
+  "code": "cca",
+  "name": "Cetelem",
+  "icon": 64083,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqs",
+  "name": "CGV",
+  "icon": 58184,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwx",
+  "name": "Chagee",
+  "icon": 59396,
+  "cat": "Other services"
+ },
+ {
+  "code": "td",
+  "name": "ChaingeFinance",
+  "icon": 49820,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "akn",
+  "name": "Chakra Rewards",
+  "icon": 49698,
+  "cat": "Other services"
+ },
+ {
+  "code": "axp",
+  "name": "ChargePoint",
+  "icon": 49549,
+  "cat": "Other services"
+ },
+ {
+  "code": "cgg",
+  "name": "ChargerGoGo",
+  "icon": 68010,
+  "cat": "Other services"
+ },
+ {
+  "code": "chrg",
+  "name": "ChargeSPOT",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "arc",
+  "name": "CHECK24",
+  "icon": 49473,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_ch",
+  "name": "Checkscan",
+  "icon": 12347,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjm",
+  "name": "Cheddar",
+  "icon": 50083,
+  "cat": "Other services"
+ },
+ {
+  "code": "che",
+  "name": "CheQ",
+  "icon": 69411,
+  "cat": "Other services"
+ },
+ {
+  "code": "afk",
+  "name": "Chevron",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "cgi",
+  "name": "Chingari",
+  "icon": 60051,
+  "cat": "Other services"
+ },
+ {
+  "code": "cpt",
+  "name": "Chipotle",
+  "icon": 13822,
+  "cat": "Other services"
+ },
+ {
+  "code": "aum",
+  "name": "Chipper Cash",
+  "icon": 49720,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "chc",
+  "name": "Choco Crush",
+  "icon": 14883,
+  "cat": "Games"
+ },
+ {
+  "code": "baz",
+  "name": "Christian Filipina",
+  "icon": 49769,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzy",
+  "name": "Chroma Awards",
+  "icon": 62799,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxu",
+  "name": "Chronodrive",
+  "icon": 59560,
+  "cat": "Other services"
+ },
+ {
+  "code": "bek",
+  "name": "Chubb",
+  "icon": 50265,
+  "cat": "Other services"
+ },
+ {
+  "code": "ass",
+  "name": "CICIL",
+  "icon": 50076,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwi",
+  "name": "CIMB",
+  "icon": 58282,
+  "cat": "Other services"
+ },
+ {
+  "code": "arz",
+  "name": "Cineplex",
+  "icon": 49178,
+  "cat": "Other services"
+ },
+ {
+  "code": "az",
+  "name": "CityBase",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bws",
+  "name": "Citygo",
+  "icon": 59400,
+  "cat": "Other services"
+ },
+ {
+  "code": "ctyh",
+  "name": "Cityheaven",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "acu",
+  "name": "CityMall",
+  "icon": 49171,
+  "cat": "The shops"
+ },
+ {
+  "code": "civ",
+  "name": "Civo",
+  "icon": 73202,
+  "cat": "Other services"
+ },
+ {
+  "code": "awp",
+  "name": "Clapper",
+  "icon": 49933,
+  "cat": "Other services"
+ },
+ {
+  "code": "acz",
+  "name": "Claude",
+  "icon": 71633,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgv",
+  "name": "Clearpay",
+  "icon": 49929,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "hf",
+  "name": "Cleartrip",
+  "icon": 58927,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpo",
+  "name": "Clerk",
+  "icon": 58413,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_en",
+  "name": "ClickEntregas",
+  "icon": 12495,
+  "cat": "Taxi"
+ },
+ {
+  "code": "fe",
+  "name": "CliQQ",
+  "icon": 49584,
+  "cat": "Other services"
+ },
+ {
+  "code": "ael",
+  "name": "Cloud Manager",
+  "icon": 49341,
+  "cat": "Other services"
+ },
+ {
+  "code": "jn",
+  "name": "CloudBet",
+  "icon": 49613,
+  "cat": "Betting"
+ },
+ {
+  "code": "dd",
+  "name": "CloudChat",
+  "icon": 49738,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bqx",
+  "name": "Club Q8",
+  "icon": 58405,
+  "cat": "Other services"
+ },
+ {
+  "code": "et",
+  "name": "Clubhouse",
+  "icon": 12157,
+  "cat": "Social media"
+ },
+ {
+  "code": "agm",
+  "name": "CMB",
+  "icon": 49134,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkb",
+  "name": "CMK Club",
+  "icon": 49741,
+  "cat": "Other services"
+ },
+ {
+  "code": "ql",
+  "name": "CMTcuzdan",
+  "icon": 50125,
+  "cat": "Other services"
+ },
+ {
+  "code": "abb",
+  "name": "Coca-Cola",
+  "icon": 19646,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcb",
+  "name": "Codapay",
+  "icon": 50014,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "oe",
+  "name": "Codashop",
+  "icon": 49421,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bsd",
+  "name": "Codeium",
+  "icon": 58213,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajo",
+  "name": "CoffeeTea",
+  "icon": 49935,
+  "cat": "Food"
+ },
+ {
+  "code": "cof",
+  "name": "Coffy",
+  "icon": 73809,
+  "cat": "Food"
+ },
+ {
+  "code": "re",
+  "name": "Coinbase",
+  "icon": 0,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ne",
+  "name": "Coindcx",
+  "icon": 15657,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "oay",
+  "name": "Coinfantasy",
+  "icon": 16262,
+  "cat": "Other services"
+ },
+ {
+  "code": "vw",
+  "name": "CoinField",
+  "icon": 50254,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bkc",
+  "name": "CoinTR",
+  "icon": 50065,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ase",
+  "name": "Collection Pot",
+  "icon": 49418,
+  "cat": "Other services"
+ },
+ {
+  "code": "aci",
+  "name": "Colombian Cupid",
+  "icon": 50023,
+  "cat": "Dating"
+ },
+ {
+  "code": "com",
+  "name": "Comeplay",
+  "icon": 73883,
+  "cat": "Betting"
+ },
+ {
+  "code": "cmmt",
+  "name": "Comfirmtkt",
+  "icon": 21222,
+  "cat": "Other services"
+ },
+ {
+  "code": "zx",
+  "name": "CommunityGaming",
+  "icon": 11959,
+  "cat": "Games"
+ },
+ {
+  "code": "ctkt",
+  "name": "ConfirmTkt",
+  "icon": 21227,
+  "cat": "Other services"
+ },
+ {
+  "code": "con",
+  "name": "Connecto",
+  "icon": 66191,
+  "cat": "Other services"
+ },
+ {
+  "code": "jv",
+  "name": "Consultant",
+  "icon": 49355,
+  "cat": "Other services"
+ },
+ {
+  "code": "cat",
+  "name": "Conta Simples",
+  "icon": 63181,
+  "cat": "Other services"
+ },
+ {
+  "code": "eg",
+  "name": "ContactSys",
+  "icon": 49970,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnf",
+  "name": "ContiCazino",
+  "icon": 58278,
+  "cat": "Other services"
+ },
+ {
+  "code": "cag",
+  "name": "Cora",
+  "icon": 62833,
+  "cat": "Other services"
+ },
+ {
+  "code": "cor",
+  "name": "CordeliaСurise",
+  "icon": 74001,
+  "cat": "Other services"
+ },
+ {
+  "code": "azc",
+  "name": "CoreAsia",
+  "icon": 50165,
+  "cat": "Other services"
+ },
+ {
+  "code": "om",
+  "name": "Corona",
+  "icon": 49663,
+  "cat": "Other services"
+ },
+ {
+  "code": "bly",
+  "name": "COSMOTE",
+  "icon": 58368,
+  "cat": "Other services"
+ },
+ {
+  "code": "ces",
+  "name": "Count&Earn",
+  "icon": 73903,
+  "cat": "Games"
+ },
+ {
+  "code": "yg",
+  "name": "Coursehero",
+  "icon": 11978,
+  "cat": "Other services"
+ },
+ {
+  "code": "ctd",
+  "name": "Courtyard",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bia",
+  "name": "COYO",
+  "icon": 50004,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqf",
+  "name": "Coze",
+  "icon": 49810,
+  "cat": "Other services"
+ },
+ {
+  "code": "wc",
+  "name": "Craigslist",
+  "icon": 331,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bhc",
+  "name": "Creaplay",
+  "icon": 50159,
+  "cat": "Other services"
+ },
+ {
+  "code": "edd",
+  "name": "Cred",
+  "icon": 15552,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bxw",
+  "name": "Credinex",
+  "icon": 59562,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqz",
+  "name": "Credit Karma",
+  "icon": 58309,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "qcz",
+  "name": "Creditmantri",
+  "icon": 70324,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ax",
+  "name": "CrefisaMais",
+  "icon": 49468,
+  "cat": "Other services"
+ },
+ {
+  "code": "crx",
+  "name": "Crex11",
+  "icon": 59993,
+  "cat": "Other services"
+ },
+ {
+  "code": "qjm",
+  "name": "Cricbuzz",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "lu",
+  "name": "Crickpe",
+  "icon": 49644,
+  "cat": "Other services"
+ },
+ {
+  "code": "cch",
+  "name": "Cricmatch",
+  "icon": 60311,
+  "cat": "Betting"
+ },
+ {
+  "code": "bte",
+  "name": "CROCOBET",
+  "icon": 58237,
+  "cat": "Betting"
+ },
+ {
+  "code": "sx",
+  "name": "Crowdtap",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccl",
+  "name": "Cruzeiro",
+  "icon": 64289,
+  "cat": "Other services"
+ },
+ {
+  "code": "ti",
+  "name": "Cryptocom",
+  "icon": 49431,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aoi",
+  "name": "Cryptonow",
+  "icon": 49297,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "azz",
+  "name": "Crystalbet",
+  "icon": 49166,
+  "cat": "Betting"
+ },
+ {
+  "code": "ahh",
+  "name": "Cumbuca",
+  "icon": 49900,
+  "cat": "Other services"
+ },
+ {
+  "code": "ceb",
+  "name": "CureBay",
+  "icon": 61573,
+  "cat": "Other services"
+ },
+ {
+  "code": "crsr",
+  "name": "Cursor",
+  "icon": 70688,
+  "cat": "Other services"
+ },
+ {
+  "code": "cur",
+  "name": "Curtsy",
+  "icon": 69639,
+  "cat": "Other services"
+ },
+ {
+  "code": "bch",
+  "name": "CyberLotus",
+  "icon": 50030,
+  "cat": "Other services"
+ },
+ {
+  "code": "btl",
+  "name": "D4",
+  "icon": 58323,
+  "cat": "Other services"
+ },
+ {
+  "code": "abp",
+  "name": "D5BET",
+  "icon": 49964,
+  "cat": "Betting"
+ },
+ {
+  "code": "bzf",
+  "name": "Dabble",
+  "icon": 62340,
+  "cat": "Other services"
+ },
+ {
+  "code": "akk",
+  "name": "Dagangan",
+  "icon": 49745,
+  "cat": "Other services"
+ },
+ {
+  "code": "dah",
+  "name": "DahaDaha",
+  "icon": 68370,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahi",
+  "name": "Daki",
+  "icon": 49493,
+  "cat": "Other services"
+ },
+ {
+  "code": "apg",
+  "name": "Damai",
+  "icon": 49223,
+  "cat": "Other services"
+ },
+ {
+  "code": "ox",
+  "name": "Damejidlo",
+  "icon": 50137,
+  "cat": "Other services"
+ },
+ {
+  "code": "fr",
+  "name": "Dana",
+  "icon": 4165,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "dgl",
+  "name": "Dangal365",
+  "icon": 61576,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjc",
+  "name": "Daraz",
+  "icon": 50129,
+  "cat": "Other services"
+ },
+ {
+  "code": "abz",
+  "name": "Darit Legko",
+  "icon": 50155,
+  "cat": "Other services"
+ },
+ {
+  "code": "arv",
+  "name": "DARKSIDE",
+  "icon": 49832,
+  "cat": "Other services"
+ },
+ {
+  "code": "das",
+  "name": "DashReels",
+  "icon": 69572,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbj",
+  "name": "DaTalk",
+  "icon": 63660,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqi",
+  "name": "Datanyze",
+  "icon": 58175,
+  "cat": "Other services"
+ },
+ {
+  "code": "dav",
+  "name": "Dave",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aju",
+  "name": "Daya Auto",
+  "icon": 49383,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbd",
+  "name": "DBS Bank",
+  "icon": 49801,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "btu",
+  "name": "DDX Fitness",
+  "icon": 58427,
+  "cat": "Other services"
+ },
+ {
+  "code": "oc",
+  "name": "DealShare",
+  "icon": 49707,
+  "cat": "Other services"
+ },
+ {
+  "code": "atw",
+  "name": "DeepSeek",
+  "icon": 49523,
+  "cat": "Other services"
+ },
+ {
+  "code": "zk",
+  "name": "Deliveroo",
+  "icon": 328,
+  "cat": "Food"
+ },
+ {
+  "code": "dt",
+  "name": "Delivery Club",
+  "icon": 12169,
+  "cat": "Food"
+ },
+ {
+  "code": "bgz",
+  "name": "Deloitte",
+  "icon": 49958,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgl",
+  "name": "DeLorean Labs",
+  "icon": 49763,
+  "cat": "Other services"
+ },
+ {
+  "code": "zz",
+  "name": "DENT",
+  "icon": 325,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "btc",
+  "name": "Depinsim",
+  "icon": 58434,
+  "cat": "Other services"
+ },
+ {
+  "code": "xy",
+  "name": "Depop",
+  "icon": 49188,
+  "cat": "Other services"
+ },
+ {
+  "code": "del",
+  "name": "DeskLucky",
+  "icon": 68326,
+  "cat": "Other services"
+ },
+ {
+  "code": "lx",
+  "name": "DewuPoison",
+  "icon": 12089,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "awn",
+  "name": "DialMyCalls",
+  "icon": 50141,
+  "cat": "Other services"
+ },
+ {
+  "code": "xk",
+  "name": "DiDi",
+  "icon": 322,
+  "cat": "Taxi"
+ },
+ {
+  "code": "ais",
+  "name": "DiDiFood",
+  "icon": 49427,
+  "cat": "Food"
+ },
+ {
+  "code": "gr_di",
+  "name": "DigiHaat",
+  "icon": 47740,
+  "cat": "Other services"
+ },
+ {
+  "code": "zv",
+  "name": "Digikala",
+  "icon": 49766,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjl",
+  "name": "Digio",
+  "icon": 49990,
+  "cat": "Other services"
+ },
+ {
+  "code": "dis",
+  "name": "Digistore",
+  "icon": 74136,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "ahg",
+  "name": "Digivarsity Lurningo",
+  "icon": 49834,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhr",
+  "name": "Dil Mil",
+  "icon": 49261,
+  "cat": "Other services"
+ },
+ {
+  "code": "ding",
+  "name": "Ding",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsu",
+  "name": "Dingtone",
+  "icon": 58236,
+  "cat": "Messengers"
+ },
+ {
+  "code": "ame",
+  "name": "Discover Hong Kong",
+  "icon": 50164,
+  "cat": "Other services"
+ },
+ {
+  "code": "ud",
+  "name": "Disney Hotstar",
+  "icon": 49498,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxf",
+  "name": "Disney Plus",
+  "icon": 59507,
+  "cat": "Other services"
+ },
+ {
+  "code": "dw",
+  "name": "Divar",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aot",
+  "name": "Diversity",
+  "icon": 49852,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcp",
+  "name": "DLS",
+  "icon": 49943,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzl",
+  "name": "Doctoralia",
+  "icon": 62782,
+  "cat": "Other services"
+ },
+ {
+  "code": "blr",
+  "name": "DocuSign",
+  "icon": 58116,
+  "cat": "Other services"
+ },
+ {
+  "code": "brf",
+  "name": "Dolap",
+  "icon": 58165,
+  "cat": "Other services"
+ },
+ {
+  "code": "dz",
+  "name": "Dominos Pizza",
+  "icon": 12168,
+  "cat": "Food"
+ },
+ {
+  "code": "agv",
+  "name": "DoneDeal",
+  "icon": 49534,
+  "cat": "Other services"
+ },
+ {
+  "code": "ac",
+  "name": "Doordash",
+  "icon": 12196,
+  "cat": "Food"
+ },
+ {
+  "code": "aqv",
+  "name": "Doorverse",
+  "icon": 49819,
+  "cat": "Other services"
+ },
+ {
+  "code": "bx",
+  "name": "Dosi",
+  "icon": 49980,
+  "cat": "Other services"
+ },
+ {
+  "code": "sv",
+  "name": "Dostavista",
+  "icon": 49389,
+  "cat": "Other services"
+ },
+ {
+  "code": "qhb",
+  "name": "Dot and Key",
+  "icon": 69594,
+  "cat": "Other services"
+ },
+ {
+  "code": "ddy",
+  "name": "Dotandkey",
+  "icon": 69562,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfr",
+  "name": "Dott",
+  "icon": 49276,
+  "cat": "Other services"
+ },
+ {
+  "code": "ak",
+  "name": "Douyu",
+  "icon": 316,
+  "cat": "Social media"
+ },
+ {
+  "code": "ve",
+  "name": "Dream11",
+  "icon": 12547,
+  "cat": "Betting"
+ },
+ {
+  "code": "byy",
+  "name": "Dreamcash",
+  "icon": 61596,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "drm",
+  "name": "DreamMoney",
+  "icon": 62079,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "agr",
+  "name": "Driffle",
+  "icon": 49868,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxc",
+  "name": "DRIVE2",
+  "icon": 59397,
+  "cat": "Other services"
+ },
+ {
+  "code": "dbz",
+  "name": "Drivebison",
+  "icon": 0,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbb",
+  "name": "Dscout",
+  "icon": 49750,
+  "cat": "Other services"
+ },
+ {
+  "code": "dub",
+  "name": "Dubaiexch",
+  "icon": 74014,
+  "cat": "Betting"
+ },
+ {
+  "code": "bjf",
+  "name": "Dubizzle",
+  "icon": 49530,
+  "cat": "Other services"
+ },
+ {
+  "code": "btr",
+  "name": "Duet",
+  "icon": 58294,
+  "cat": "Other services"
+ },
+ {
+  "code": "fi",
+  "name": "Dundle",
+  "icon": 12155,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "awd",
+  "name": "Dunhill",
+  "icon": 49335,
+  "cat": "Other services"
+ },
+ {
+  "code": "uzo",
+  "name": "Dunzo",
+  "icon": 60067,
+  "cat": "Other services"
+ },
+ {
+  "code": "dtc",
+  "name": "Dutch Bros",
+  "icon": 58930,
+  "cat": "Other services"
+ },
+ {
+  "code": "byk",
+  "name": "Dynata e-Rewards",
+  "icon": 60836,
+  "cat": "Other services"
+ },
+ {
+  "code": "le",
+  "name": "E bike Gewinnspiel",
+  "icon": 49951,
+  "cat": "Other services"
+ },
+ {
+  "code": "ava",
+  "name": "e-CNY",
+  "icon": 49872,
+  "cat": "Other services"
+ },
+ {
+  "code": "arj",
+  "name": "e2zSTORE",
+  "icon": 49740,
+  "cat": "The shops"
+ },
+ {
+  "code": "ayw",
+  "name": "E4B",
+  "icon": 50176,
+  "cat": "Other services"
+ },
+ {
+  "code": "adl",
+  "name": "EarnEasy",
+  "icon": 15714,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "akj",
+  "name": "Easycash",
+  "icon": 49200,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bqd",
+  "name": "EasyPark",
+  "icon": 58340,
+  "cat": "Other services"
+ },
+ {
+  "code": "dh",
+  "name": "eBay",
+  "icon": 71627,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "cbi",
+  "name": "EBpay",
+  "icon": 63665,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "eca",
+  "name": "eCall",
+  "icon": 74125,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bbs",
+  "name": "Ecoplatform",
+  "icon": 49830,
+  "cat": "Other services"
+ },
+ {
+  "code": "anu",
+  "name": "Edurators",
+  "icon": 50264,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqw",
+  "name": "Edvantum",
+  "icon": 49732,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgu",
+  "name": "EffLink",
+  "icon": 50064,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzw",
+  "name": "Efi",
+  "icon": 62798,
+  "cat": "Other services"
+ },
+ {
+  "code": "te",
+  "name": "eFood",
+  "icon": 49192,
+  "cat": "Food"
+ },
+ {
+  "code": "brh",
+  "name": "Efsane",
+  "icon": 58431,
+  "cat": "Other services"
+ },
+ {
+  "code": "bot",
+  "name": "EGS",
+  "icon": 58152,
+  "cat": "Other services"
+ },
+ {
+  "code": "tbsh",
+  "name": "Ele.me",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjk",
+  "name": "ElectroPay",
+  "icon": 49380,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "cam",
+  "name": "Eleme 饿了么",
+  "icon": 63104,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvc",
+  "name": "ELEV8",
+  "icon": 58249,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzz",
+  "name": "Elite Competitions",
+  "icon": 62800,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfg",
+  "name": "EMAG",
+  "icon": 49185,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmv",
+  "name": "Emma AXA Mandiri",
+  "icon": 58263,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmg",
+  "name": "Emoney",
+  "icon": 58258,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bzr",
+  "name": "EMOS",
+  "icon": 62781,
+  "cat": "Other services"
+ },
+ {
+  "code": "uf",
+  "name": "Eneba",
+  "icon": 49225,
+  "cat": "Other services"
+ },
+ {
+  "code": "eni",
+  "name": "Enilive",
+  "icon": 63216,
+  "cat": "Other services"
+ },
+ {
+  "code": "arf",
+  "name": "Enjoei",
+  "icon": 49529,
+  "cat": "Other services"
+ },
+ {
+  "code": "ntry",
+  "name": "EntryGo",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwh",
+  "name": "EOS RED 靈境殺戮",
+  "icon": 58246,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbl",
+  "name": "Epharma",
+  "icon": 63658,
+  "cat": "Other services"
+ },
+ {
+  "code": "blm",
+  "name": "Epic Games",
+  "icon": 58331,
+  "cat": "Games"
+ },
+ {
+  "code": "cau",
+  "name": "Ero Me",
+  "icon": 63183,
+  "cat": "Other services"
+ },
+ {
+  "code": "ah",
+  "name": "EscapeFromTarkov",
+  "icon": 15117,
+  "cat": "Games"
+ },
+ {
+  "code": "bcj",
+  "name": "Escort Advisor",
+  "icon": 49640,
+  "cat": "Other services"
+ },
+ {
+  "code": "azw",
+  "name": "Espresso House",
+  "icon": 49619,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcr",
+  "name": "ESX",
+  "icon": 49803,
+  "cat": "Other services"
+ },
+ {
+  "code": "apb",
+  "name": "eToro",
+  "icon": 49256,
+  "cat": "Other services"
+ },
+ {
+  "code": "alq",
+  "name": "Etsy",
+  "icon": 49402,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "ahm",
+  "name": "Eureka",
+  "icon": 49629,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhz",
+  "name": "Eurobet",
+  "icon": 49986,
+  "cat": "Betting"
+ },
+ {
+  "code": "axq",
+  "name": "Eventbrite",
+  "icon": 49789,
+  "cat": "Other services"
+ },
+ {
+  "code": "yj",
+  "name": "eWallet",
+  "icon": 49395,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ba",
+  "name": "Expressmoney",
+  "icon": 49690,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "kr",
+  "name": "Eyecon",
+  "icon": 50042,
+  "cat": "Other services"
+ },
+ {
+  "code": "esz",
+  "name": "Ez777",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "db",
+  "name": "Ezbuy",
+  "icon": 49987,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgb",
+  "name": "EZMatch",
+  "icon": 49483,
+  "cat": "Dating"
+ },
+ {
+  "code": "rm",
+  "name": "Faberlic",
+  "icon": 49356,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbq",
+  "name": "FABLO",
+  "icon": 63916,
+  "cat": "Other services"
+ },
+ {
+  "code": "qz",
+  "name": "Faceit",
+  "icon": 12055,
+  "cat": "Games"
+ },
+ {
+  "code": "alc",
+  "name": "Facily",
+  "icon": 49412,
+  "cat": "Other services"
+ },
+ {
+  "code": "cct",
+  "name": "Factory",
+  "icon": 64417,
+  "cat": "Other services"
+ },
+ {
+  "code": "asl",
+  "name": "Familhao",
+  "icon": 49975,
+  "cat": "Other services"
+ },
+ {
+  "code": "axo",
+  "name": "Fanatics Live",
+  "icon": 50228,
+  "cat": "Other services"
+ },
+ {
+  "code": "fan",
+  "name": "FanCode",
+  "icon": 16392,
+  "cat": "Other services"
+ },
+ {
+  "code": "fns6",
+  "name": "FANS",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzp",
+  "name": "Farmatodo",
+  "icon": 62780,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsb",
+  "name": "Fasset",
+  "icon": 58189,
+  "cat": "Other services"
+ },
+ {
+  "code": "any",
+  "name": "FastEarn",
+  "icon": 50128,
+  "cat": "Other services"
+ },
+ {
+  "code": "mr",
+  "name": "Fastmail",
+  "icon": 49636,
+  "cat": "Other services"
+ },
+ {
+  "code": "axn",
+  "name": "FastMoss",
+  "icon": 49137,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbw",
+  "name": "FastPari",
+  "icon": 64084,
+  "cat": "Other services"
+ },
+ {
+  "code": "faw",
+  "name": "Fastwin",
+  "icon": 18398,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbk",
+  "name": "Fastwork",
+  "icon": 63657,
+  "cat": "Other services"
+ },
+ {
+  "code": "bun",
+  "name": "Fat Llama",
+  "icon": 58272,
+  "cat": "Other services"
+ },
+ {
+  "code": "ats",
+  "name": "Fave",
+  "icon": 49433,
+  "cat": "Other services"
+ },
+ {
+  "code": "bla",
+  "name": "FDJ ParionsSport",
+  "icon": 58289,
+  "cat": "Other services"
+ },
+ {
+  "code": "fed",
+  "name": "FedEx",
+  "icon": 69633,
+  "cat": "Other services"
+ },
+ {
+  "code": "akd",
+  "name": "Feels",
+  "icon": 49319,
+  "cat": "Other services"
+ },
+ {
+  "code": "ait",
+  "name": "FeetFinder",
+  "icon": 49779,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwd",
+  "name": "Fetch",
+  "icon": 58446,
+  "cat": "Other services"
+ },
+ {
+  "code": "fet",
+  "name": "Fetlife",
+  "icon": 69651,
+  "cat": "Other services"
+ },
+ {
+  "code": "bet",
+  "name": "Fibank",
+  "icon": 49562,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "azt",
+  "name": "Fidelity Investments",
+  "icon": 49842,
+  "cat": "Other services"
+ },
+ {
+  "code": "bau",
+  "name": "FieldStar",
+  "icon": 49591,
+  "cat": "Other services"
+ },
+ {
+  "code": "axj",
+  "name": "FIFGROUP MOBILE CUSTOMER",
+  "icon": 49524,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbk",
+  "name": "FilipinoCupid",
+  "icon": 49194,
+  "cat": "Other services"
+ },
+ {
+  "code": "stu",
+  "name": "FILO STUDENT",
+  "icon": 74173,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdj",
+  "name": "Findo",
+  "icon": 50224,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxl",
+  "name": "Findom",
+  "icon": 59502,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfh",
+  "name": "Finom",
+  "icon": 49870,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfw",
+  "name": "Finya",
+  "icon": 49204,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzs",
+  "name": "Finzmo",
+  "icon": 62803,
+  "cat": "Other services"
+ },
+ {
+  "code": "aim",
+  "name": "Firebase",
+  "icon": 49527,
+  "cat": "Other services"
+ },
+ {
+  "code": "qbk",
+  "name": "First Games",
+  "icon": 70324,
+  "cat": "Games"
+ },
+ {
+  "code": "adx",
+  "name": "FirstCry",
+  "icon": 49637,
+  "cat": "Other services"
+ },
+ {
+  "code": "adm",
+  "name": "FitCredit",
+  "icon": 49993,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aig",
+  "name": "Five Surveys",
+  "icon": 49177,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbf",
+  "name": "Fivebet",
+  "icon": 63666,
+  "cat": "Betting"
+ },
+ {
+  "code": "cn",
+  "name": "Fiverr",
+  "icon": 71638,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpl",
+  "name": "Flaming",
+  "icon": 58448,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahy",
+  "name": "Fliff",
+  "icon": 49622,
+  "cat": "Other services"
+ },
+ {
+  "code": "tv",
+  "name": "Flink",
+  "icon": 49357,
+  "cat": "Other services"
+ },
+ {
+  "code": "aew",
+  "name": "Flip",
+  "icon": 49513,
+  "cat": "Other services"
+ },
+ {
+  "code": "xt",
+  "name": "Flipkard",
+  "icon": 71586,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bir",
+  "name": "FloatMe",
+  "icon": 50244,
+  "cat": "Other services"
+ },
+ {
+  "code": "flo",
+  "name": "Flot",
+  "icon": 70410,
+  "cat": "Other services"
+ },
+ {
+  "code": "iy",
+  "name": "FoodHub",
+  "icon": 49567,
+  "cat": "Food"
+ },
+ {
+  "code": "abe",
+  "name": "Foodora",
+  "icon": 49214,
+  "cat": "Food"
+ },
+ {
+  "code": "nz",
+  "name": "Foodpanda",
+  "icon": 313,
+  "cat": "Food"
+ },
+ {
+  "code": "kw",
+  "name": "Foody",
+  "icon": 50149,
+  "cat": "Food"
+ },
+ {
+  "code": "bke",
+  "name": "FOOTDISTRICT",
+  "icon": 49667,
+  "cat": "Other services"
+ },
+ {
+  "code": "gu",
+  "name": "Fora",
+  "icon": 49512,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvp",
+  "name": "Forte",
+  "icon": 58281,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnq",
+  "name": "Fortuna",
+  "icon": 58210,
+  "cat": "Other services"
+ },
+ {
+  "code": "xg",
+  "name": "FortunaSK",
+  "icon": 49734,
+  "cat": "Other services"
+ },
+ {
+  "code": "amc",
+  "name": "Fortune Slots",
+  "icon": 49826,
+  "cat": "Betting"
+ },
+ {
+  "code": "rk",
+  "name": "Fotka",
+  "icon": 49266,
+  "cat": "Other services"
+ },
+ {
+  "code": "kq",
+  "name": "FotoCasa",
+  "icon": 49928,
+  "cat": "Other services"
+ },
+ {
+  "code": "blb",
+  "name": "Foundit",
+  "icon": 58235,
+  "cat": "Other services"
+ },
+ {
+  "code": "wz",
+  "name": "FoxFord",
+  "icon": 49950,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbw",
+  "name": "Foxy",
+  "icon": 50304,
+  "cat": "Other services"
+ },
+ {
+  "code": "bog",
+  "name": "France Mobilities",
+  "icon": 58163,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdl",
+  "name": "Frankly",
+  "icon": 50207,
+  "cat": "Other services"
+ },
+ {
+  "code": "kg",
+  "name": "FreeChargeApp",
+  "icon": 15516,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bgw",
+  "name": "Freedom24",
+  "icon": 49960,
+  "cat": "Other services"
+ },
+ {
+  "code": "gq",
+  "name": "Freelancer",
+  "icon": 49229,
+  "cat": "Other services"
+ },
+ {
+  "code": "zb",
+  "name": "FreeNow",
+  "icon": 49526,
+  "cat": "Other services"
+ },
+ {
+  "code": "nj",
+  "name": "FreshKarta",
+  "icon": 49557,
+  "cat": "Other services"
+ },
+ {
+  "code": "amq",
+  "name": "FRESHOOS",
+  "icon": 50036,
+  "cat": "Other services"
+ },
+ {
+  "code": "aty",
+  "name": "FRND",
+  "icon": 49866,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkq",
+  "name": "FT Cabs",
+  "icon": 58420,
+  "cat": "Taxi"
+ },
+ {
+  "code": "brz",
+  "name": "FuelCycle",
+  "icon": 58216,
+  "cat": "Other services"
+ },
+ {
+  "code": "ful",
+  "name": "FullEnrich",
+  "icon": 73880,
+  "cat": "Other services"
+ },
+ {
+  "code": "funn",
+  "name": "FunCrash",
+  "icon": 73286,
+  "cat": "Other services"
+ },
+ {
+  "code": "fnn6",
+  "name": "FunOne",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ng",
+  "name": "Funpay",
+  "icon": 15246,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "aih",
+  "name": "Fups",
+  "icon": 49729,
+  "cat": "Other services"
+ },
+ {
+  "code": "fsy6",
+  "name": "FusiYa",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "od",
+  "name": "FWDMAX",
+  "icon": 50073,
+  "cat": "Other services"
+ },
+ {
+  "code": "aja",
+  "name": "G2A",
+  "icon": 49723,
+  "cat": "Other services"
+ },
+ {
+  "code": "bk",
+  "name": "G2G",
+  "icon": 49518,
+  "cat": "Other services"
+ },
+ {
+  "code": "avn",
+  "name": "G42",
+  "icon": 50038,
+  "cat": "Other services"
+ },
+ {
+  "code": "ou",
+  "name": "Gabi",
+  "icon": 50154,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahf",
+  "name": "GAIL`s Bakery",
+  "icon": 49737,
+  "cat": "Other services"
+ },
+ {
+  "code": "xe",
+  "name": "GalaxyChat",
+  "icon": 49339,
+  "cat": "Messengers"
+ },
+ {
+  "code": "gal",
+  "name": "Galaxyticketing",
+  "icon": 65139,
+  "cat": "Other services"
+ },
+ {
+  "code": "cal",
+  "name": "Game Zone",
+  "icon": 63106,
+  "cat": "Games"
+ },
+ {
+  "code": "wn",
+  "name": "GameArena",
+  "icon": 49919,
+  "cat": "Games"
+ },
+ {
+  "code": "ges",
+  "name": "GameES",
+  "icon": 74176,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "pa",
+  "name": "Gamekit",
+  "icon": 49603,
+  "cat": "Games"
+ },
+ {
+  "code": "ed",
+  "name": "Gamer",
+  "icon": 49620,
+  "cat": "Games"
+ },
+ {
+  "code": "afx",
+  "name": "Gamesofa",
+  "icon": 50089,
+  "cat": "Games"
+ },
+ {
+  "code": "gmvn",
+  "name": "Gamevn3",
+  "icon": 46917,
+  "cat": "Games"
+ },
+ {
+  "code": "gmz",
+  "name": "Gamezy",
+  "icon": 14897,
+  "cat": "Games"
+ },
+ {
+  "code": "arg",
+  "name": "Gappx",
+  "icon": 50248,
+  "cat": "Other services"
+ },
+ {
+  "code": "bri",
+  "name": "Gardrops",
+  "icon": 58267,
+  "cat": "Other services"
+ },
+ {
+  "code": "ank",
+  "name": "Garena",
+  "icon": 49360,
+  "cat": "Games"
+ },
+ {
+  "code": "ayh",
+  "name": "GB Wallet",
+  "icon": 50012,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bc",
+  "name": "GCash",
+  "icon": 49153,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aow",
+  "name": "Geekay",
+  "icon": 49488,
+  "cat": "Other services"
+ },
+ {
+  "code": "anj",
+  "name": "Gemini",
+  "icon": 49494,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajm",
+  "name": "Gener8",
+  "icon": 49573,
+  "cat": "Other services"
+ },
+ {
+  "code": "bay",
+  "name": "Genome",
+  "icon": 49511,
+  "cat": "Other services"
+ },
+ {
+  "code": "bod",
+  "name": "Genspark",
+  "icon": 58200,
+  "cat": "Other services"
+ },
+ {
+  "code": "gen",
+  "name": "Gentari",
+  "icon": 73000,
+  "cat": "Other services"
+ },
+ {
+  "code": "get",
+  "name": "GET GET",
+  "icon": 74114,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "ate",
+  "name": "GETAWARD",
+  "icon": 49661,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_gc",
+  "name": "Getcontact",
+  "icon": 7088,
+  "cat": "Other services"
+ },
+ {
+  "code": "ghe",
+  "name": "GetHoldings",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "ul",
+  "name": "Getir",
+  "icon": 310,
+  "cat": "Food"
+ },
+ {
+  "code": "cz",
+  "name": "Getmega",
+  "icon": 50288,
+  "cat": "Other services"
+ },
+ {
+  "code": "agh",
+  "name": "Getnet",
+  "icon": 50037,
+  "cat": "Other services"
+ },
+ {
+  "code": "aiu",
+  "name": "GetNinjas",
+  "icon": 49556,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajs",
+  "name": "GetPlus",
+  "icon": 49535,
+  "cat": "Other services"
+ },
+ {
+  "code": "ala",
+  "name": "GetResponse",
+  "icon": 50028,
+  "cat": "Other services"
+ },
+ {
+  "code": "avz",
+  "name": "Getsbet",
+  "icon": 49260,
+  "cat": "Betting"
+ },
+ {
+  "code": "arn",
+  "name": "GFK",
+  "icon": 49722,
+  "cat": "Other services"
+ },
+ {
+  "code": "qe",
+  "name": "GG",
+  "icon": 49790,
+  "cat": "Other services"
+ },
+ {
+  "code": "nn",
+  "name": "Giftcloud",
+  "icon": 49757,
+  "cat": "Other services"
+ },
+ {
+  "code": "caw",
+  "name": "GinjaBet",
+  "icon": 63208,
+  "cat": "Betting"
+ },
+ {
+  "code": "jd",
+  "name": "GiraBank",
+  "icon": 49788,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "cbx",
+  "name": "GitLab",
+  "icon": 64081,
+  "cat": "Other services"
+ },
+ {
+  "code": "nk",
+  "name": "Gittigidiyor",
+  "icon": 50270,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvg",
+  "name": "Gizbo",
+  "icon": 58253,
+  "cat": "Other services"
+ },
+ {
+  "code": "amu",
+  "name": "Glassbox",
+  "icon": 49555,
+  "cat": "Other services"
+ },
+ {
+  "code": "beg",
+  "name": "Global Cash",
+  "icon": 49628,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "iz",
+  "name": "Global24",
+  "icon": 49941,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjg",
+  "name": "GlobalNet",
+  "icon": 50135,
+  "cat": "Other services"
+ },
+ {
+  "code": "gl",
+  "name": "GlobalTel",
+  "icon": 50237,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvn",
+  "name": "Globo",
+  "icon": 58458,
+  "cat": "Other services"
+ },
+ {
+  "code": "hm",
+  "name": "Globus",
+  "icon": 49930,
+  "cat": "Other services"
+ },
+ {
+  "code": "ae",
+  "name": "Glovo",
+  "icon": 15112,
+  "cat": "Food"
+ },
+ {
+  "code": "mq",
+  "name": "GMNG",
+  "icon": 49895,
+  "cat": "Other services"
+ },
+ {
+  "code": "abk",
+  "name": "GMX",
+  "icon": 49152,
+  "cat": "Other services"
+ },
+ {
+  "code": "gnc",
+  "name": "GNC",
+  "icon": 69241,
+  "cat": "Other services"
+ },
+ {
+  "code": "axt",
+  "name": "GNJOY",
+  "icon": 50067,
+  "cat": "Other services"
+ },
+ {
+  "code": "g68f",
+  "name": "GO",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ggms",
+  "name": "Goa games",
+  "icon": 70324,
+  "cat": "Games"
+ },
+ {
+  "code": "ads",
+  "name": "GoChat",
+  "icon": 14778,
+  "cat": "Messengers"
+ },
+ {
+  "code": "ez",
+  "name": "GoerliFaucet",
+  "icon": 50102,
+  "cat": "Other services"
+ },
+ {
+  "code": "rum",
+  "name": "GoGoRummy",
+  "icon": 73838,
+  "cat": "Betting"
+ },
+ {
+  "code": "gg",
+  "name": "GoGym",
+  "icon": 7169,
+  "cat": "Other services"
+ },
+ {
+  "code": "goi",
+  "name": "Goibibo",
+  "icon": 69933,
+  "cat": "Other services"
+ },
+ {
+  "code": "ni",
+  "name": "Gojek",
+  "icon": 648,
+  "cat": "Taxi"
+ },
+ {
+  "code": "aqp",
+  "name": "Golden Plus GP",
+  "icon": 49932,
+  "cat": "Other services"
+ },
+ {
+  "code": "qiv",
+  "name": "Goldsbet",
+  "icon": 70324,
+  "cat": "Betting"
+ },
+ {
+  "code": "aky",
+  "name": "GOMOFY",
+  "icon": 50138,
+  "cat": "Other services"
+ },
+ {
+  "code": "caj",
+  "name": "GoMoney",
+  "icon": 63107,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bfj",
+  "name": "Good Morning Global",
+  "icon": 50230,
+  "cat": "Other services"
+ },
+ {
+  "code": "ght",
+  "name": "Google Chat",
+  "icon": 61903,
+  "cat": "Messengers"
+ },
+ {
+  "code": "gmsg",
+  "name": "Google Messenger",
+  "icon": 58934,
+  "cat": "Messengers"
+ },
+ {
+  "code": "gpy",
+  "name": "Google Pay",
+  "icon": 62332,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "rcs",
+  "name": "Google RCS",
+  "icon": 61826,
+  "cat": "Messengers"
+ },
+ {
+  "code": "ggls",
+  "name": "Google send",
+  "icon": 46917,
+  "cat": "Messengers"
+ },
+ {
+  "code": "gf",
+  "name": "GoogleVoice",
+  "icon": 4563,
+  "cat": "Messengers"
+ },
+ {
+  "code": "aya",
+  "name": "Gopay",
+  "icon": 49515,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "gop",
+  "name": "Goplay",
+  "icon": 74007,
+  "cat": "Betting"
+ },
+ {
+  "code": "ajn",
+  "name": "Gopuff",
+  "icon": 49451,
+  "cat": "Other services"
+ },
+ {
+  "code": "got",
+  "name": "goSTOPS",
+  "icon": 63408,
+  "cat": "Other services"
+ },
+ {
+  "code": "qkz",
+  "name": "Govinda365",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "jg",
+  "name": "Grab",
+  "icon": 15901,
+  "cat": "Taxi"
+ },
+ {
+  "code": "gps",
+  "name": "GrabPoints",
+  "icon": 64563,
+  "cat": "Other services"
+ },
+ {
+  "code": "agd",
+  "name": "Grailed",
+  "icon": 49307,
+  "cat": "Other services"
+ },
+ {
+  "code": "gra",
+  "name": "Grammarly",
+  "icon": 69624,
+  "cat": "Other services"
+ },
+ {
+  "code": "pas",
+  "name": "Grandpashabet",
+  "icon": 73900,
+  "cat": "Betting"
+ },
+ {
+  "code": "bfp",
+  "name": "GrapeData",
+  "icon": 49942,
+  "cat": "Other services"
+ },
+ {
+  "code": "avw",
+  "name": "Great Rewards",
+  "icon": 50261,
+  "cat": "Other services"
+ },
+ {
+  "code": "awo",
+  "name": "GreatDay SunFish",
+  "icon": 50001,
+  "cat": "Other services"
+ },
+ {
+  "code": "gre",
+  "name": "Green SM",
+  "icon": 74150,
+  "cat": "Taxi"
+ },
+ {
+  "code": "als",
+  "name": "Greggs",
+  "icon": 49205,
+  "cat": "Other services"
+ },
+ {
+  "code": "acn",
+  "name": "Gringo",
+  "icon": 49287,
+  "cat": "Other services"
+ },
+ {
+  "code": "awm",
+  "name": "Grosenia",
+  "icon": 50284,
+  "cat": "Other services"
+ },
+ {
+  "code": "xs",
+  "name": "GroupMe",
+  "icon": 651,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bxi",
+  "name": "Grupo Madero",
+  "icon": 59508,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgd",
+  "name": "GS World",
+  "icon": 49967,
+  "cat": "Other services"
+ },
+ {
+  "code": "alb",
+  "name": "Guiche Web",
+  "icon": 50029,
+  "cat": "Other services"
+ },
+ {
+  "code": "ber",
+  "name": "Gumtree",
+  "icon": 49379,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bwl",
+  "name": "Guthabende",
+  "icon": 58978,
+  "cat": "Other services"
+ },
+ {
+  "code": "guv",
+  "name": "Guvi",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aof",
+  "name": "Guzman y Gomez",
+  "icon": 49169,
+  "cat": "Other services"
+ },
+ {
+  "code": "gvrd",
+  "name": "GV RIDE",
+  "icon": 46917,
+  "cat": "Taxi"
+ },
+ {
+  "code": "gya",
+  "name": "GyanTV",
+  "icon": 73694,
+  "cat": "Other services"
+ },
+ {
+  "code": "gh",
+  "name": "GyFTR",
+  "icon": 50123,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvf",
+  "name": "GymPlius",
+  "icon": 58451,
+  "cat": "Other services"
+ },
+ {
+  "code": "asa",
+  "name": "Habby",
+  "icon": 50234,
+  "cat": "Other services"
+ },
+ {
+  "code": "bid",
+  "name": "Hablax",
+  "icon": 49706,
+  "cat": "Other services"
+ },
+ {
+  "code": "haq",
+  "name": "Hacoo",
+  "icon": 68233,
+  "cat": "Other services"
+ },
+ {
+  "code": "hll",
+  "name": "Hamaramall",
+  "icon": 65789,
+  "cat": "Other services"
+ },
+ {
+  "code": "rp",
+  "name": "Hamrahaval",
+  "icon": 50013,
+  "cat": "Other services"
+ },
+ {
+  "code": "sj",
+  "name": "HandyPick",
+  "icon": 49678,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahp",
+  "name": "Handyticket",
+  "icon": 49713,
+  "cat": "Other services"
+ },
+ {
+  "code": "bik",
+  "name": "Hanwha Life",
+  "icon": 49415,
+  "cat": "Other services"
+ },
+ {
+  "code": "aks",
+  "name": "Hanya",
+  "icon": 49828,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzt",
+  "name": "Hapi",
+  "icon": 62796,
+  "cat": "Other services"
+ },
+ {
+  "code": "df",
+  "name": "Happn",
+  "icon": 12174,
+  "cat": "Dating"
+ },
+ {
+  "code": "bap",
+  "name": "HAPPYBET",
+  "icon": 50305,
+  "cat": "Betting"
+ },
+ {
+  "code": "sp",
+  "name": "HappyFresh",
+  "icon": 49660,
+  "cat": "Other services"
+ },
+ {
+  "code": "hpnc",
+  "name": "Happypancake",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "au",
+  "name": "Haraj",
+  "icon": 49894,
+  "cat": "Other services"
+ },
+ {
+  "code": "agp",
+  "name": "Hdfcbank",
+  "icon": 50068,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "blk",
+  "name": "HDI",
+  "icon": 58196,
+  "cat": "Other services"
+ },
+ {
+  "code": "bks",
+  "name": "Heetch",
+  "icon": 58155,
+  "cat": "Other services"
+ },
+ {
+  "code": "gx",
+  "name": "Hepsiburadacom",
+  "icon": 66542,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "en",
+  "name": "Hermes",
+  "icon": 4153,
+  "cat": "The shops"
+ },
+ {
+  "code": "bmm",
+  "name": "Hey Cash",
+  "icon": 58168,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "vx",
+  "name": "HeyBox",
+  "icon": 49569,
+  "cat": "Other services"
+ },
+ {
+  "code": "hep",
+  "name": "HeyPiggy",
+  "icon": 64557,
+  "cat": "Other services"
+ },
+ {
+  "code": "hfm",
+  "name": "HFM",
+  "icon": 65794,
+  "cat": "Other services"
+ },
+ {
+  "code": "aoa",
+  "name": "Hicard",
+  "icon": 49514,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "auj",
+  "name": "High 5 Casino",
+  "icon": 49774,
+  "cat": "Betting"
+ },
+ {
+  "code": "bhy",
+  "name": "HighLevel",
+  "icon": 49602,
+  "cat": "Other services"
+ },
+ {
+  "code": "rt",
+  "name": "Hily",
+  "icon": 49285,
+  "cat": "Other services"
+ },
+ {
+  "code": "axf",
+  "name": "Hinance",
+  "icon": 49576,
+  "cat": "Other services"
+ },
+ {
+  "code": "hrt",
+  "name": "Hirect",
+  "icon": 60038,
+  "cat": "Other services"
+ },
+ {
+  "code": "hir",
+  "name": "HiRummy",
+  "icon": 64549,
+  "cat": "Betting"
+ },
+ {
+  "code": "anq",
+  "name": "Hitnspin",
+  "icon": 49971,
+  "cat": "Other services"
+ },
+ {
+  "code": "hkcs",
+  "name": "Hkcsl",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "hke",
+  "name": "HKTICKETING",
+  "icon": 65141,
+  "cat": "Other services"
+ },
+ {
+  "code": "bne",
+  "name": "HM",
+  "icon": 58233,
+  "cat": "Other services"
+ },
+ {
+  "code": "aea",
+  "name": "Hobi games",
+  "icon": 15536,
+  "cat": "Games"
+ },
+ {
+  "code": "asd",
+  "name": "Hongguo 红果短剧",
+  "icon": 50106,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpw",
+  "name": "HONOR",
+  "icon": 58408,
+  "cat": "Other services"
+ },
+ {
+  "code": "avg",
+  "name": "Hooked Protocol",
+  "icon": 49679,
+  "cat": "Other services"
+ },
+ {
+  "code": "ru",
+  "name": "HOP",
+  "icon": 50214,
+  "cat": "Other services"
+ },
+ {
+  "code": "hpg6",
+  "name": "HOPEGOO",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "jl",
+  "name": "Hopi",
+  "icon": 307,
+  "cat": "Other services"
+ },
+ {
+  "code": "byx",
+  "name": "Hopp",
+  "icon": 61594,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnb",
+  "name": "Hopper",
+  "icon": 58244,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbd",
+  "name": "Hornet",
+  "icon": 63656,
+  "cat": "Dating"
+ },
+ {
+  "code": "bwa",
+  "name": "Hostinger",
+  "icon": 58166,
+  "cat": "Other services"
+ },
+ {
+  "code": "bix",
+  "name": "Hotel101",
+  "icon": 50090,
+  "cat": "Other services"
+ },
+ {
+  "code": "gi",
+  "name": "Hotline",
+  "icon": 49405,
+  "cat": "Other services"
+ },
+ {
+  "code": "zaz",
+  "name": "HowZat",
+  "icon": 14912,
+  "cat": "Betting"
+ },
+ {
+  "code": "boe",
+  "name": "HP Gas Vitran",
+  "icon": 58385,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_hp",
+  "name": "HP Pay",
+  "icon": 48744,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "qim",
+  "name": "HPGas",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "hphm",
+  "name": "HPH MATERIALS",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "kp",
+  "name": "HQ Trivia",
+  "icon": 304,
+  "cat": "Games"
+ },
+ {
+  "code": "buo",
+  "name": "HRBlock",
+  "icon": 58343,
+  "cat": "Other services"
+ },
+ {
+  "code": "alk",
+  "name": "HUGESoft",
+  "icon": 49604,
+  "cat": "Other services"
+ },
+ {
+  "code": "gv",
+  "name": "Humta",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayc",
+  "name": "HungerStation",
+  "icon": 49387,
+  "cat": "Other services"
+ },
+ {
+  "code": "hwc6",
+  "name": "HWC",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "hyp",
+  "name": "Hypermart",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aza",
+  "name": "Hypernet of Things",
+  "icon": 49926,
+  "cat": "Other services"
+ },
+ {
+  "code": "bux",
+  "name": "i1DA",
+  "icon": 58181,
+  "cat": "Other services"
+ },
+ {
+  "code": "ibt",
+  "name": "Ibotta",
+  "icon": 58935,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxb",
+  "name": "iCard",
+  "icon": 59398,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ico",
+  "name": "Icash",
+  "icon": 70833,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "dq",
+  "name": "IceCasino",
+  "icon": 49381,
+  "cat": "Betting"
+ },
+ {
+  "code": "bjd",
+  "name": "Iconcept",
+  "icon": 50217,
+  "cat": "Other services"
+ },
+ {
+  "code": "iq",
+  "name": "Icq",
+  "icon": 50187,
+  "cat": "Messengers"
+ },
+ {
+  "code": "cx",
+  "name": "Icrypex",
+  "icon": 49587,
+  "cat": "Other services"
+ },
+ {
+  "code": "ays",
+  "name": "ICW Connect",
+  "icon": 49945,
+  "cat": "Other services"
+ },
+ {
+  "code": "kk",
+  "name": "Idealista",
+  "icon": 49460,
+  "cat": "Other services"
+ },
+ {
+  "code": "ido",
+  "name": "Idee Opinioni",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aui",
+  "name": "IDOLCHAMP",
+  "icon": 49809,
+  "cat": "Other services"
+ },
+ {
+  "code": "pd",
+  "name": "IFood",
+  "icon": 299,
+  "cat": "Food"
+ },
+ {
+  "code": "apc",
+  "name": "iGameBUY",
+  "icon": 49328,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "byq",
+  "name": "Ikualo",
+  "icon": 60840,
+  "cat": "Other services"
+ },
+ {
+  "code": "bze",
+  "name": "iLOTBET",
+  "icon": 62339,
+  "cat": "Betting"
+ },
+ {
+  "code": "amz",
+  "name": "ImmoScout24",
+  "icon": 49313,
+  "cat": "Other services"
+ },
+ {
+  "code": "ib",
+  "name": "Immowelt",
+  "icon": 49348,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_im",
+  "name": "IMO messager",
+  "icon": 71614,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bnv",
+  "name": "IN1",
+  "icon": 58411,
+  "cat": "Other services"
+ },
+ {
+  "code": "iv",
+  "name": "Inboxlv",
+  "icon": 12108,
+  "cat": "Other services"
+ },
+ {
+  "code": "idm",
+  "name": "IncredMoney",
+  "icon": 69297,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "brk",
+  "name": "Indeed",
+  "icon": 58301,
+  "cat": "Other services"
+ },
+ {
+  "code": "apm",
+  "name": "Index",
+  "icon": 50115,
+  "cat": "Other services"
+ },
+ {
+  "code": "tp",
+  "name": "IndiaGold",
+  "icon": 49394,
+  "cat": "Other services"
+ },
+ {
+  "code": "bac",
+  "name": "IndiaMart",
+  "icon": 49795,
+  "cat": "Other services"
+ },
+ {
+  "code": "fg",
+  "name": "IndianOil",
+  "icon": 49497,
+  "cat": "Other services"
+ },
+ {
+  "code": "zq",
+  "name": "IndiaPlays",
+  "icon": 50263,
+  "cat": "Other services"
+ },
+ {
+  "code": "qgh",
+  "name": "Indiapolls",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bps",
+  "name": "Indiluck",
+  "icon": 58342,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajw",
+  "name": "INDOBA",
+  "icon": 50111,
+  "cat": "Other services"
+ },
+ {
+  "code": "ju",
+  "name": "Indomaret",
+  "icon": 11324,
+  "cat": "The shops"
+ },
+ {
+  "code": "blt",
+  "name": "INDOPAKET",
+  "icon": 58121,
+  "cat": "Other services"
+ },
+ {
+  "code": "rl",
+  "name": "inDriver",
+  "icon": 12043,
+  "cat": "Taxi"
+ },
+ {
+  "code": "anx",
+  "name": "InfinitePay",
+  "icon": 49221,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bnc",
+  "name": "Infomaniak",
+  "icon": 58452,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqg",
+  "name": "INFORMPSKOV",
+  "icon": 58308,
+  "cat": "Other services"
+ },
+ {
+  "code": "xi",
+  "name": "InFund",
+  "icon": 49857,
+  "cat": "Other services"
+ },
+ {
+  "code": "gy",
+  "name": "Ingalaxy",
+  "icon": 7176,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkt",
+  "name": "IngramSpark",
+  "icon": 58305,
+  "cat": "Other services"
+ },
+ {
+  "code": "hy",
+  "name": "Ininal",
+  "icon": 49953,
+  "cat": "Other services"
+ },
+ {
+  "code": "vt",
+  "name": "Innomax",
+  "icon": 49922,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_ip",
+  "name": "Innopay",
+  "icon": 57927,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bhf",
+  "name": "InPost",
+  "icon": 50071,
+  "cat": "Other services"
+ },
+ {
+  "code": "aev",
+  "name": "Inshallah",
+  "icon": 50146,
+  "cat": "Other services"
+ },
+ {
+  "code": "avm",
+  "name": "Instacart",
+  "icon": 49316,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "nst",
+  "name": "Instamatch",
+  "icon": 70324,
+  "cat": "Dating"
+ },
+ {
+  "code": "bxn",
+  "name": "Intel SAP",
+  "icon": 59499,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbu",
+  "name": "InternationalCupid",
+  "icon": 49191,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqq",
+  "name": "Intersport",
+  "icon": 58209,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_inv",
+  "name": "Investro",
+  "icon": 14133,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bhd",
+  "name": "IPiu",
+  "icon": 49607,
+  "cat": "Other services"
+ },
+ {
+  "code": "ipl",
+  "name": "iPlum",
+  "icon": 69621,
+  "cat": "Other services"
+ },
+ {
+  "code": "yv",
+  "name": "IPLwin",
+  "icon": 49812,
+  "cat": "Other services"
+ },
+ {
+  "code": "agk",
+  "name": "Ipsos iSay",
+  "icon": 49183,
+  "cat": "Other services"
+ },
+ {
+  "code": "es",
+  "name": "iQIYI",
+  "icon": 12160,
+  "cat": "Other services"
+ },
+ {
+  "code": "il",
+  "name": "IQOS",
+  "icon": 12115,
+  "cat": "The shops"
+ },
+ {
+  "code": "cf",
+  "name": "Irancell",
+  "icon": 50250,
+  "cat": "Other services"
+ },
+ {
+  "code": "us",
+  "name": "IRCTC",
+  "icon": 13991,
+  "cat": "Other services"
+ },
+ {
+  "code": "btz",
+  "name": "IRWIN",
+  "icon": 58398,
+  "cat": "Other services"
+ },
+ {
+  "code": "aou",
+  "name": "IT Business Group",
+  "icon": 49578,
+  "cat": "Other services"
+ },
+ {
+  "code": "btn",
+  "name": "Itau",
+  "icon": 58256,
+  "cat": "Other services"
+ },
+ {
+  "code": "ad",
+  "name": "Iti",
+  "icon": 15889,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aby",
+  "name": "ITMS",
+  "icon": 49742,
+  "cat": "Other services"
+ },
+ {
+  "code": "bev",
+  "name": "ITN",
+  "icon": 49708,
+  "cat": "Other services"
+ },
+ {
+  "code": "boy",
+  "name": "Ixigo",
+  "icon": 70949,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxd",
+  "name": "Jackaroo",
+  "icon": 59504,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhe",
+  "name": "Jago",
+  "icon": 50058,
+  "cat": "Other services"
+ },
+ {
+  "code": "buh",
+  "name": "Jai Foods",
+  "icon": 58328,
+  "cat": "Food"
+ },
+ {
+  "code": "jwc",
+  "name": "Jalwa Games",
+  "icon": 69456,
+  "cat": "Games"
+ },
+ {
+  "code": "ea",
+  "name": "JamesDelivery",
+  "icon": 50175,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsr",
+  "name": "Janapriya",
+  "icon": 58304,
+  "cat": "Other services"
+ },
+ {
+  "code": "ado",
+  "name": "Jasper Home Fashions",
+  "icon": 49896,
+  "cat": "Other services"
+ },
+ {
+  "code": "aoq",
+  "name": "JB Hi-Fi",
+  "icon": 49878,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmw",
+  "name": "JChicken",
+  "icon": 58298,
+  "cat": "Other services"
+ },
+ {
+  "code": "jddt",
+  "name": "JD Dating (JD交友)",
+  "icon": 46917,
+  "cat": "Dating"
+ },
+ {
+  "code": "eet",
+  "name": "Jeet11",
+  "icon": 60054,
+  "cat": "Other services"
+ },
+ {
+  "code": "jee",
+  "name": "Jeetexch",
+  "icon": 60306,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjz",
+  "name": "Jeevansathi",
+  "icon": 50210,
+  "cat": "Other services"
+ },
+ {
+  "code": "azo",
+  "name": "Jegotrip",
+  "icon": 50296,
+  "cat": "Other services"
+ },
+ {
+  "code": "byg",
+  "name": "Jeton",
+  "icon": 60603,
+  "cat": "Other services"
+ },
+ {
+  "code": "jau",
+  "name": "Jiagu360",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "jln6",
+  "name": "JILINo1",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "jmty",
+  "name": "Jimoty / ジモティー",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "za",
+  "name": "Jingdong",
+  "icon": 7185,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "jii",
+  "name": "Jio",
+  "icon": 71217,
+  "cat": "Other services"
+ },
+ {
+  "code": "aay",
+  "name": "Jiomart",
+  "icon": 14879,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "buz",
+  "name": "Jitume",
+  "icon": 58262,
+  "cat": "Other services"
+ },
+ {
+  "code": "agz",
+  "name": "Jiva Petani",
+  "icon": 49653,
+  "cat": "Other services"
+ },
+ {
+  "code": "hr",
+  "name": "JKF",
+  "icon": 50124,
+  "cat": "Other services"
+ },
+ {
+  "code": "ic",
+  "name": "JoGo",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "jjj",
+  "name": "JojoBet",
+  "icon": 73909,
+  "cat": "Betting"
+ },
+ {
+  "code": "mjo",
+  "name": "Joymall",
+  "icon": 15539,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "xx",
+  "name": "Joyride",
+  "icon": 12028,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcc",
+  "name": "JULO",
+  "icon": 50193,
+  "cat": "Other services"
+ },
+ {
+  "code": "mpp",
+  "name": "Jumpp",
+  "icon": 70945,
+  "cat": "Other services"
+ },
+ {
+  "code": "jt",
+  "name": "JumpTaxi",
+  "icon": 7188,
+  "cat": "Taxi"
+ },
+ {
+  "code": "gr_jl",
+  "name": "Junglee Ludo",
+  "icon": 59172,
+  "cat": "Other services"
+ },
+ {
+  "code": "hi",
+  "name": "JungleeRummy",
+  "icon": 50241,
+  "cat": "Betting"
+ },
+ {
+  "code": "bng",
+  "name": "Jush",
+  "icon": 58375,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpz",
+  "name": "Just Eat",
+  "icon": 58391,
+  "cat": "Food"
+ },
+ {
+  "code": "pu",
+  "name": "Justdating",
+  "icon": 49155,
+  "cat": "Dating"
+ },
+ {
+  "code": "bdy",
+  "name": "Justdial",
+  "icon": 49848,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhj",
+  "name": "Jòfogàs",
+  "icon": 50192,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmf",
+  "name": "K-RITEL",
+  "icon": 58182,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwo",
+  "name": "KabanchikUA",
+  "icon": 58980,
+  "cat": "Other services"
+ },
+ {
+  "code": "abx",
+  "name": "Kaching",
+  "icon": 49224,
+  "cat": "Other services"
+ },
+ {
+  "code": "zo",
+  "name": "Kaggle",
+  "icon": 663,
+  "cat": "Other services"
+ },
+ {
+  "code": "byp",
+  "name": "Kaito",
+  "icon": 60841,
+  "cat": "Other services"
+ },
+ {
+  "code": "kt",
+  "name": "KakaoTalk",
+  "icon": 187,
+  "cat": "Messengers"
+ },
+ {
+  "code": "kal",
+  "name": "KakoLive",
+  "icon": 68014,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfd",
+  "name": "Kalodata",
+  "icon": 50285,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzc",
+  "name": "KAMI",
+  "icon": 62336,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcm",
+  "name": "KANOE",
+  "icon": 50291,
+  "cat": "Other services"
+ },
+ {
+  "code": "avu",
+  "name": "Karos",
+  "icon": 49639,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbt",
+  "name": "KashCash",
+  "icon": 63936,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bqu",
+  "name": "KasPro",
+  "icon": 58325,
+  "cat": "Other services"
+ },
+ {
+  "code": "bff",
+  "name": "Kawan Food",
+  "icon": 49952,
+  "cat": "Food"
+ },
+ {
+  "code": "jz",
+  "name": "Kaya",
+  "icon": 49684,
+  "cat": "Other services"
+ },
+ {
+  "code": "kir",
+  "name": "KazandiRio",
+  "icon": 67727,
+  "cat": "Other services"
+ },
+ {
+  "code": "awr",
+  "name": "KCEX",
+  "icon": 49510,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbb",
+  "name": "KeepCalling",
+  "icon": 63662,
+  "cat": "Other services"
+ },
+ {
+  "code": "auh",
+  "name": "KeeTa 美团",
+  "icon": 49540,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajx",
+  "name": "Kemnaker RI",
+  "icon": 49409,
+  "cat": "Other services"
+ },
+ {
+  "code": "bej",
+  "name": "KERETAKU",
+  "icon": 49762,
+  "cat": "Other services"
+ },
+ {
+  "code": "ra",
+  "name": "KeyPay",
+  "icon": 50233,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "kgn",
+  "name": "KGEN",
+  "icon": 73291,
+  "cat": "Other services"
+ },
+ {
+  "code": "adk",
+  "name": "Khatabook",
+  "icon": 49631,
+  "cat": "Other services"
+ },
+ {
+  "code": "khj",
+  "name": "Khelraja",
+  "icon": 60021,
+  "cat": "Other services"
+ },
+ {
+  "code": "kch",
+  "name": "KickCash",
+  "icon": 70324,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "asx",
+  "name": "KIMGRES",
+  "icon": 49599,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayz",
+  "name": "Kimi",
+  "icon": 50055,
+  "cat": "Other services"
+ },
+ {
+  "code": "uw",
+  "name": "Kirana",
+  "icon": 50082,
+  "cat": "Other services"
+ },
+ {
+  "code": "awl",
+  "name": "KitaBeli",
+  "icon": 49845,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvo",
+  "name": "KKP",
+  "icon": 58227,
+  "cat": "Other services"
+ },
+ {
+  "code": "api",
+  "name": "KKTIX",
+  "icon": 50221,
+  "cat": "Other services"
+ },
+ {
+  "code": "afz",
+  "name": "Klarna",
+  "icon": 49148,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "gr_dh",
+  "name": "Kleinanzeigen",
+  "icon": 12752,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "atj",
+  "name": "Klin",
+  "icon": 50044,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayi",
+  "name": "Klook",
+  "icon": 49765,
+  "cat": "Other services"
+ },
+ {
+  "code": "kly",
+  "name": "Klydo",
+  "icon": 69548,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsq",
+  "name": "KNECTT",
+  "icon": 58307,
+  "cat": "Other services"
+ },
+ {
+  "code": "kon",
+  "name": "Kodbende",
+  "icon": 73417,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnn",
+  "name": "KOHO",
+  "icon": 58172,
+  "cat": "Other services"
+ },
+ {
+  "code": "cas",
+  "name": "Koin",
+  "icon": 63185,
+  "cat": "Other services"
+ },
+ {
+  "code": "kl",
+  "name": "Kolesa.kz/Krisha.kz",
+  "icon": 14528,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "biw",
+  "name": "Kome",
+  "icon": 50255,
+  "cat": "Other services"
+ },
+ {
+  "code": "kny",
+  "name": "Konvy",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "kk69",
+  "name": "KOOK",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bha",
+  "name": "Kopi Kenangan",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "blg",
+  "name": "KOPI SUSU",
+  "icon": 58453,
+  "cat": "Other services"
+ },
+ {
+  "code": "acg",
+  "name": "KoronaPay",
+  "icon": 49537,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "pv",
+  "name": "Koshelek",
+  "icon": 49597,
+  "cat": "Other services"
+ },
+ {
+  "code": "rv",
+  "name": "Kotak811",
+  "icon": 50252,
+  "cat": "Other services"
+ },
+ {
+  "code": "kpi",
+  "name": "KPintar",
+  "icon": 74156,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqw",
+  "name": "KPN Fresh",
+  "icon": 58390,
+  "cat": "Other services"
+ },
+ {
+  "code": "azk",
+  "name": "KreditMart",
+  "icon": 49711,
+  "cat": "Other services"
+ },
+ {
+  "code": "ct",
+  "name": "KuhnyaNaRayone",
+  "icon": 49823,
+  "cat": "Other services"
+ },
+ {
+  "code": "cuf",
+  "name": "KukuFM",
+  "icon": 69591,
+  "cat": "Other services"
+ },
+ {
+  "code": "cuc",
+  "name": "KukuTV",
+  "icon": 69588,
+  "cat": "Other services"
+ },
+ {
+  "code": "ati",
+  "name": "Kullut",
+  "icon": 49973,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsx",
+  "name": "KulturPass",
+  "icon": 58315,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmo",
+  "name": "Kviku",
+  "icon": 58437,
+  "cat": "Other services"
+ },
+ {
+  "code": "vp",
+  "name": "Kwai",
+  "icon": 205,
+  "cat": "Social media"
+ },
+ {
+  "code": "aid",
+  "name": "Kwiff",
+  "icon": 49363,
+  "cat": "Other services"
+ },
+ {
+  "code": "asr",
+  "name": "LA VOZ DEL PACIENTE",
+  "icon": 50051,
+  "cat": "Other services"
+ },
+ {
+  "code": "bey",
+  "name": "La3eb",
+  "icon": 50222,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvx",
+  "name": "Lagkagehuset",
+  "icon": 58332,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbs",
+  "name": "Lalafo",
+  "icon": 63937,
+  "cat": "Other services"
+ },
+ {
+  "code": "fh",
+  "name": "Lalamove",
+  "icon": 49253,
+  "cat": "Other services"
+ },
+ {
+  "code": "aym",
+  "name": "Langit Musik",
+  "icon": 49263,
+  "cat": "Other services"
+ },
+ {
+  "code": "arb",
+  "name": "Las Vegas Casino",
+  "icon": 49294,
+  "cat": "Betting"
+ },
+ {
+  "code": "afj",
+  "name": "Laybuy",
+  "icon": 50246,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzd",
+  "name": "Laylo",
+  "icon": 62338,
+  "cat": "Other services"
+ },
+ {
+  "code": "dl",
+  "name": "Lazada",
+  "icon": 293,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bb",
+  "name": "LazyPay",
+  "icon": 49778,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "baw",
+  "name": "Leadgid",
+  "icon": 50057,
+  "cat": "Other services"
+ },
+ {
+  "code": "do",
+  "name": "Leboncoin",
+  "icon": 8893,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "brr",
+  "name": "LemFi",
+  "icon": 58117,
+  "cat": "Other services"
+ },
+ {
+  "code": "atc",
+  "name": "Lemo",
+  "icon": 50273,
+  "cat": "Other services"
+ },
+ {
+  "code": "bav",
+  "name": "LeoList",
+  "icon": 49482,
+  "cat": "Other services"
+ },
+ {
+  "code": "caf",
+  "name": "Leon Club",
+  "icon": 62836,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayg",
+  "name": "Leroy Merlin",
+  "icon": 49671,
+  "cat": "The shops"
+ },
+ {
+  "code": "brg",
+  "name": "Letgo",
+  "icon": 58416,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqk",
+  "name": "Lex",
+  "icon": 58255,
+  "cat": "Other services"
+ },
+ {
+  "code": "tz",
+  "name": "Leyka",
+  "icon": 49411,
+  "cat": "Other services"
+ },
+ {
+  "code": "apk",
+  "name": "Liberty",
+  "icon": 49961,
+  "cat": "Other services"
+ },
+ {
+  "code": "lic",
+  "name": "LIC games",
+  "icon": 17388,
+  "cat": "Games"
+ },
+ {
+  "code": "pz",
+  "name": "Lidl",
+  "icon": 49174,
+  "cat": "Other services"
+ },
+ {
+  "code": "oo",
+  "name": "LigaPro",
+  "icon": 49794,
+  "cat": "Other services"
+ },
+ {
+  "code": "aux",
+  "name": "Lightning AI",
+  "icon": 49378,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxs",
+  "name": "LikeCard",
+  "icon": 59555,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "jf",
+  "name": "Likee",
+  "icon": 12105,
+  "cat": "Social media"
+ },
+ {
+  "code": "ayn",
+  "name": "Lime",
+  "icon": 50271,
+  "cat": "Other services"
+ },
+ {
+  "code": "lnwr",
+  "name": "LINE WORKS",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbp",
+  "name": "LineBet",
+  "icon": 49988,
+  "cat": "Betting"
+ },
+ {
+  "code": "arr",
+  "name": "Linii Lybvi",
+  "icon": 49489,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgg",
+  "name": "Link",
+  "icon": 49669,
+  "cat": "Other services"
+ },
+ {
+  "code": "aka",
+  "name": "LinkAja",
+  "icon": 49521,
+  "cat": "Other services"
+ },
+ {
+  "code": "tn",
+  "name": "LinkedIN",
+  "icon": 4074,
+  "cat": "Social media"
+ },
+ {
+  "code": "ex",
+  "name": "Linode",
+  "icon": 49197,
+  "cat": "Other services"
+ },
+ {
+  "code": "alh",
+  "name": "Lion Parcel",
+  "icon": 49448,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbz",
+  "name": "LionsgatePlay",
+  "icon": 49717,
+  "cat": "Other services"
+ },
+ {
+  "code": "bak",
+  "name": "LiveCode",
+  "icon": 49652,
+  "cat": "Other services"
+ },
+ {
+  "code": "eu",
+  "name": "LiveScore",
+  "icon": 50113,
+  "cat": "Other services"
+ },
+ {
+  "code": "auy",
+  "name": "LivU",
+  "icon": 50096,
+  "cat": "Other services"
+ },
+ {
+  "code": "ll69",
+  "name": "LLAO",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "di",
+  "name": "Loanflix",
+  "icon": 49899,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "brm",
+  "name": "Locanto",
+  "icon": 58410,
+  "cat": "Other services"
+ },
+ {
+  "code": "su",
+  "name": "LOCO",
+  "icon": 49902,
+  "cat": "Other services"
+ },
+ {
+  "code": "lod",
+  "name": "Loda",
+  "icon": 18431,
+  "cat": "Other services"
+ },
+ {
+  "code": "log",
+  "name": "Long Chau",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aef",
+  "name": "Long Drive Cars",
+  "icon": 50268,
+  "cat": "Other services"
+ },
+ {
+  "code": "mk",
+  "name": "LongHu",
+  "icon": 49931,
+  "cat": "Other services"
+ },
+ {
+  "code": "akm",
+  "name": "LOTTE Mart",
+  "icon": 50206,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqe",
+  "name": "Lottomatica",
+  "icon": 58293,
+  "cat": "Betting"
+ },
+ {
+  "code": "rs",
+  "name": "Lotus",
+  "icon": 50170,
+  "cat": "Other services"
+ },
+ {
+  "code": "las",
+  "name": "LoveAndSeek",
+  "icon": 69645,
+  "cat": "Dating"
+ },
+ {
+  "code": "oj",
+  "name": "LoveRu",
+  "icon": 49301,
+  "cat": "Dating"
+ },
+ {
+  "code": "lvrn",
+  "name": "Love認証コ",
+  "icon": 46917,
+  "cat": "Dating"
+ },
+ {
+  "code": "bpc",
+  "name": "LOVOO",
+  "icon": 58177,
+  "cat": "Other services"
+ },
+ {
+  "code": "bga",
+  "name": "LPTracker",
+  "icon": 49245,
+  "cat": "Other services"
+ },
+ {
+  "code": "afg",
+  "name": "Luck",
+  "icon": 50223,
+  "cat": "Other services"
+ },
+ {
+  "code": "lckg",
+  "name": "Luckgood",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "acc",
+  "name": "LuckyLand Slots",
+  "icon": 49716,
+  "cat": "Betting"
+ },
+ {
+  "code": "qld",
+  "name": "Ludo11",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "ldps",
+  "name": "Ludoplus",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "rod",
+  "name": "Ludosupreme",
+  "icon": 14900,
+  "cat": "Other services"
+ },
+ {
+  "code": "bht",
+  "name": "Luno",
+  "icon": 49787,
+  "cat": "Other services"
+ },
+ {
+  "code": "beh",
+  "name": "LUUP",
+  "icon": 49983,
+  "cat": "Other services"
+ },
+ {
+  "code": "lxy",
+  "name": "Luxy",
+  "icon": 59046,
+  "cat": "Other services"
+ },
+ {
+  "code": "ale",
+  "name": "Lydia",
+  "icon": 50203,
+  "cat": "Other services"
+ },
+ {
+  "code": "lyf",
+  "name": "Lyft",
+  "icon": 69498,
+  "cat": "Taxi"
+ },
+ {
+  "code": "gz",
+  "name": "LYKA",
+  "icon": 12131,
+  "cat": "Other services"
+ },
+ {
+  "code": "amj",
+  "name": "M panels",
+  "icon": 50240,
+  "cat": "Other services"
+ },
+ {
+  "code": "mac",
+  "name": "Macfit",
+  "icon": 73671,
+  "cat": "Other services"
+ },
+ {
+  "code": "aen",
+  "name": "Madslots",
+  "icon": 50181,
+  "cat": "Betting"
+ },
+ {
+  "code": "afq",
+  "name": "MagaLu",
+  "icon": 50053,
+  "cat": "Other services"
+ },
+ {
+  "code": "hq",
+  "name": "Magicbricks",
+  "icon": 50199,
+  "cat": "Other services"
+ },
+ {
+  "code": "ade",
+  "name": "Magicpin",
+  "icon": 15681,
+  "cat": "Other services"
+ },
+ {
+  "code": "mah",
+  "name": "MahaGames",
+  "icon": 73841,
+  "cat": "Betting"
+ },
+ {
+  "code": "yq",
+  "name": "Mail.com",
+  "icon": 49536,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbr",
+  "name": "Mail2World",
+  "icon": 63919,
+  "cat": "Other services"
+ },
+ {
+  "code": "arl",
+  "name": "Mainvest",
+  "icon": 49898,
+  "cat": "Other services"
+ },
+ {
+  "code": "btk",
+  "name": "Mais Store",
+  "icon": 58157,
+  "cat": "The shops"
+ },
+ {
+  "code": "bzq",
+  "name": "Maitix 麦座",
+  "icon": 62784,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkp",
+  "name": "MakeMyTrip",
+  "icon": 58447,
+  "cat": "Other services"
+ },
+ {
+  "code": "blf",
+  "name": "Malabar",
+  "icon": 58389,
+  "cat": "Other services"
+ },
+ {
+  "code": "atg",
+  "name": "Mandi Bhav",
+  "icon": 49598,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccn",
+  "name": "Mang Sunwork",
+  "icon": 64421,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcq",
+  "name": "Mantan",
+  "icon": 49398,
+  "cat": "Other services"
+ },
+ {
+  "code": "mns",
+  "name": "Manus",
+  "icon": 59106,
+  "cat": "Other services"
+ },
+ {
+  "code": "oh",
+  "name": "MapleSEA",
+  "icon": 12060,
+  "cat": "Games"
+ },
+ {
+  "code": "azj",
+  "name": "MariPinjam",
+  "icon": 49846,
+  "cat": "Other services"
+ },
+ {
+  "code": "bew",
+  "name": "Mariyas Naturals",
+  "icon": 49923,
+  "cat": "Other services"
+ },
+ {
+  "code": "bic",
+  "name": "Marktde",
+  "icon": 49516,
+  "cat": "Other services"
+ },
+ {
+  "code": "agj",
+  "name": "Marktplaats",
+  "icon": 49259,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_dm",
+  "name": "Maxidom",
+  "icon": 12259,
+  "cat": "The shops"
+ },
+ {
+  "code": "ahl",
+  "name": "Maxim",
+  "icon": 49196,
+  "cat": "Taxi"
+ },
+ {
+  "code": "act",
+  "name": "Maxis",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ard",
+  "name": "Maya",
+  "icon": 49502,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "mydn",
+  "name": "Mayi",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ry",
+  "name": "McDonalds",
+  "icon": 669,
+  "cat": "Food"
+ },
+ {
+  "code": "bpq",
+  "name": "MChat",
+  "icon": 58188,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bei",
+  "name": "Measat",
+  "icon": 50166,
+  "cat": "Other services"
+ },
+ {
+  "code": "mde",
+  "name": "Media Express",
+  "icon": 16684,
+  "cat": "Other services"
+ },
+ {
+  "code": "mdw",
+  "name": "MediaWorld",
+  "icon": 63407,
+  "cat": "Other services"
+ },
+ {
+  "code": "lg",
+  "name": "MediBuddy",
+  "icon": 15678,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnw",
+  "name": "Medium",
+  "icon": 58202,
+  "cat": "Social media"
+ },
+ {
+  "code": "blp",
+  "name": "MEEFF",
+  "icon": 58129,
+  "cat": "Other services"
+ },
+ {
+  "code": "hp",
+  "name": "Meesho",
+  "icon": 19505,
+  "cat": "Other services"
+ },
+ {
+  "code": "bje",
+  "name": "Meest",
+  "icon": 50010,
+  "cat": "Other services"
+ },
+ {
+  "code": "qr",
+  "name": "MEGA",
+  "icon": 12501,
+  "cat": "Other services"
+ },
+ {
+  "code": "meg",
+  "name": "Megapari",
+  "icon": 65797,
+  "cat": "Other services"
+ },
+ {
+  "code": "agx",
+  "name": "MeiQFashion",
+  "icon": 50122,
+  "cat": "Other services"
+ },
+ {
+  "code": "agf",
+  "name": "Meitu",
+  "icon": 49702,
+  "cat": "Other services"
+ },
+ {
+  "code": "cce",
+  "name": "Melbet",
+  "icon": 64286,
+  "cat": "Betting"
+ },
+ {
+  "code": "uy",
+  "name": "Meliuz",
+  "icon": 49315,
+  "cat": "Other services"
+ },
+ {
+  "code": "mlnb",
+  "name": "Melonbooks",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "mn69",
+  "name": "Menu",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "alp",
+  "name": "Mera Gaon",
+  "icon": 49614,
+  "cat": "Other services"
+ },
+ {
+  "code": "cq",
+  "name": "Mercado",
+  "icon": 49182,
+  "cat": "Other services"
+ },
+ {
+  "code": "dg",
+  "name": "Mercari",
+  "icon": 4182,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "amv",
+  "name": "MeSeems",
+  "icon": 49715,
+  "cat": "Other services"
+ },
+ {
+  "code": "vy",
+  "name": "Meta",
+  "icon": 49277,
+  "cat": "Other services"
+ },
+ {
+  "code": "mua",
+  "name": "Meta.ua",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "he",
+  "name": "Mewt",
+  "icon": 50130,
+  "cat": "Other services"
+ },
+ {
+  "code": "bii",
+  "name": "MEXC",
+  "icon": 49365,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkx",
+  "name": "Mi Gente",
+  "icon": 58164,
+  "cat": "Other services"
+ },
+ {
+  "code": "mc",
+  "name": "Michat",
+  "icon": 12086,
+  "cat": "Messengers"
+ },
+ {
+  "code": "ahd",
+  "name": "Midnite",
+  "icon": 49209,
+  "cat": "Other services"
+ },
+ {
+  "code": "bec",
+  "name": "Migo",
+  "icon": 50258,
+  "cat": "Other services"
+ },
+ {
+  "code": "mgrs",
+  "name": "Migros",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "mksh",
+  "name": "MIKOSHI",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsw",
+  "name": "Milanuncios",
+  "icon": 58279,
+  "cat": "Other services"
+ },
+ {
+  "code": "mil",
+  "name": "Milkrun",
+  "icon": 71823,
+  "cat": "Other services"
+ },
+ {
+  "code": "ey",
+  "name": "Miloan",
+  "icon": 50005,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "blz",
+  "name": "MiniPay",
+  "icon": 58425,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "brs",
+  "name": "MioDottore",
+  "icon": 58205,
+  "cat": "Other services"
+ },
+ {
+  "code": "op",
+  "name": "MIRATORG",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "yr",
+  "name": "Miravia",
+  "icon": 49696,
+  "cat": "Other services"
+ },
+ {
+  "code": "qs",
+  "name": "MirZnakomstv",
+  "icon": 49693,
+  "cat": "Other services"
+ },
+ {
+  "code": "bua",
+  "name": "Mistral AI",
+  "icon": 58197,
+  "cat": "Other services"
+ },
+ {
+  "code": "amh",
+  "name": "MitID",
+  "icon": 49657,
+  "cat": "Other services"
+ },
+ {
+  "code": "fo",
+  "name": "MobiKwik",
+  "icon": 15407,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bry",
+  "name": "Mobile DE",
+  "icon": 58345,
+  "cat": "Other services"
+ },
+ {
+  "code": "wk",
+  "name": "Mobile01",
+  "icon": 50098,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_mc",
+  "name": "Mobileconnect.panel",
+  "icon": 59176,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_le",
+  "name": "Mobileproxy",
+  "icon": 12258,
+  "cat": "Other services"
+ },
+ {
+  "code": "axe",
+  "name": "MocaMoca",
+  "icon": 49655,
+  "cat": "Other services"
+ },
+ {
+  "code": "aht",
+  "name": "MockGuru",
+  "icon": 50158,
+  "cat": "Other services"
+ },
+ {
+  "code": "gm",
+  "name": "MocoSpace",
+  "icon": 12146,
+  "cat": "Social media"
+ },
+ {
+  "code": "bal",
+  "name": "Moka",
+  "icon": 50109,
+  "cat": "Other services"
+ },
+ {
+  "code": "hc",
+  "name": "MOMO",
+  "icon": 49325,
+  "cat": "Other services"
+ },
+ {
+  "code": "mon",
+  "name": "Mondelez",
+  "icon": 74131,
+  "cat": "Food"
+ },
+ {
+  "code": "bzi",
+  "name": "MoneyBack 易賞錢",
+  "icon": 62342,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "qt",
+  "name": "MoneyControl",
+  "icon": 50219,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bkm",
+  "name": "MoneyHelp",
+  "icon": 58218,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "qo",
+  "name": "Moneylion",
+  "icon": 49312,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "qg",
+  "name": "MoneyPay",
+  "icon": 49685,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "amt",
+  "name": "Moneyview",
+  "icon": 49547,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aom",
+  "name": "Monzo",
+  "icon": 49255,
+  "cat": "Other services"
+ },
+ {
+  "code": "cap",
+  "name": "Moomoo",
+  "icon": 63186,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgj",
+  "name": "MoonPay",
+  "icon": 49362,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "yzhn",
+  "name": "Moonshot AI",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "aun",
+  "name": "Morinaga",
+  "icon": 50153,
+  "cat": "Other services"
+ },
+ {
+  "code": "awu",
+  "name": "MosGram",
+  "icon": 49284,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmn",
+  "name": "Motina",
+  "icon": 58271,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajz",
+  "name": "MotionPay",
+  "icon": 49467,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "azl",
+  "name": "MotoRan",
+  "icon": 49428,
+  "cat": "Other services"
+ },
+ {
+  "code": "aix",
+  "name": "Move It",
+  "icon": 49165,
+  "cat": "Other services"
+ },
+ {
+  "code": "atb",
+  "name": "Movider",
+  "icon": 49703,
+  "cat": "Other services"
+ },
+ {
+  "code": "bis",
+  "name": "mPaisa",
+  "icon": 49476,
+  "cat": "Other services"
+ },
+ {
+  "code": "xq",
+  "name": "MPL",
+  "icon": 49239,
+  "cat": "Other services"
+ },
+ {
+  "code": "afh",
+  "name": "mPokket",
+  "icon": 50276,
+  "cat": "Other services"
+ },
+ {
+  "code": "ben",
+  "name": "mPower",
+  "icon": 49813,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqq",
+  "name": "MPSTATS",
+  "icon": 49302,
+  "cat": "Other services"
+ },
+ {
+  "code": "lw",
+  "name": "MrGreen",
+  "icon": 49612,
+  "cat": "Other services"
+ },
+ {
+  "code": "ej",
+  "name": "MrQ",
+  "icon": 49884,
+  "cat": "Other services"
+ },
+ {
+  "code": "ser",
+  "name": "mServ",
+  "icon": 73659,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfo",
+  "name": "MSport",
+  "icon": 50160,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgo",
+  "name": "MTrading",
+  "icon": 49748,
+  "cat": "Other services"
+ },
+ {
+  "code": "bat",
+  "name": "Muathegame",
+  "icon": 49674,
+  "cat": "Games"
+ },
+ {
+  "code": "bfe",
+  "name": "MuchBetter",
+  "icon": 49939,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bdv",
+  "name": "Mudah",
+  "icon": 50172,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfb",
+  "name": "Mudrex",
+  "icon": 50103,
+  "cat": "Other services"
+ },
+ {
+  "code": "alm",
+  "name": "Muzz",
+  "icon": 49186,
+  "cat": "Other services"
+ },
+ {
+  "code": "mjr",
+  "name": "My Jar",
+  "icon": 15705,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bol",
+  "name": "My TELUS",
+  "icon": 58403,
+  "cat": "Other services"
+ },
+ {
+  "code": "bki",
+  "name": "MyACUVUE",
+  "icon": 58150,
+  "cat": "Other services"
+ },
+ {
+  "code": "bib",
+  "name": "myBCA",
+  "icon": 49347,
+  "cat": "Other services"
+ },
+ {
+  "code": "afm",
+  "name": "MyBoost",
+  "icon": 15969,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbv",
+  "name": "MyCard",
+  "icon": 64080,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "auo",
+  "name": "Mycashbacks",
+  "icon": 49231,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ur",
+  "name": "MyDailyCash",
+  "icon": 49968,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "qa",
+  "name": "MyFishka",
+  "icon": 49959,
+  "cat": "Other services"
+ },
+ {
+  "code": "awe",
+  "name": "myGift",
+  "icon": 49918,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwf",
+  "name": "MyGo",
+  "icon": 58130,
+  "cat": "Other services"
+ },
+ {
+  "code": "mhs",
+  "name": "Myhpgas",
+  "icon": 47011,
+  "cat": "Other services"
+ },
+ {
+  "code": "bme",
+  "name": "myIM3",
+  "icon": 58125,
+  "cat": "Other services"
+ },
+ {
+  "code": "jio",
+  "name": "MyJio",
+  "icon": 71636,
+  "cat": "Other services"
+ },
+ {
+  "code": "fy",
+  "name": "Mylove",
+  "icon": 70324,
+  "cat": "Dating"
+ },
+ {
+  "code": "mu",
+  "name": "MyMusicTaste",
+  "icon": 49721,
+  "cat": "Other services"
+ },
+ {
+  "code": "nl",
+  "name": "Myntro-Shop",
+  "icon": 67475,
+  "cat": "The shops"
+ },
+ {
+  "code": "bfq",
+  "name": "myPAT",
+  "icon": 49799,
+  "cat": "Other services"
+ },
+ {
+  "code": "bru",
+  "name": "myPOS",
+  "icon": 58314,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccd",
+  "name": "mySabay",
+  "icon": 64284,
+  "cat": "Other services"
+ },
+ {
+  "code": "myo",
+  "name": "Mystore",
+  "icon": 60047,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "ccq",
+  "name": "MyTOWNKL",
+  "icon": 64420,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayv",
+  "name": "myTVSUPER",
+  "icon": 49306,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajq",
+  "name": "MyValue",
+  "icon": 49479,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkf",
+  "name": "myXL",
+  "icon": 49393,
+  "cat": "Other services"
+ },
+ {
+  "code": "jm",
+  "name": "Mzadqatar",
+  "icon": 49835,
+  "cat": "Other services"
+ },
+ {
+  "code": "buk",
+  "name": "NABIS",
+  "icon": 58396,
+  "cat": "Other services"
+ },
+ {
+  "code": "bov",
+  "name": "Naiin",
+  "icon": 58226,
+  "cat": "Other services"
+ },
+ {
+  "code": "nmkz",
+  "name": "Naimi",
+  "icon": 14274,
+  "cat": "Other services"
+ },
+ {
+  "code": "byl",
+  "name": "Nala",
+  "icon": 60835,
+  "cat": "Other services"
+ },
+ {
+  "code": "nmc",
+  "name": "Namascar",
+  "icon": 32241,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpn",
+  "name": "Namirial",
+  "icon": 58280,
+  "cat": "Other services"
+ },
+ {
+  "code": "man",
+  "name": "Namma Yatri",
+  "icon": 15731,
+  "cat": "Taxi"
+ },
+ {
+  "code": "je",
+  "name": "Nanovest",
+  "icon": 49491,
+  "cat": "Other services"
+ },
+ {
+  "code": "awg",
+  "name": "Natura Avon",
+  "icon": 49234,
+  "cat": "Other services"
+ },
+ {
+  "code": "nau",
+  "name": "Naukri",
+  "icon": 17384,
+  "cat": "Other services"
+ },
+ {
+  "code": "nv",
+  "name": "Naver",
+  "icon": 190,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "avd",
+  "name": "NCA888",
+  "icon": 50091,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmr",
+  "name": "NCISM",
+  "icon": 58320,
+  "cat": "Other services"
+ },
+ {
+  "code": "sw",
+  "name": "NCsoft",
+  "icon": 49160,
+  "cat": "Other services"
+ },
+ {
+  "code": "afb",
+  "name": "Nebu",
+  "icon": 49818,
+  "cat": "Other services"
+ },
+ {
+  "code": "aft",
+  "name": "Neocrypto",
+  "icon": 50186,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aex",
+  "name": "Neon",
+  "icon": 50200,
+  "cat": "Other services"
+ },
+ {
+  "code": "neo",
+  "name": "NeonMoneyTalks",
+  "icon": 73414,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bbf",
+  "name": "Neosurf",
+  "icon": 49854,
+  "cat": "Other services"
+ },
+ {
+  "code": "bct",
+  "name": "Neoteq",
+  "icon": 49881,
+  "cat": "Other services"
+ },
+ {
+  "code": "awc",
+  "name": "Nestle Baby",
+  "icon": 49966,
+  "cat": "Other services"
+ },
+ {
+  "code": "bed",
+  "name": "NetBet",
+  "icon": 49992,
+  "cat": "Betting"
+ },
+ {
+  "code": "gr_ne",
+  "name": "Netease",
+  "icon": 12438,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "aok",
+  "name": "NETELLER",
+  "icon": 49151,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "apo",
+  "name": "Netmarble",
+  "icon": 49324,
+  "cat": "Other services"
+ },
+ {
+  "code": "brt",
+  "name": "Netwin",
+  "icon": 58338,
+  "cat": "Other services"
+ },
+ {
+  "code": "buw",
+  "name": "NewPort",
+  "icon": 58297,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmu",
+  "name": "Newsoft",
+  "icon": 58306,
+  "cat": "Other services"
+ },
+ {
+  "code": "ble",
+  "name": "Nexon",
+  "icon": 58187,
+  "cat": "Other services"
+ },
+ {
+  "code": "aey",
+  "name": "Next",
+  "icon": 49768,
+  "cat": "Other services"
+ },
+ {
+  "code": "ef",
+  "name": "Nextdoor",
+  "icon": 49237,
+  "cat": "Other services"
+ },
+ {
+  "code": "awh",
+  "name": "NGCASH",
+  "icon": 49675,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bjh",
+  "name": "NGN",
+  "icon": 49647,
+  "cat": "Other services"
+ },
+ {
+  "code": "nh7",
+  "name": "NH7",
+  "icon": 15660,
+  "cat": "Other services"
+ },
+ {
+  "code": "awa",
+  "name": "NHN Cloud",
+  "icon": 49838,
+  "cat": "Other services"
+ },
+ {
+  "code": "ald",
+  "name": "Nice88",
+  "icon": 49726,
+  "cat": "Other services"
+ },
+ {
+  "code": "nss",
+  "name": "NiceSurveys",
+  "icon": 64559,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_nn",
+  "name": "Nielsen",
+  "icon": 59179,
+  "cat": "Other services"
+ },
+ {
+  "code": "px",
+  "name": "Nifty",
+  "icon": 49638,
+  "cat": "Other services"
+ },
+ {
+  "code": "nif",
+  "name": "NiftyGateway",
+  "icon": 69597,
+  "cat": "Other services"
+ },
+ {
+  "code": "ew",
+  "name": "Nike",
+  "icon": 284,
+  "cat": "The shops"
+ },
+ {
+  "code": "azu",
+  "name": "Ninjaz",
+  "icon": 49910,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccb",
+  "name": "Nintendo",
+  "icon": 64079,
+  "cat": "Games"
+ },
+ {
+  "code": "agi",
+  "name": "Njuškalo",
+  "icon": 49643,
+  "cat": "Other services"
+ },
+ {
+  "code": "bku",
+  "name": "NL International",
+  "icon": 58441,
+  "cat": "Other services"
+ },
+ {
+  "code": "dv",
+  "name": "NoBroker",
+  "icon": 49610,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayd",
+  "name": "NocNoc",
+  "icon": 50173,
+  "cat": "Other services"
+ },
+ {
+  "code": "tf",
+  "name": "Noon",
+  "icon": 71590,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bbn",
+  "name": "Norstat",
+  "icon": 50078,
+  "cat": "Other services"
+ },
+ {
+  "code": "xo",
+  "name": "Notifire",
+  "icon": 50287,
+  "cat": "Other services"
+ },
+ {
+  "code": "ms",
+  "name": "NovaPoshta",
+  "icon": 49461,
+  "cat": "Other services"
+ },
+ {
+  "code": "zy",
+  "name": "Nttgame",
+  "icon": 49353,
+  "cat": "Games"
+ },
+ {
+  "code": "alx",
+  "name": "NutriClub",
+  "icon": 49462,
+  "cat": "Other services"
+ },
+ {
+  "code": "nuum",
+  "name": "Nuum.ru",
+  "icon": 58940,
+  "cat": "Other services"
+ },
+ {
+  "code": "nxx",
+  "name": "Nxcomm",
+  "icon": 70013,
+  "cat": "Other services"
+ },
+ {
+  "code": "kaa",
+  "name": "Nykaa",
+  "icon": 65798,
+  "cat": "Other services"
+ },
+ {
+  "code": "axm",
+  "name": "Não Me Perturbe",
+  "icon": 49373,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcs",
+  "name": "Ocard",
+  "icon": 50100,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bjt",
+  "name": "OCBC",
+  "icon": 49349,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdm",
+  "name": "Octobank",
+  "icon": 49955,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bju",
+  "name": "Odix Pay",
+  "icon": 50056,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "zm",
+  "name": "OfferUp",
+  "icon": 49340,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "uz",
+  "name": "OffGamers",
+  "icon": 49326,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bui",
+  "name": "OKbet",
+  "icon": 58429,
+  "cat": "Betting"
+ },
+ {
+  "code": "ty",
+  "name": "Okey",
+  "icon": 49605,
+  "cat": "Other services"
+ },
+ {
+  "code": "og",
+  "name": "Okko",
+  "icon": 12062,
+  "cat": "Other services"
+ },
+ {
+  "code": "lr",
+  "name": "Okta",
+  "icon": 50069,
+  "cat": "Other services"
+ },
+ {
+  "code": "kvp6",
+  "name": "OKVIP",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "qjb",
+  "name": "Okwin",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aor",
+  "name": "OKX",
+  "icon": 49143,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ly",
+  "name": "Olacabs",
+  "icon": 4106,
+  "cat": "Taxi"
+ },
+ {
+  "code": "ns",
+  "name": "Oldubil",
+  "icon": 49195,
+  "cat": "Other services"
+ },
+ {
+  "code": "akf",
+  "name": "Ollis",
+  "icon": 49754,
+  "cat": "Other services"
+ },
+ {
+  "code": "sn",
+  "name": "OLX",
+  "icon": 691,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "m68e",
+  "name": "Omiai",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ocd",
+  "name": "Omnicard",
+  "icon": 23306,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "asi",
+  "name": "OMODA",
+  "icon": 50008,
+  "cat": "Other services"
+ },
+ {
+  "code": "axc",
+  "name": "One World Connect",
+  "icon": 50087,
+  "cat": "Other services"
+ },
+ {
+  "code": "aj",
+  "name": "OneAset",
+  "icon": 49982,
+  "cat": "Other services"
+ },
+ {
+  "code": "agg",
+  "name": "OneForma",
+  "icon": 49240,
+  "cat": "Other services"
+ },
+ {
+  "code": "npss",
+  "name": "OnePass",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbj",
+  "name": "OnePay",
+  "icon": 50253,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "avf",
+  "name": "ONESIAM",
+  "icon": 49886,
+  "cat": "Other services"
+ },
+ {
+  "code": "ue",
+  "name": "Onet",
+  "icon": 49150,
+  "cat": "Other services"
+ },
+ {
+  "code": "bck",
+  "name": "Onion Academy 洋葱学园",
+  "icon": 49553,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcw",
+  "name": "Online Check Writer",
+  "icon": 49692,
+  "cat": "Other services"
+ },
+ {
+  "code": "ob",
+  "name": "Onlinerby",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "zf",
+  "name": "OnTaxi",
+  "icon": 49586,
+  "cat": "Taxi"
+ },
+ {
+  "code": "bpa",
+  "name": "OP Braga",
+  "icon": 58404,
+  "cat": "Other services"
+ },
+ {
+  "code": "bif",
+  "name": "OPAP",
+  "icon": 50080,
+  "cat": "Other services"
+ },
+ {
+  "code": "bul",
+  "name": "Openbank",
+  "icon": 58231,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bab",
+  "name": "Opera Mini",
+  "icon": 49739,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_op",
+  "name": "Oppo",
+  "icon": 12245,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "ora",
+  "name": "Orami",
+  "icon": 70407,
+  "cat": "Other services"
+ },
+ {
+  "code": "qh",
+  "name": "Oriflame",
+  "icon": 49344,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjj",
+  "name": "Osem",
+  "icon": 50162,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsl",
+  "name": "Oskelly",
+  "icon": 58296,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_ot",
+  "name": "Ostin",
+  "icon": 12244,
+  "cat": "The shops"
+ },
+ {
+  "code": "oiy",
+  "name": "Otipy",
+  "icon": 60060,
+  "cat": "Other services"
+ },
+ {
+  "code": "oto",
+  "name": "OTOKONFOR",
+  "icon": 65143,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmp",
+  "name": "Ourbit",
+  "icon": 58302,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxq",
+  "name": "OURO",
+  "icon": 59559,
+  "cat": "Other services"
+ },
+ {
+  "code": "tme",
+  "name": "OurTime",
+  "icon": 69166,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpb",
+  "name": "Outbox",
+  "icon": 58412,
+  "cat": "Other services"
+ },
+ {
+  "code": "auz",
+  "name": "Outlier",
+  "icon": 49322,
+  "cat": "Other services"
+ },
+ {
+  "code": "xh",
+  "name": "Ovo",
+  "icon": 688,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "avi",
+  "name": "Oye Turtle",
+  "icon": 50016,
+  "cat": "Other services"
+ },
+ {
+  "code": "aaz",
+  "name": "Ozan",
+  "icon": 49424,
+  "cat": "Other services"
+ },
+ {
+  "code": "bns",
+  "name": "PAC Cash",
+  "icon": 58383,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "afw",
+  "name": "Packeta",
+  "icon": 49821,
+  "cat": "Other services"
+ },
+ {
+  "code": "cw",
+  "name": "PaddyPower",
+  "icon": 49142,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsj",
+  "name": "Pagaleve",
+  "icon": 58171,
+  "cat": "Other services"
+ },
+ {
+  "code": "pzr",
+  "name": "Paisabazaar",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aus",
+  "name": "PalawanPay",
+  "icon": 49571,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "akz",
+  "name": "Panvel",
+  "icon": 49282,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxv",
+  "name": "PAPER",
+  "icon": 59554,
+  "cat": "Other services"
+ },
+ {
+  "code": "brl",
+  "name": "Paperspace",
+  "icon": 58234,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvh",
+  "name": "ParenTeam",
+  "icon": 58311,
+  "cat": "Other services"
+ },
+ {
+  "code": "abf",
+  "name": "Parimatch",
+  "icon": 49390,
+  "cat": "Betting"
+ },
+ {
+  "code": "bjw",
+  "name": "Paripesa",
+  "icon": 50074,
+  "cat": "Other services"
+ },
+ {
+  "code": "bef",
+  "name": "Parker Cards",
+  "icon": 49851,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ptrs",
+  "name": "Paters",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bln",
+  "name": "Pawshake",
+  "icon": 58384,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgx",
+  "name": "Paxel",
+  "icon": 50302,
+  "cat": "Other services"
+ },
+ {
+  "code": "dn",
+  "name": "Paxful",
+  "icon": 49248,
+  "cat": "Other services"
+ },
+ {
+  "code": "pxb",
+  "name": "PaxiHub",
+  "icon": 62075,
+  "cat": "Other services"
+ },
+ {
+  "code": "qb",
+  "name": "Payberry",
+  "icon": 49554,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "akc",
+  "name": "Paybis",
+  "icon": 49308,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "xz",
+  "name": "Paycell",
+  "icon": 49242,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bdq",
+  "name": "Paydy",
+  "icon": 49258,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "azr",
+  "name": "PayFix",
+  "icon": 49991,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "nc",
+  "name": "Payoneer",
+  "icon": 49129,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "jq",
+  "name": "Paysafecard",
+  "icon": 697,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "tr",
+  "name": "Paysend",
+  "icon": 49290,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aol",
+  "name": "Paysera",
+  "icon": 50256,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bjb",
+  "name": "PaySprint",
+  "icon": 50225,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ge",
+  "name": "Paytm",
+  "icon": 19479,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bso",
+  "name": "PayWell",
+  "icon": 58317,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "yp",
+  "name": "Payzapp",
+  "icon": 15544,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "paz",
+  "name": "Pazarama",
+  "icon": 73283,
+  "cat": "Other services"
+ },
+ {
+  "code": "pcp",
+  "name": "Pcipay",
+  "icon": 70324,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "pcmx",
+  "name": "PCMAX",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "aww",
+  "name": "Pecunpay",
+  "icon": 49724,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bqh",
+  "name": "PEDIR GAS",
+  "icon": 58245,
+  "cat": "Other services"
+ },
+ {
+  "code": "aoo",
+  "name": "Pegasus Airlines",
+  "icon": 49909,
+  "cat": "Other services"
+ },
+ {
+  "code": "plg",
+  "name": "Pelago",
+  "icon": 58948,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqt",
+  "name": "PENTA",
+  "icon": 58211,
+  "cat": "Other services"
+ },
+ {
+  "code": "blv",
+  "name": "Pepsi",
+  "icon": 58422,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqe",
+  "name": "PeraMoo",
+  "icon": 49666,
+  "cat": "Other services"
+ },
+ {
+  "code": "per",
+  "name": "Perplexity",
+  "icon": 70956,
+  "cat": "Other services"
+ },
+ {
+  "code": "bci",
+  "name": "Pesobox",
+  "icon": 49572,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqd",
+  "name": "Pesohere",
+  "icon": 49596,
+  "cat": "Other services"
+ },
+ {
+  "code": "bni",
+  "name": "Pets4Homes",
+  "icon": 58430,
+  "cat": "Other services"
+ },
+ {
+  "code": "fx",
+  "name": "Pgbonus",
+  "icon": 694,
+  "cat": "Other services"
+ },
+ {
+  "code": "asm",
+  "name": "PH777",
+  "icon": 50295,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfk",
+  "name": "Pharmaniaga",
+  "icon": 50050,
+  "cat": "Other services"
+ },
+ {
+  "code": "fc",
+  "name": "PharmEasy",
+  "icon": 50046,
+  "cat": "Other services"
+ },
+ {
+  "code": "noh",
+  "name": "PhonePe",
+  "icon": 15643,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aie",
+  "name": "Photostrana",
+  "icon": 49695,
+  "cat": "Other services"
+ },
+ {
+  "code": "pik",
+  "name": "Pikkit",
+  "icon": 73019,
+  "cat": "Other services"
+ },
+ {
+  "code": "zp",
+  "name": "Pinduoduo",
+  "icon": 15905,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "jh",
+  "name": "PingPong",
+  "icon": 50117,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqb",
+  "name": "Pinoy Peso",
+  "icon": 50298,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgs",
+  "name": "Pintu",
+  "icon": 49844,
+  "cat": "Other services"
+ },
+ {
+  "code": "bka",
+  "name": "Pipwave",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "agy",
+  "name": "Pixels",
+  "icon": 49816,
+  "cat": "Other services"
+ },
+ {
+  "code": "plnt",
+  "name": "Planetarium",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "afv",
+  "name": "PlayCKC",
+  "icon": 49687,
+  "cat": "Other services"
+ },
+ {
+  "code": "aer",
+  "name": "PlayerAuctions",
+  "icon": 49396,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "abs",
+  "name": "Playerzpot",
+  "icon": 49859,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_pk",
+  "name": "PlayKaro",
+  "icon": 47737,
+  "cat": "Other services"
+ },
+ {
+  "code": "adc",
+  "name": "PlayOJO",
+  "icon": 50229,
+  "cat": "Other services"
+ },
+ {
+  "code": "bms",
+  "name": "Playpark",
+  "icon": 58242,
+  "cat": "Other services"
+ },
+ {
+  "code": "awz",
+  "name": "PlayTime",
+  "icon": 49220,
+  "cat": "Other services"
+ },
+ {
+  "code": "abv",
+  "name": "PlayZone",
+  "icon": 49815,
+  "cat": "Other services"
+ },
+ {
+  "code": "aoy",
+  "name": "PLN Mobile",
+  "icon": 49783,
+  "cat": "Other services"
+ },
+ {
+  "code": "cae",
+  "name": "Ploom",
+  "icon": 62834,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpj",
+  "name": "PMSURYAGHAR",
+  "icon": 58241,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajc",
+  "name": "Pochta Rossii",
+  "icon": 49761,
+  "cat": "Other services"
+ },
+ {
+  "code": "lot",
+  "name": "Pocket Ludo",
+  "icon": 15513,
+  "cat": "Other services"
+ },
+ {
+  "code": "pckt",
+  "name": "POCKET PLAY",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ch",
+  "name": "Pocket52",
+  "icon": 15728,
+  "cat": "Betting"
+ },
+ {
+  "code": "aag",
+  "name": "Pockit",
+  "icon": 50289,
+  "cat": "Other services"
+ },
+ {
+  "code": "ato",
+  "name": "Podrygka",
+  "icon": 50218,
+  "cat": "Other services"
+ },
+ {
+  "code": "opd",
+  "name": "Poe",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "pcm6",
+  "name": "Poe.com",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "pok",
+  "name": "Pokemoncenter",
+  "icon": 61106,
+  "cat": "Other services"
+ },
+ {
+  "code": "Prcl",
+  "name": "Poker Circle",
+  "icon": 70324,
+  "cat": "Betting"
+ },
+ {
+  "code": "bkk",
+  "name": "Poparide",
+  "icon": 58439,
+  "cat": "Taxi"
+ },
+ {
+  "code": "ppm",
+  "name": "PopMart",
+  "icon": 68230,
+  "cat": "Other services"
+ },
+ {
+  "code": "rg",
+  "name": "Porbet",
+  "icon": 49680,
+  "cat": "Betting"
+ },
+ {
+  "code": "haa",
+  "name": "Portal",
+  "icon": 70832,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpm",
+  "name": "Porter",
+  "icon": 58374,
+  "cat": "Other services"
+ },
+ {
+  "code": "oz",
+  "name": "Poshmark",
+  "icon": 621,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "adb",
+  "name": "PoshVine",
+  "icon": 49782,
+  "cat": "Other services"
+ },
+ {
+  "code": "lq",
+  "name": "Potato",
+  "icon": 49962,
+  "cat": "Other services"
+ },
+ {
+  "code": "fj",
+  "name": "Potato Chat",
+  "icon": 49375,
+  "cat": "Messengers"
+ },
+ {
+  "code": "dx",
+  "name": "Powerkredite",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhp",
+  "name": "PPC",
+  "icon": 49199,
+  "cat": "Other services"
+ },
+ {
+  "code": "atq",
+  "name": "PQHosting",
+  "icon": 49241,
+  "cat": "Other services"
+ },
+ {
+  "code": "bna",
+  "name": "Practo",
+  "icon": 70947,
+  "cat": "Other services"
+ },
+ {
+  "code": "aio",
+  "name": "Prakerja",
+  "icon": 49635,
+  "cat": "Other services"
+ },
+ {
+  "code": "pra",
+  "name": "Praxo",
+  "icon": 73420,
+  "cat": "Other services"
+ },
+ {
+  "code": "pre",
+  "name": "Predik",
+  "icon": 68522,
+  "cat": "Other services"
+ },
+ {
+  "code": "auf",
+  "name": "PREMIER",
+  "icon": 49485,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvq",
+  "name": "PREMIUM BANDAI",
+  "icon": 58336,
+  "cat": "Other services"
+ },
+ {
+  "code": "anw",
+  "name": "Premmia",
+  "icon": 49455,
+  "cat": "Other services"
+ },
+ {
+  "code": "akh",
+  "name": "Prenagen Club",
+  "icon": 50006,
+  "cat": "Other services"
+ },
+ {
+  "code": "ary",
+  "name": "Presto",
+  "icon": 49792,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxm",
+  "name": "Prezzee",
+  "icon": 59500,
+  "cat": "Other services"
+ },
+ {
+  "code": "aiq",
+  "name": "Prime Opinion",
+  "icon": 49401,
+  "cat": "Other services"
+ },
+ {
+  "code": "abr",
+  "name": "Privy",
+  "icon": 49606,
+  "cat": "Other services"
+ },
+ {
+  "code": "aa",
+  "name": "Probo",
+  "icon": 49386,
+  "cat": "Other services"
+ },
+ {
+  "code": "bij",
+  "name": "Prodege",
+  "icon": 49228,
+  "cat": "Other services"
+ },
+ {
+  "code": "axi",
+  "name": "ProductLab",
+  "icon": 49814,
+  "cat": "Other services"
+ },
+ {
+  "code": "alo",
+  "name": "Profee",
+  "icon": 49377,
+  "cat": "Other services"
+ },
+ {
+  "code": "dp",
+  "name": "ProtonMail",
+  "icon": 700,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbm",
+  "name": "PUBG",
+  "icon": 63920,
+  "cat": "Games"
+ },
+ {
+  "code": "aga",
+  "name": "Publi24",
+  "icon": 49172,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqg",
+  "name": "Publix",
+  "icon": 49850,
+  "cat": "Other services"
+ },
+ {
+  "code": "pul",
+  "name": "Pulsz",
+  "icon": 69636,
+  "cat": "Other services"
+ },
+ {
+  "code": "plps",
+  "name": "PuluPeso",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "amm",
+  "name": "Punjab citizen",
+  "icon": 50180,
+  "cat": "Other services"
+ },
+ {
+  "code": "adf",
+  "name": "Punjab Timber Traders",
+  "icon": 50236,
+  "cat": "Other services"
+ },
+ {
+  "code": "lk",
+  "name": "PurePlatfrom",
+  "icon": 49672,
+  "cat": "Other services"
+ },
+ {
+  "code": "pue",
+  "name": "Puresmooth",
+  "icon": 70975,
+  "cat": "Other services"
+ },
+ {
+  "code": "puu",
+  "name": "Pusulabet",
+  "icon": 73691,
+  "cat": "Betting"
+ },
+ {
+  "code": "ppl",
+  "name": "PYYPL",
+  "icon": 46173,
+  "cat": "Other services"
+ },
+ {
+  "code": "vf",
+  "name": "Q12 Trivia",
+  "icon": 70324,
+  "cat": "Games"
+ },
+ {
+  "code": "bbh",
+  "name": "Qbet",
+  "icon": 49977,
+  "cat": "Betting"
+ },
+ {
+  "code": "qia",
+  "name": "Qitaf",
+  "icon": 73175,
+  "cat": "Other services"
+ },
+ {
+  "code": "qon",
+  "name": "Qoneqt",
+  "icon": 69250,
+  "cat": "Other services"
+ },
+ {
+  "code": "eq",
+  "name": "Qoo10",
+  "icon": 12164,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bnu",
+  "name": "Qpon",
+  "icon": 58120,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqj",
+  "name": "QQPK",
+  "icon": 58232,
+  "cat": "Other services"
+ },
+ {
+  "code": "zw",
+  "name": "Quack",
+  "icon": 50032,
+  "cat": "Other services"
+ },
+ {
+  "code": "bja",
+  "name": "QuackQuack Dating App",
+  "icon": 49875,
+  "cat": "Dating"
+ },
+ {
+  "code": "bty",
+  "name": "QueBueno",
+  "icon": 58321,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxj",
+  "name": "Quero-Quero PAG",
+  "icon": 59557,
+  "cat": "Other services"
+ },
+ {
+  "code": "qh69",
+  "name": "Quhuo",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpy",
+  "name": "Quicko",
+  "icon": 58454,
+  "cat": "Other services"
+ },
+ {
+  "code": "qty",
+  "name": "QuickTV",
+  "icon": 65060,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhk",
+  "name": "Qumpara",
+  "icon": 49797,
+  "cat": "Other services"
+ },
+ {
+  "code": "avk",
+  "name": "Quoka",
+  "icon": 49517,
+  "cat": "Other services"
+ },
+ {
+  "code": "cck",
+  "name": "Quoty",
+  "icon": 64302,
+  "cat": "Other services"
+ },
+ {
+  "code": "acr",
+  "name": "QwikCilver",
+  "icon": 49244,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayy",
+  "name": "Rabbit",
+  "icon": 50119,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayk",
+  "name": "Radquest",
+  "icon": 49414,
+  "cat": "Other services"
+ },
+ {
+  "code": "swr",
+  "name": "RailOne (ex-SwaRail)",
+  "icon": 59673,
+  "cat": "Other services"
+ },
+ {
+  "code": "rak",
+  "name": "Raja Games",
+  "icon": 69459,
+  "cat": "Games"
+ },
+ {
+  "code": "rktn",
+  "name": "Rakuten",
+  "icon": 70324,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bmz",
+  "name": "Ramble",
+  "icon": 58366,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_ra",
+  "name": "Rambler",
+  "icon": 15241,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "qml",
+  "name": "Ranglive",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgf",
+  "name": "Rapido",
+  "icon": 50232,
+  "cat": "Taxi"
+ },
+ {
+  "code": "aba",
+  "name": "Rappi",
+  "icon": 49189,
+  "cat": "Food"
+ },
+ {
+  "code": "aqh",
+  "name": "Rayobyte",
+  "icon": 50281,
+  "cat": "Other services"
+ },
+ {
+  "code": "jp",
+  "name": "Rbt",
+  "icon": 50179,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayj",
+  "name": "Realme",
+  "icon": 49560,
+  "cat": "Other services"
+ },
+ {
+  "code": "reb",
+  "name": "Rebounce",
+  "icon": 73732,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajj",
+  "name": "Rebtel",
+  "icon": 49327,
+  "cat": "Other services"
+ },
+ {
+  "code": "aoz",
+  "name": "ReclameAQUI",
+  "icon": 49304,
+  "cat": "Other services"
+ },
+ {
+  "code": "qf",
+  "name": "RedBook 小红书",
+  "icon": 57792,
+  "cat": "Social media"
+ },
+ {
+  "code": "baq",
+  "name": "Redbubble",
+  "icon": 49336,
+  "cat": "Other services"
+ },
+ {
+  "code": "ci",
+  "name": "redBus",
+  "icon": 49767,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnl",
+  "name": "Reddit",
+  "icon": 58115,
+  "cat": "Social media"
+ },
+ {
+  "code": "gr_rb",
+  "name": "ReddyBook",
+  "icon": 57942,
+  "cat": "Other services"
+ },
+ {
+  "code": "xgu",
+  "name": "RedNote / Xiaohongshu",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "rdy",
+  "name": "RedotPay",
+  "icon": 66609,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "res",
+  "name": "Redrob Signal",
+  "icon": 70427,
+  "cat": "Messengers"
+ },
+ {
+  "code": "ack",
+  "name": "RegainRX",
+  "icon": 49840,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsn",
+  "name": "RelicDAO",
+  "icon": 58176,
+  "cat": "Other services"
+ },
+ {
+  "code": "aln",
+  "name": "Remotasks",
+  "icon": 49528,
+  "cat": "Other services"
+ },
+ {
+  "code": "asu",
+  "name": "Replit",
+  "icon": 49833,
+  "cat": "Other services"
+ },
+ {
+  "code": "ear",
+  "name": "Research 360",
+  "icon": 65326,
+  "cat": "Other services"
+ },
+ {
+  "code": "bon",
+  "name": "RetailMeNot",
+  "icon": 58277,
+  "cat": "The shops"
+ },
+ {
+  "code": "bkz",
+  "name": "Rewardy",
+  "icon": 58377,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjp",
+  "name": "Ria",
+  "icon": 49595,
+  "cat": "Other services"
+ },
+ {
+  "code": "ric",
+  "name": "Ricardo",
+  "icon": 69654,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "aqk",
+  "name": "Richkart",
+  "icon": 49719,
+  "cat": "Other services"
+ },
+ {
+  "code": "atr",
+  "name": "RIDE",
+  "icon": 50183,
+  "cat": "Taxi"
+ },
+ {
+  "code": "bvv",
+  "name": "Ride amigo",
+  "icon": 46917,
+  "cat": "Taxi"
+ },
+ {
+  "code": "bok",
+  "name": "Riobet",
+  "icon": 58275,
+  "cat": "Betting"
+ },
+ {
+  "code": "avp",
+  "name": "Ripio",
+  "icon": 49805,
+  "cat": "Other services"
+ },
+ {
+  "code": "aso",
+  "name": "RL Solution",
+  "icon": 49873,
+  "cat": "Other services"
+ },
+ {
+  "code": "aiw",
+  "name": "Roblox",
+  "icon": 49298,
+  "cat": "Games"
+ },
+ {
+  "code": "sl",
+  "name": "Robota.ua",
+  "icon": 49338,
+  "cat": "Other services"
+ },
+ {
+  "code": "aau",
+  "name": "RockeTreach",
+  "icon": 50238,
+  "cat": "Other services"
+ },
+ {
+  "code": "ga",
+  "name": "Roposo",
+  "icon": 50197,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayt",
+  "name": "Roqqu",
+  "icon": 49824,
+  "cat": "Other services"
+ },
+ {
+  "code": "awf",
+  "name": "Rothmans",
+  "icon": 49925,
+  "cat": "Other services"
+ },
+ {
+  "code": "beb",
+  "name": "Rotiboy",
+  "icon": 50212,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmq",
+  "name": "Royale",
+  "icon": 58265,
+  "cat": "Other services"
+ },
+ {
+  "code": "qit",
+  "name": "Royaljeet",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "ku",
+  "name": "RoyalWin",
+  "icon": 15527,
+  "cat": "Other services"
+ },
+ {
+  "code": "km",
+  "name": "Rozetka",
+  "icon": 49275,
+  "cat": "Other services"
+ },
+ {
+  "code": "tc",
+  "name": "Rumbler",
+  "icon": 58113,
+  "cat": "Other services"
+ },
+ {
+  "code": "rmm",
+  "name": "Rummy",
+  "icon": 14939,
+  "cat": "Betting"
+ },
+ {
+  "code": "ec",
+  "name": "Rummy Culture",
+  "icon": 15691,
+  "cat": "Betting"
+ },
+ {
+  "code": "rmg",
+  "name": "Rummy gold",
+  "icon": 14927,
+  "cat": "Betting"
+ },
+ {
+  "code": "oru",
+  "name": "Rummy Most",
+  "icon": 14936,
+  "cat": "Betting"
+ },
+ {
+  "code": "so",
+  "name": "Rummy Wealth",
+  "icon": 14930,
+  "cat": "Betting"
+ },
+ {
+  "code": "rul",
+  "name": "RummyLoot",
+  "icon": 69600,
+  "cat": "Betting"
+ },
+ {
+  "code": "xb",
+  "name": "RummyOla",
+  "icon": 49399,
+  "cat": "Betting"
+ },
+ {
+  "code": "bsf",
+  "name": "Rupiah Cepat",
+  "icon": 58192,
+  "cat": "Other services"
+ },
+ {
+  "code": "ioy",
+  "name": "Rupiyo",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "kv",
+  "name": "Rush",
+  "icon": 15519,
+  "cat": "Other services"
+ },
+ {
+  "code": "bes",
+  "name": "RusNovo",
+  "icon": 50092,
+  "cat": "Other services"
+ },
+ {
+  "code": "ay",
+  "name": "Ruten",
+  "icon": 49697,
+  "cat": "Other services"
+ },
+ {
+  "code": "ako",
+  "name": "Ryde",
+  "icon": 49210,
+  "cat": "Other services"
+ },
+ {
+  "code": "bil",
+  "name": "SafeW",
+  "icon": 49855,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_sh",
+  "name": "Sahibinden",
+  "icon": 12209,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "caz",
+  "name": "Sainsburys",
+  "icon": 63652,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvi",
+  "name": "Salams",
+  "icon": 58160,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjn",
+  "name": "SaltyCustoms",
+  "icon": 49759,
+  "cat": "Other services"
+ },
+ {
+  "code": "ath",
+  "name": "Samarth Diamond App",
+  "icon": 50018,
+  "cat": "Other services"
+ },
+ {
+  "code": "sams",
+  "name": "Samsclub",
+  "icon": 73166,
+  "cat": "Other services"
+ },
+ {
+  "code": "sal",
+  "name": "Sankes and Ladders",
+  "icon": 15654,
+  "cat": "Other services"
+ },
+ {
+  "code": "lj",
+  "name": "Santander",
+  "icon": 49268,
+  "cat": "Other services"
+ },
+ {
+  "code": "sar",
+  "name": "Saral",
+  "icon": 73499,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqa",
+  "name": "Satori",
+  "icon": 50009,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhv",
+  "name": "Savbra",
+  "icon": 49776,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgh",
+  "name": "SayHi Chat",
+  "icon": 50262,
+  "cat": "Dating"
+ },
+ {
+  "code": "bti",
+  "name": "Sayurbox",
+  "icon": 58174,
+  "cat": "Other services"
+ },
+ {
+  "code": "amg",
+  "name": "SBI Card",
+  "icon": 50015,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "gr_bm",
+  "name": "SBM Urban",
+  "icon": 57933,
+  "cat": "Other services"
+ },
+ {
+  "code": "byf",
+  "name": "SeaBank",
+  "icon": 60605,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "cay",
+  "name": "Seamless AI",
+  "icon": 63653,
+  "cat": "Other services"
+ },
+ {
+  "code": "are",
+  "name": "Seated",
+  "icon": 50040,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "sgk",
+  "name": "SeatGeek",
+  "icon": 70324,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "alt",
+  "name": "Segari",
+  "icon": 50216,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzo",
+  "name": "SeLoger",
+  "icon": 62779,
+  "cat": "Other services"
+ },
+ {
+  "code": "aoe",
+  "name": "Sendwave",
+  "icon": 49314,
+  "cat": "Other services"
+ },
+ {
+  "code": "azp",
+  "name": "Senthil Murugan Jewellers",
+  "icon": 49874,
+  "cat": "Other services"
+ },
+ {
+  "code": "abj",
+  "name": "Serasa",
+  "icon": 49478,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpt",
+  "name": "SerpApi",
+  "icon": 58169,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbx",
+  "name": "ServeXplus",
+  "icon": 50093,
+  "cat": "Other services"
+ },
+ {
+  "code": "ago",
+  "name": "Servify",
+  "icon": 50107,
+  "cat": "Other services"
+ },
+ {
+  "code": "zg",
+  "name": "Setel",
+  "icon": 50196,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnz",
+  "name": "Seven Bet",
+  "icon": 58324,
+  "cat": "Betting"
+ },
+ {
+  "code": "adu",
+  "name": "Seznam",
+  "icon": 50208,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjy",
+  "name": "Shaadi",
+  "icon": 49770,
+  "cat": "Other services"
+ },
+ {
+  "code": "shbr",
+  "name": "Shaberi",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bem",
+  "name": "Shafa",
+  "icon": 49352,
+  "cat": "Other services"
+ },
+ {
+  "code": "sha",
+  "name": "SHAKEPAY",
+  "icon": 69930,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "raa",
+  "name": "Sharechat",
+  "icon": 15675,
+  "cat": "Social media"
+ },
+ {
+  "code": "ara",
+  "name": "Shareful",
+  "icon": 49548,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajv",
+  "name": "ShareParty",
+  "icon": 50041,
+  "cat": "Other services"
+ },
+ {
+  "code": "aei",
+  "name": "Sharyat",
+  "icon": 49811,
+  "cat": "Other services"
+ },
+ {
+  "code": "rx",
+  "name": "Sheerid",
+  "icon": 49728,
+  "cat": "Other services"
+ },
+ {
+  "code": "aez",
+  "name": "Shein",
+  "icon": 49566,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bob",
+  "name": "Shell GO",
+  "icon": 58153,
+  "cat": "Other services"
+ },
+ {
+  "code": "shll",
+  "name": "ShellRechange",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "anv",
+  "name": "Shield",
+  "icon": 49772,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsc",
+  "name": "Shielded",
+  "icon": 58215,
+  "cat": "Other services"
+ },
+ {
+  "code": "aeb",
+  "name": "Shine Brand Seeds",
+  "icon": 50198,
+  "cat": "Other services"
+ },
+ {
+  "code": "bel",
+  "name": "ShineIn",
+  "icon": 50127,
+  "cat": "Other services"
+ },
+ {
+  "code": "bie",
+  "name": "Shinjiru",
+  "icon": 49867,
+  "cat": "Other services"
+ },
+ {
+  "code": "adz",
+  "name": "Shokoladnica",
+  "icon": 49334,
+  "cat": "Other services"
+ },
+ {
+  "code": "bca",
+  "name": "Shop101",
+  "icon": 50019,
+  "cat": "The shops"
+ },
+ {
+  "code": "axx",
+  "name": "Shopback",
+  "icon": 49249,
+  "cat": "The shops"
+ },
+ {
+  "code": "ka",
+  "name": "Shopee",
+  "icon": 272,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "avv",
+  "name": "shopFarEast",
+  "icon": 49694,
+  "cat": "The shops"
+ },
+ {
+  "code": "ano",
+  "name": "Shopify",
+  "icon": 49423,
+  "cat": "The shops"
+ },
+ {
+  "code": "qcb",
+  "name": "Shopsy",
+  "icon": 70324,
+  "cat": "The shops"
+ },
+ {
+  "code": "ze",
+  "name": "Shpock",
+  "icon": 49753,
+  "cat": "Other services"
+ },
+ {
+  "code": "qjw",
+  "name": "Shriram One",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "shr",
+  "name": "Shriramlife",
+  "icon": 70976,
+  "cat": "Other services"
+ },
+ {
+  "code": "shsh",
+  "name": "Shueisha",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ana",
+  "name": "Sicredi",
+  "icon": 49701,
+  "cat": "Other services"
+ },
+ {
+  "code": "apl",
+  "name": "Sideline",
+  "icon": 49226,
+  "cat": "Other services"
+ },
+ {
+  "code": "biu",
+  "name": "Siesta",
+  "icon": 49974,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_sg",
+  "name": "Signal",
+  "icon": 71611,
+  "cat": "Messengers"
+ },
+ {
+  "code": "sih",
+  "name": "SignalHire",
+  "icon": 69609,
+  "cat": "Other services"
+ },
+ {
+  "code": "sgnt",
+  "name": "SIGOIntOTP",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "blo",
+  "name": "SiliconFlow 硅基流动",
+  "icon": 58161,
+  "cat": "Other services"
+ },
+ {
+  "code": "aoj",
+  "name": "Simply",
+  "icon": 49501,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfm",
+  "name": "Simplysiti",
+  "icon": 50063,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdh",
+  "name": "Singledk",
+  "icon": 49364,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmi",
+  "name": "Sisal",
+  "icon": 58432,
+  "cat": "Other services"
+ },
+ {
+  "code": "sfc",
+  "name": "SisalFunClub",
+  "icon": 69247,
+  "cat": "Other services"
+ },
+ {
+  "code": "eo",
+  "name": "Sizeer",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aps",
+  "name": "Skelbiu",
+  "icon": 49522,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_si",
+  "name": "Skill India",
+  "icon": 57943,
+  "cat": "Other services"
+ },
+ {
+  "code": "bee",
+  "name": "SKO",
+  "icon": 49777,
+  "cat": "Other services"
+ },
+ {
+  "code": "wg",
+  "name": "Skout",
+  "icon": 267,
+  "cat": "Dating"
+ },
+ {
+  "code": "aqt",
+  "name": "Skrill",
+  "icon": 49180,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "sk",
+  "name": "Skroutz",
+  "icon": 50182,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwu",
+  "name": "SkyBet",
+  "icon": 59393,
+  "cat": "Betting"
+ },
+ {
+  "code": "rc",
+  "name": "Skype",
+  "icon": 12054,
+  "cat": "Messengers"
+ },
+ {
+  "code": "pb",
+  "name": "SkyTV",
+  "icon": 49343,
+  "cat": "Other services"
+ },
+ {
+  "code": "aep",
+  "name": "Slickcall",
+  "icon": 50081,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsz",
+  "name": "Sling Money",
+  "icon": 58195,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "slp",
+  "name": "Slips",
+  "icon": 69606,
+  "cat": "Other services"
+ },
+ {
+  "code": "btb",
+  "name": "SM Malls Online",
+  "icon": 58264,
+  "cat": "The shops"
+ },
+ {
+  "code": "amd",
+  "name": "Smart",
+  "icon": 49417,
+  "cat": "Other services"
+ },
+ {
+  "code": "aye",
+  "name": "SmartSari",
+  "icon": 50095,
+  "cat": "Other services"
+ },
+ {
+  "code": "agb",
+  "name": "Smiles",
+  "icon": 14782,
+  "cat": "Other services"
+ },
+ {
+  "code": "aub",
+  "name": "Smitten",
+  "icon": 49994,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjo",
+  "name": "Smooshie Juice",
+  "icon": 49743,
+  "cat": "Other services"
+ },
+ {
+  "code": "ail",
+  "name": "Smotryoshka",
+  "icon": 49300,
+  "cat": "Other services"
+ },
+ {
+  "code": "sms",
+  "name": "Smsmegr",
+  "icon": 68227,
+  "cat": "Other services"
+ },
+ {
+  "code": "smt",
+  "name": "SMTP2GO",
+  "icon": 66884,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqy",
+  "name": "SNAI",
+  "icon": 58407,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfz",
+  "name": "Snapmint",
+  "icon": 49656,
+  "cat": "Other services"
+ },
+ {
+  "code": "ph",
+  "name": "SnappFood",
+  "icon": 49791,
+  "cat": "Food"
+ },
+ {
+  "code": "bai",
+  "name": "SNKRDUNK",
+  "icon": 49187,
+  "cat": "Other services"
+ },
+ {
+  "code": "axa",
+  "name": "Social Nature",
+  "icon": 49583,
+  "cat": "Social media"
+ },
+ {
+  "code": "bvd",
+  "name": "SOCIALMATTE",
+  "icon": 58380,
+  "cat": "Other services"
+ },
+ {
+  "code": "ia",
+  "name": "Socios",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvt",
+  "name": "SoCo",
+  "icon": 58290,
+  "cat": "Other services"
+ },
+ {
+  "code": "sod",
+  "name": "Soddigo",
+  "icon": 68323,
+  "cat": "Other services"
+ },
+ {
+  "code": "car",
+  "name": "Sofisa Direto",
+  "icon": 63182,
+  "cat": "Other services"
+ },
+ {
+  "code": "bom",
+  "name": "Solcredito",
+  "icon": 58228,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bhq",
+  "name": "Solitaire Cash",
+  "icon": 50177,
+  "cat": "Betting"
+ },
+ {
+  "code": "biv",
+  "name": "Sonline",
+  "icon": 50002,
+  "cat": "Other services"
+ },
+ {
+  "code": "akx",
+  "name": "Sony LIV",
+  "icon": 50121,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxz",
+  "name": "SOOP",
+  "icon": 60369,
+  "cat": "Other services"
+ },
+ {
+  "code": "jy",
+  "name": "Sorare",
+  "icon": 49161,
+  "cat": "Other services"
+ },
+ {
+  "code": "byj",
+  "name": "Sorpa",
+  "icon": 60842,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwk",
+  "name": "Sorted Wallet",
+  "icon": 58418,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "mx",
+  "name": "SoulApp",
+  "icon": 49198,
+  "cat": "Other services"
+ },
+ {
+  "code": "bub",
+  "name": "Sparda Bank",
+  "icon": 58354,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "acb",
+  "name": "Spark Driver",
+  "icon": 49453,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbc",
+  "name": "SparkBlend",
+  "icon": 50099,
+  "cat": "Other services"
+ },
+ {
+  "code": "sch",
+  "name": "Spincrush",
+  "icon": 47323,
+  "cat": "Other services"
+ },
+ {
+  "code": "qkt",
+  "name": "SpinWinner",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "cci",
+  "name": "Spliiit",
+  "icon": 64300,
+  "cat": "Other services"
+ },
+ {
+  "code": "sli",
+  "name": "Sponline",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqr",
+  "name": "SportEfir",
+  "icon": 49817,
+  "cat": "Other services"
+ },
+ {
+  "code": "va",
+  "name": "SportGully",
+  "icon": 49825,
+  "cat": "Other services"
+ },
+ {
+  "code": "spo",
+  "name": "Sportloto",
+  "icon": 73502,
+  "cat": "Betting"
+ },
+ {
+  "code": "usu",
+  "name": "Sportsbuzz11",
+  "icon": 14909,
+  "cat": "Other services"
+ },
+ {
+  "code": "cd",
+  "name": "SpotHit",
+  "icon": 49574,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbg",
+  "name": "Square",
+  "icon": 49676,
+  "cat": "Other services"
+ },
+ {
+  "code": "la",
+  "name": "Ssoidnet",
+  "icon": 49727,
+  "cat": "Other services"
+ },
+ {
+  "code": "sta",
+  "name": "Stage",
+  "icon": 69585,
+  "cat": "Other services"
+ },
+ {
+  "code": "stn",
+  "name": "Stan",
+  "icon": 58953,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwt",
+  "name": "Stanleybet",
+  "icon": 59399,
+  "cat": "Betting"
+ },
+ {
+  "code": "sr",
+  "name": "Starbucks",
+  "icon": 49617,
+  "cat": "Food"
+ },
+ {
+  "code": "sre",
+  "name": "Starexch",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbz",
+  "name": "Starling",
+  "icon": 64078,
+  "cat": "Other services"
+ },
+ {
+  "code": "auk",
+  "name": "STB Union",
+  "icon": 49736,
+  "cat": "Other services"
+ },
+ {
+  "code": "mt",
+  "name": "Steam",
+  "icon": 220,
+  "cat": "Games"
+ },
+ {
+  "code": "ccf",
+  "name": "StepFun",
+  "icon": 64303,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsg",
+  "name": "SticksnSushi",
+  "icon": 58276,
+  "cat": "Other services"
+ },
+ {
+  "code": "jo",
+  "name": "SticPay",
+  "icon": 50277,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "sti",
+  "name": "Stir",
+  "icon": 72420,
+  "cat": "Other services"
+ },
+ {
+  "code": "axd",
+  "name": "STK",
+  "icon": 50011,
+  "cat": "Other services"
+ },
+ {
+  "code": "ali",
+  "name": "StockyDodo",
+  "icon": 49890,
+  "cat": "Other services"
+ },
+ {
+  "code": "bas",
+  "name": "Stoiximan",
+  "icon": 50027,
+  "cat": "Other services"
+ },
+ {
+  "code": "caq",
+  "name": "Stone",
+  "icon": 63180,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzm",
+  "name": "Storewards",
+  "icon": 62777,
+  "cat": "The shops"
+ },
+ {
+  "code": "bkr",
+  "name": "Storm EduGo",
+  "icon": 58445,
+  "cat": "Other services"
+ },
+ {
+  "code": "stm",
+  "name": "StoryMax",
+  "icon": 67907,
+  "cat": "Other services"
+ },
+ {
+  "code": "sty",
+  "name": "StoryTV",
+  "icon": 65058,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahj",
+  "name": "Strato",
+  "icon": 49520,
+  "cat": "Other services"
+ },
+ {
+  "code": "nu",
+  "name": "Stripe",
+  "icon": 50275,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "buu",
+  "name": "STS",
+  "icon": 58273,
+  "cat": "Other services"
+ },
+ {
+  "code": "lc",
+  "name": "Subito",
+  "icon": 11278,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bao",
+  "name": "SUGO",
+  "icon": 49419,
+  "cat": "Other services"
+ },
+ {
+  "code": "aca",
+  "name": "Sunlight",
+  "icon": 49329,
+  "cat": "Other services"
+ },
+ {
+  "code": "bny",
+  "name": "Suno",
+  "icon": 58185,
+  "cat": "Other services"
+ },
+ {
+  "code": "arh",
+  "name": "Super Ace",
+  "icon": 49700,
+  "cat": "Other services"
+ },
+ {
+  "code": "sup",
+  "name": "Super.com",
+  "icon": 69557,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgr",
+  "name": "Superbank",
+  "icon": 49581,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ane",
+  "name": "Supercell",
+  "icon": 49934,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgi",
+  "name": "SuperLive",
+  "icon": 49354,
+  "cat": "Other services"
+ },
+ {
+  "code": "ca",
+  "name": "SuperS",
+  "icon": 49751,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjq",
+  "name": "Surveyon",
+  "icon": 49323,
+  "cat": "Other services"
+ },
+ {
+  "code": "blu",
+  "name": "SurveyRewardz",
+  "icon": 58270,
+  "cat": "Other services"
+ },
+ {
+  "code": "gd",
+  "name": "Surveytime",
+  "icon": 49800,
+  "cat": "Other services"
+ },
+ {
+  "code": "suz",
+  "name": "Suzuki Ride Connect",
+  "icon": 73638,
+  "cat": "Other services"
+ },
+ {
+  "code": "swe",
+  "name": "Sweetring",
+  "icon": 69603,
+  "cat": "Other services"
+ },
+ {
+  "code": "swrt",
+  "name": "Swerte88",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "jx",
+  "name": "Swiggy",
+  "icon": 15666,
+  "cat": "Food"
+ },
+ {
+  "code": "acl",
+  "name": "Swissmoney",
+  "icon": 49673,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "hg",
+  "name": "Switips",
+  "icon": 12125,
+  "cat": "Other services"
+ },
+ {
+  "code": "tq",
+  "name": "Swvl",
+  "icon": 49621,
+  "cat": "Other services"
+ },
+ {
+  "code": "xc",
+  "name": "SynotTip",
+  "icon": 50190,
+  "cat": "Other services"
+ },
+ {
+  "code": "yb",
+  "name": "Systema Gorod",
+  "icon": 58962,
+  "cat": "Other services"
+ },
+ {
+  "code": "ton",
+  "name": "T-online",
+  "icon": 67018,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccr",
+  "name": "T-POP",
+  "icon": 64418,
+  "cat": "Other services"
+ },
+ {
+  "code": "bge",
+  "name": "T2P",
+  "icon": 50104,
+  "cat": "Other services"
+ },
+ {
+  "code": "aw",
+  "name": "Taikang",
+  "icon": 12187,
+  "cat": "Other services"
+ },
+ {
+  "code": "xw",
+  "name": "Taki",
+  "icon": 49712,
+  "cat": "Other services"
+ },
+ {
+  "code": "ei",
+  "name": "Taksheel",
+  "icon": 49565,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqm",
+  "name": "Tala",
+  "icon": 49271,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_ta",
+  "name": "Talabat",
+  "icon": 12469,
+  "cat": "Food"
+ },
+ {
+  "code": "bzj",
+  "name": "Talk360",
+  "icon": 62778,
+  "cat": "Messengers"
+ },
+ {
+  "code": "tu",
+  "name": "TalkU",
+  "icon": 7230,
+  "cat": "Messengers"
+ },
+ {
+  "code": "azv",
+  "name": "Tangga",
+  "icon": 49570,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnm",
+  "name": "TangoMe",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "wh",
+  "name": "Tantan",
+  "icon": 12040,
+  "cat": "Dating"
+ },
+ {
+  "code": "t694",
+  "name": "TAO",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "qd",
+  "name": "Taobao",
+  "icon": 264,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "axh",
+  "name": "TAOVIP",
+  "icon": 49496,
+  "cat": "Other services"
+ },
+ {
+  "code": "tap",
+  "name": "TapTap",
+  "icon": 59588,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_tp",
+  "name": "Taptap Send",
+  "icon": 12201,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bby",
+  "name": "TATA 1mg",
+  "icon": 50266,
+  "cat": "Other services"
+ },
+ {
+  "code": "acs",
+  "name": "Tata CLiQ Palette",
+  "icon": 49649,
+  "cat": "Other services"
+ },
+ {
+  "code": "qmp",
+  "name": "Tata Motors",
+  "icon": 68859,
+  "cat": "Other services"
+ },
+ {
+  "code": "ace",
+  "name": "Tata Neu",
+  "icon": 15663,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "uc",
+  "name": "Tatneft",
+  "icon": 50059,
+  "cat": "Other services"
+ },
+ {
+  "code": "bag",
+  "name": "Taurus",
+  "icon": 50178,
+  "cat": "Other services"
+ },
+ {
+  "code": "bur",
+  "name": "Tayyab",
+  "icon": 58248,
+  "cat": "Other services"
+ },
+ {
+  "code": "tccc",
+  "name": "Tcccfrs",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bta",
+  "name": "TCLOUD",
+  "icon": 58312,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpu",
+  "name": "TCONE",
+  "icon": 58395,
+  "cat": "Other services"
+ },
+ {
+  "code": "avb",
+  "name": "Tealive",
+  "icon": 49154,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_td",
+  "name": "Teen Patti Dynasty",
+  "icon": 59167,
+  "cat": "Betting"
+ },
+ {
+  "code": "tnp",
+  "name": "Teenpati joy",
+  "icon": 14906,
+  "cat": "Betting"
+ },
+ {
+  "code": "tle",
+  "name": "Telephia: Earn Rewards",
+  "icon": 71753,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhg",
+  "name": "Telz",
+  "icon": 49580,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdn",
+  "name": "Teman Prima",
+  "icon": 50227,
+  "cat": "Other services"
+ },
+ {
+  "code": "ep",
+  "name": "Temu",
+  "icon": 20436,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "qq",
+  "name": "Tencent QQ",
+  "icon": 261,
+  "cat": "Messengers"
+ },
+ {
+  "code": "cr",
+  "name": "TenChat",
+  "icon": 12178,
+  "cat": "Social media"
+ },
+ {
+  "code": "bxp",
+  "name": "Tennents",
+  "icon": 59556,
+  "cat": "Other services"
+ },
+ {
+  "code": "acj",
+  "name": "TeriMeriChoice",
+  "icon": 50251,
+  "cat": "Other services"
+ },
+ {
+  "code": "bky",
+  "name": "Tesco",
+  "icon": 58222,
+  "cat": "Other services"
+ },
+ {
+  "code": "asf",
+  "name": "TextFree",
+  "icon": 18756,
+  "cat": "Messengers"
+ },
+ {
+  "code": "aur",
+  "name": "The Concert",
+  "icon": 50189,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfy",
+  "name": "The Dots",
+  "icon": 49914,
+  "cat": "Other services"
+ },
+ {
+  "code": "bam",
+  "name": "The Haat",
+  "icon": 49662,
+  "cat": "Other services"
+ },
+ {
+  "code": "bda",
+  "name": "The Simple Peso",
+  "icon": 50260,
+  "cat": "Other services"
+ },
+ {
+  "code": "aprnt",
+  "name": "theAsianparent",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aeu",
+  "name": "TheFork",
+  "icon": 49190,
+  "cat": "Other services"
+ },
+ {
+  "code": "azi",
+  "name": "TheL",
+  "icon": 49404,
+  "cat": "Other services"
+ },
+ {
+  "code": "lz",
+  "name": "Things",
+  "icon": 49484,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayu",
+  "name": "Think Academy",
+  "icon": 49849,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahr",
+  "name": "This Fate",
+  "icon": 49422,
+  "cat": "Other services"
+ },
+ {
+  "code": "nm",
+  "name": "Thisshop",
+  "icon": 49807,
+  "cat": "The shops"
+ },
+ {
+  "code": "box",
+  "name": "Thumbtack",
+  "icon": 58156,
+  "cat": "Other services"
+ },
+ {
+  "code": "ast",
+  "name": "THXapp",
+  "icon": 49509,
+  "cat": "Other services"
+ },
+ {
+  "code": "rb",
+  "name": "Tick",
+  "icon": 49714,
+  "cat": "Other services"
+ },
+ {
+  "code": "azm",
+  "name": "Ticket Plus",
+  "icon": 50072,
+  "cat": "Other services"
+ },
+ {
+  "code": "tckt",
+  "name": "TicketBoard",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "gp",
+  "name": "Ticketmaster",
+  "icon": 12142,
+  "cat": "Other services"
+ },
+ {
+  "code": "aue",
+  "name": "TicketOne",
+  "icon": 49625,
+  "cat": "Other services"
+ },
+ {
+  "code": "alv",
+  "name": "TIER",
+  "icon": 49997,
+  "cat": "Other services"
+ },
+ {
+  "code": "aki",
+  "name": "Tiketcom",
+  "icon": 49642,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzh",
+  "name": "Tikkie",
+  "icon": 62341,
+  "cat": "Other services"
+ },
+ {
+  "code": "tit",
+  "name": "TIM IT",
+  "icon": 68773,
+  "cat": "Other services"
+ },
+ {
+  "code": "tim",
+  "name": "TimesPrime",
+  "icon": 69390,
+  "cat": "Other services"
+ },
+ {
+  "code": "apj",
+  "name": "Tinkoff VoiceKit",
+  "icon": 49551,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcn",
+  "name": "Tipsport Gamechanger",
+  "icon": 49646,
+  "cat": "Betting"
+ },
+ {
+  "code": "aap",
+  "name": "Tiptapp",
+  "icon": 49689,
+  "cat": "Other services"
+ },
+ {
+  "code": "air",
+  "name": "TipTip",
+  "icon": 58364,
+  "cat": "Other services"
+ },
+ {
+  "code": "tix",
+  "name": "Tixel",
+  "icon": 69648,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhu",
+  "name": "TMTW",
+  "icon": 49911,
+  "cat": "Other services"
+ },
+ {
+  "code": "toi",
+  "name": "Toing",
+  "icon": 70320,
+  "cat": "Other services"
+ },
+ {
+  "code": "xd",
+  "name": "Tokopedia",
+  "icon": 4168,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "tlk",
+  "name": "Toloka.ai",
+  "icon": 47008,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfc",
+  "name": "Tomei",
+  "icon": 49897,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhn",
+  "name": "TopCashback",
+  "icon": 50299,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bae",
+  "name": "Topchop",
+  "icon": 49858,
+  "cat": "Other services"
+ },
+ {
+  "code": "anz",
+  "name": "TopGun",
+  "icon": 50112,
+  "cat": "Other services"
+ },
+ {
+  "code": "tss",
+  "name": "TopSurveys",
+  "icon": 64561,
+  "cat": "Other services"
+ },
+ {
+  "code": "nr",
+  "name": "Tosla",
+  "icon": 50108,
+  "cat": "Other services"
+ },
+ {
+  "code": "bra",
+  "name": "Touch n Go TNG",
+  "icon": 58159,
+  "cat": "Other services"
+ },
+ {
+  "code": "fm",
+  "name": "Touchance",
+  "icon": 50148,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvz",
+  "name": "TourCMR",
+  "icon": 58341,
+  "cat": "Other services"
+ },
+ {
+  "code": "ape",
+  "name": "Toutiao",
+  "icon": 49481,
+  "cat": "Other services"
+ },
+ {
+  "code": "bzg",
+  "name": "Toyota",
+  "icon": 62343,
+  "cat": "Other services"
+ },
+ {
+  "code": "azx",
+  "name": "ToYou",
+  "icon": 49888,
+  "cat": "Other services"
+ },
+ {
+  "code": "bss",
+  "name": "Trade Republic",
+  "icon": 58399,
+  "cat": "Other services"
+ },
+ {
+  "code": "af",
+  "name": "TradeX",
+  "icon": 49937,
+  "cat": "Other services"
+ },
+ {
+  "code": "mw",
+  "name": "Transfergo",
+  "icon": 49541,
+  "cat": "Other services"
+ },
+ {
+  "code": "zhng",
+  "name": "TravelSky",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bnt",
+  "name": "Treasury",
+  "icon": 58461,
+  "cat": "Other services"
+ },
+ {
+  "code": "pr",
+  "name": "Trendyol",
+  "icon": 18752,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "trg",
+  "name": "Trendyol GO",
+  "icon": 73169,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "tri",
+  "name": "TRIBBU",
+  "icon": 66885,
+  "cat": "Other services"
+ },
+ {
+  "code": "nq",
+  "name": "Trip",
+  "icon": 12068,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "ccv",
+  "name": "Triumph",
+  "icon": 70778,
+  "cat": "Other services"
+ },
+ {
+  "code": "tl",
+  "name": "Truecaller",
+  "icon": 4112,
+  "cat": "Messengers"
+ },
+ {
+  "code": "cbn",
+  "name": "TrueCOLOR 本色",
+  "icon": 63917,
+  "cat": "Other services"
+ },
+ {
+  "code": "axb",
+  "name": "TrueID",
+  "icon": 49552,
+  "cat": "Other services"
+ },
+ {
+  "code": "qdx",
+  "name": "Truemeds",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbm",
+  "name": "TrueMoney",
+  "icon": 49333,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bts",
+  "name": "Trustee Plus",
+  "icon": 58326,
+  "cat": "Other services"
+ },
+ {
+  "code": "ada",
+  "name": "TRUTH SOCIAL",
+  "icon": 49141,
+  "cat": "Social media"
+ },
+ {
+  "code": "bfn",
+  "name": "Tualang Honey",
+  "icon": 49756,
+  "cat": "Other services"
+ },
+ {
+  "code": "brn",
+  "name": "Tune AI",
+  "icon": 58460,
+  "cat": "Other services"
+ },
+ {
+  "code": "tnst",
+  "name": "Tune studio",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "tbn",
+  "name": "TurboTenant",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "tui",
+  "name": "Tutti",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "afy",
+  "name": "Tuul",
+  "icon": 49601,
+  "cat": "Other services"
+ },
+ {
+  "code": "avo",
+  "name": "Twikey",
+  "icon": 49853,
+  "cat": "Other services"
+ },
+ {
+  "code": "ee",
+  "name": "Twilio",
+  "icon": 12167,
+  "cat": "Other services"
+ },
+ {
+  "code": "hb",
+  "name": "Twitch",
+  "icon": 718,
+  "cat": "Social media"
+ },
+ {
+  "code": "bkl",
+  "name": "Uancomm",
+  "icon": 58239,
+  "cat": "Other services"
+ },
+ {
+  "code": "ahb",
+  "name": "Ubisoft",
+  "icon": 49257,
+  "cat": "Games"
+ },
+ {
+  "code": "azn",
+  "name": "UFC",
+  "icon": 49947,
+  "cat": "Other services"
+ },
+ {
+  "code": "ufo",
+  "name": "UfotableTicket",
+  "icon": 66220,
+  "cat": "Other services"
+ },
+ {
+  "code": "cby",
+  "name": "Uhuu",
+  "icon": 64076,
+  "cat": "Other services"
+ },
+ {
+  "code": "ukl",
+  "name": "Uklon",
+  "icon": 69615,
+  "cat": "Other services"
+ },
+ {
+  "code": "hu",
+  "name": "Ukrnet",
+  "icon": 49170,
+  "cat": "Other services"
+ },
+ {
+  "code": "xa",
+  "name": "UlibkaRadugi",
+  "icon": 49744,
+  "cat": "Other services"
+ },
+ {
+  "code": "afr",
+  "name": "Ultragaz",
+  "icon": 49203,
+  "cat": "Other services"
+ },
+ {
+  "code": "amr",
+  "name": "Univest",
+  "icon": 50283,
+  "cat": "Other services"
+ },
+ {
+  "code": "aru",
+  "name": "UNNI 강남언니",
+  "icon": 49139,
+  "cat": "Other services"
+ },
+ {
+  "code": "abh",
+  "name": "UOL Host",
+  "icon": 49265,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvb",
+  "name": "Uphold",
+  "icon": 58334,
+  "cat": "Other services"
+ },
+ {
+  "code": "aho",
+  "name": "Upland",
+  "icon": 49688,
+  "cat": "Other services"
+ },
+ {
+  "code": "upx",
+  "name": "Upstox",
+  "icon": 61572,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqn",
+  "name": "Upward",
+  "icon": 58435,
+  "cat": "Other services"
+ },
+ {
+  "code": "abq",
+  "name": "Upwork",
+  "icon": 15750,
+  "cat": "Other services"
+ },
+ {
+  "code": "agt",
+  "name": "Uralairlines",
+  "icon": 50147,
+  "cat": "Other services"
+ },
+ {
+  "code": "baf",
+  "name": "Urbanic",
+  "icon": 50279,
+  "cat": "Other services"
+ },
+ {
+  "code": "abm",
+  "name": "Utkonos",
+  "icon": 49382,
+  "cat": "Other services"
+ },
+ {
+  "code": "gm69",
+  "name": "UU Game",
+  "icon": 46917,
+  "cat": "Games"
+ },
+ {
+  "code": "ao",
+  "name": "UU163",
+  "icon": 49645,
+  "cat": "Other services"
+ },
+ {
+  "code": "cl",
+  "name": "UWIN",
+  "icon": 50286,
+  "cat": "Other services"
+ },
+ {
+  "code": "adq",
+  "name": "Uzum",
+  "icon": 49861,
+  "cat": "Other services"
+ },
+ {
+  "code": "byc",
+  "name": "Vantage",
+  "icon": 60370,
+  "cat": "Other services"
+ },
+ {
+  "code": "anc",
+  "name": "VARUS",
+  "icon": 49686,
+  "cat": "Other services"
+ },
+ {
+  "code": "v694",
+  "name": "Ve88",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdk",
+  "name": "Veera",
+  "icon": 49893,
+  "cat": "Other services"
+ },
+ {
+  "code": "vee",
+  "name": "Veergame",
+  "icon": 74144,
+  "cat": "Betting"
+ },
+ {
+  "code": "cax",
+  "name": "Veezu",
+  "icon": 63541,
+  "cat": "Other services"
+ },
+ {
+  "code": "agn",
+  "name": "Velobayk",
+  "icon": 50034,
+  "cat": "Other services"
+ },
+ {
+  "code": "yy",
+  "name": "Venmo",
+  "icon": 4171,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "ajk",
+  "name": "Venteny",
+  "icon": 50140,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdc",
+  "name": "Veo",
+  "icon": 50033,
+  "cat": "Other services"
+ },
+ {
+  "code": "vrst",
+  "name": "Verasight",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "amb",
+  "name": "Vercel",
+  "icon": 49207,
+  "cat": "Other services"
+ },
+ {
+  "code": "bve",
+  "name": "VerdeCasino",
+  "icon": 58268,
+  "cat": "Betting"
+ },
+ {
+  "code": "amp",
+  "name": "VerifyKit",
+  "icon": 49550,
+  "cat": "Other services"
+ },
+ {
+  "code": "kn",
+  "name": "Verse",
+  "icon": 49705,
+  "cat": "Other services"
+ },
+ {
+  "code": "cac",
+  "name": "Vesseo",
+  "icon": 62830,
+  "cat": "Other services"
+ },
+ {
+  "code": "afp",
+  "name": "VFS GLOBAL",
+  "icon": 49310,
+  "cat": "Other services"
+ },
+ {
+  "code": "vi",
+  "name": "Viber",
+  "icon": 208,
+  "cat": "Messengers"
+ },
+ {
+  "code": "alw",
+  "name": "Vida",
+  "icon": 49764,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwn",
+  "name": "Viendong",
+  "icon": 58981,
+  "cat": "Other services"
+ },
+ {
+  "code": "bza",
+  "name": "VieON",
+  "icon": 61593,
+  "cat": "Other services"
+ },
+ {
+  "code": "vie",
+  "name": "ViewpointFB",
+  "icon": 70267,
+  "cat": "Other services"
+ },
+ {
+  "code": "agc",
+  "name": "VIMpay",
+  "icon": 49303,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "kc",
+  "name": "Vinted",
+  "icon": 71593,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "axl",
+  "name": "Viralmu",
+  "icon": 49786,
+  "cat": "Other services"
+ },
+ {
+  "code": "vtv",
+  "name": "ViraloTV",
+  "icon": 69259,
+  "cat": "Other services"
+ },
+ {
+  "code": "no",
+  "name": "Virgo",
+  "icon": 49699,
+  "cat": "Other services"
+ },
+ {
+  "code": "bko",
+  "name": "Vision Plus",
+  "icon": 58402,
+  "cat": "Other services"
+ },
+ {
+  "code": "bwc",
+  "name": "Vision11",
+  "icon": 58426,
+  "cat": "Other services"
+ },
+ {
+  "code": "bj",
+  "name": "Vita express",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "azh",
+  "name": "Vivid",
+  "icon": 49901,
+  "cat": "Other services"
+ },
+ {
+  "code": "kx",
+  "name": "Vivo",
+  "icon": 49477,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "oq",
+  "name": "Vlife",
+  "icon": 50131,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccs",
+  "name": "vMix",
+  "icon": 64419,
+  "cat": "Other services"
+ },
+ {
+  "code": "btd",
+  "name": "Volcengine 火山引擎",
+  "icon": 58201,
+  "cat": "Other services"
+ },
+ {
+  "code": "eb",
+  "name": "Voltz",
+  "icon": 49490,
+  "cat": "Other services"
+ },
+ {
+  "code": "atp",
+  "name": "Vonage",
+  "icon": 50282,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmd",
+  "name": "VooV Meeting",
+  "icon": 58162,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkg",
+  "name": "Vprok",
+  "icon": 58217,
+  "cat": "Other services"
+ },
+ {
+  "code": "afl",
+  "name": "Vsesmart",
+  "icon": 50195,
+  "cat": "Other services"
+ },
+ {
+  "code": "caa",
+  "name": "Vshow",
+  "icon": 62795,
+  "cat": "Other services"
+ },
+ {
+  "code": "alr",
+  "name": "Vson",
+  "icon": 50301,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayp",
+  "name": "VYBE by BPI",
+  "icon": 49871,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_vy",
+  "name": "Vymo",
+  "icon": 57925,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpr",
+  "name": "Waha",
+  "icon": 58393,
+  "cat": "Other services"
+ },
+ {
+  "code": "bum",
+  "name": "Wahana Honda",
+  "icon": 58178,
+  "cat": "Other services"
+ },
+ {
+  "code": "bvy",
+  "name": "Waje",
+  "icon": 58252,
+  "cat": "Other services"
+ },
+ {
+  "code": "awv",
+  "name": "Wallapop",
+  "icon": 50303,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "bxx",
+  "name": "Wallester",
+  "icon": 59659,
+  "cat": "Other services"
+ },
+ {
+  "code": "bbr",
+  "name": "WalletHub",
+  "icon": 50201,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "wr",
+  "name": "Walmart",
+  "icon": 71599,
+  "cat": "Marketplaces"
+ },
+ {
+  "code": "byb",
+  "name": "wannaPay",
+  "icon": 60371,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "buc",
+  "name": "Wargaming",
+  "icon": 58355,
+  "cat": "Games"
+ },
+ {
+  "code": "asq",
+  "name": "Warpcast",
+  "icon": 49632,
+  "cat": "Other services"
+ },
+ {
+  "code": "axz",
+  "name": "WarPin",
+  "icon": 50084,
+  "cat": "Other services"
+ },
+ {
+  "code": "cv",
+  "name": "WashXpress",
+  "icon": 49564,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdz",
+  "name": "Watcho",
+  "icon": 50242,
+  "cat": "Other services"
+ },
+ {
+  "code": "atl",
+  "name": "Watsons MY",
+  "icon": 49590,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajh",
+  "name": "WAUG",
+  "icon": 50243,
+  "cat": "Other services"
+ },
+ {
+  "code": "bml",
+  "name": "Wavy",
+  "icon": 58295,
+  "cat": "Other services"
+ },
+ {
+  "code": "bfi",
+  "name": "Wcode",
+  "icon": 49681,
+  "cat": "Other services"
+ },
+ {
+  "code": "abo",
+  "name": "WEB.DE",
+  "icon": 49133,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsk",
+  "name": "Web3Auth",
+  "icon": 58330,
+  "cat": "Other services"
+ },
+ {
+  "code": "buf",
+  "name": "Web8",
+  "icon": 58440,
+  "cat": "Other services"
+ },
+ {
+  "code": "alf",
+  "name": "WEBULL",
+  "icon": 49798,
+  "cat": "Other services"
+ },
+ {
+  "code": "wb",
+  "name": "WeChat",
+  "icon": 71630,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bqb",
+  "name": "Weex",
+  "icon": 58409,
+  "cat": "Other services"
+ },
+ {
+  "code": "avq",
+  "name": "Wego",
+  "icon": 50300,
+  "cat": "Other services"
+ },
+ {
+  "code": "kf",
+  "name": "Weibo",
+  "icon": 4118,
+  "cat": "Social media"
+ },
+ {
+  "code": "mf",
+  "name": "Weidian",
+  "icon": 49863,
+  "cat": "Other services"
+ },
+ {
+  "code": "bmh",
+  "name": "Welink",
+  "icon": 58291,
+  "cat": "Other services"
+ },
+ {
+  "code": "auq",
+  "name": "WeLive",
+  "icon": 50267,
+  "cat": "Other services"
+ },
+ {
+  "code": "bno",
+  "name": "Welo Data",
+  "icon": 58414,
+  "cat": "Other services"
+ },
+ {
+  "code": "azf",
+  "name": "Welocalize",
+  "icon": 46140,
+  "cat": "Other services"
+ },
+ {
+  "code": "bww",
+  "name": "Wert",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "th",
+  "name": "WestStein",
+  "icon": 49407,
+  "cat": "Other services"
+ },
+ {
+  "code": "bud",
+  "name": "WeTalk",
+  "icon": 58406,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bls",
+  "name": "WeTV",
+  "icon": 58124,
+  "cat": "Other services"
+ },
+ {
+  "code": "ja",
+  "name": "Weverse",
+  "icon": 49430,
+  "cat": "Other services"
+ },
+ {
+  "code": "bex",
+  "name": "Whatnot",
+  "icon": 49159,
+  "cat": "Other services"
+ },
+ {
+  "code": "bye",
+  "name": "WhatsApp Business",
+  "icon": 60602,
+  "cat": "Messengers"
+ },
+ {
+  "code": "btg",
+  "name": "Whoppah",
+  "icon": 58288,
+  "cat": "Other services"
+ },
+ {
+  "code": "aic",
+  "name": "Whoscall",
+  "icon": 50168,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqc",
+  "name": "Wigl",
+  "icon": 58207,
+  "cat": "Other services"
+ },
+ {
+  "code": "byz",
+  "name": "WikiFX",
+  "icon": 61595,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsa",
+  "name": "Will",
+  "icon": 58286,
+  "cat": "Other services"
+ },
+ {
+  "code": "adt",
+  "name": "Willhaben",
+  "icon": 49359,
+  "cat": "Other services"
+ },
+ {
+  "code": "akw",
+  "name": "WINDS",
+  "icon": 49624,
+  "cat": "Other services"
+ },
+ {
+  "code": "atx",
+  "name": "Winee3",
+  "icon": 50274,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_wn",
+  "name": "Winelab",
+  "icon": 12237,
+  "cat": "The shops"
+ },
+ {
+  "code": "jb",
+  "name": "Wing Money",
+  "icon": 49837,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "wil",
+  "name": "Wingmall",
+  "icon": 73505,
+  "cat": "Other services"
+ },
+ {
+  "code": "wig",
+  "name": "WinGo",
+  "icon": 0,
+  "cat": "Other services"
+ },
+ {
+  "code": "ta",
+  "name": "Wink",
+  "icon": 12046,
+  "cat": "Other services"
+ },
+ {
+  "code": "wmh",
+  "name": "WinMatch",
+  "icon": 47219,
+  "cat": "Betting"
+ },
+ {
+  "code": "wim",
+  "name": "Winmate",
+  "icon": 0,
+  "cat": "Other services"
+ },
+ {
+  "code": "blh",
+  "name": "Winner",
+  "icon": 58191,
+  "cat": "Other services"
+ },
+ {
+  "code": "vs",
+  "name": "WinzoGame",
+  "icon": 13492,
+  "cat": "Games"
+ },
+ {
+  "code": "baa",
+  "name": "Wirex",
+  "icon": 49735,
+  "cat": "Other services"
+ },
+ {
+  "code": "xv",
+  "name": "Wish",
+  "icon": 49532,
+  "cat": "Other services"
+ },
+ {
+  "code": "xl",
+  "name": "Wmaraci",
+  "icon": 49836,
+  "cat": "Other services"
+ },
+ {
+  "code": "wol",
+  "name": "Wolf777",
+  "icon": 74179,
+  "cat": "Betting"
+ },
+ {
+  "code": "rr",
+  "name": "Wolt",
+  "icon": 71624,
+  "cat": "Food"
+ },
+ {
+  "code": "gr_wt",
+  "name": "Wonder Ticket",
+  "icon": 59171,
+  "cat": "Other services"
+ },
+ {
+  "code": "ar",
+  "name": "Wondermart",
+  "icon": 49413,
+  "cat": "Other services"
+ },
+ {
+  "code": "qly",
+  "name": "Woohoo",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "ama",
+  "name": "WooPlus",
+  "icon": 49215,
+  "cat": "Other services"
+ },
+ {
+  "code": "avs",
+  "name": "Wooppay",
+  "icon": 50116,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "bmt",
+  "name": "Worldgas",
+  "icon": 58220,
+  "cat": "Other services"
+ },
+ {
+  "code": "qx",
+  "name": "WorldRemit",
+  "icon": 49965,
+  "cat": "Other services"
+ },
+ {
+  "code": "wow",
+  "name": "Wow Eats",
+  "icon": 72994,
+  "cat": "Food"
+ },
+ {
+  "code": "wwpr",
+  "name": "WowPera",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ayl",
+  "name": "WPK",
+  "icon": 49733,
+  "cat": "Other services"
+ },
+ {
+  "code": "bhb",
+  "name": "Wuling",
+  "icon": 49299,
+  "cat": "Other services"
+ },
+ {
+  "code": "apz",
+  "name": "Wynk",
+  "icon": 49641,
+  "cat": "Other services"
+ },
+ {
+  "code": "bd",
+  "name": "X5ID",
+  "icon": 49132,
+  "cat": "Other services"
+ },
+ {
+  "code": "fa",
+  "name": "XadrezFeliz",
+  "icon": 49771,
+  "cat": "Other services"
+ },
+ {
+  "code": "aml",
+  "name": "Xbox",
+  "icon": 49508,
+  "cat": "Games"
+ },
+ {
+  "code": "bdf",
+  "name": "Xegr",
+  "icon": 49346,
+  "cat": "Other services"
+ },
+ {
+  "code": "yu",
+  "name": "Xiaomi",
+  "icon": 11973,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "aql",
+  "name": "Xigua Video 西瓜视频",
+  "icon": 49456,
+  "cat": "Other services"
+ },
+ {
+  "code": "nw",
+  "name": "Ximalaya",
+  "icon": 12067,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqx",
+  "name": "XL-PEarl",
+  "icon": 49892,
+  "cat": "Other services"
+ },
+ {
+  "code": "avh",
+  "name": "XM",
+  "icon": 50209,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbg",
+  "name": "XP Investimentos",
+  "icon": 63659,
+  "cat": "Other services"
+ },
+ {
+  "code": "biq",
+  "name": "Xpress Super App",
+  "icon": 49806,
+  "cat": "Other services"
+ },
+ {
+  "code": "aqo",
+  "name": "xREWARD",
+  "icon": 50143,
+  "cat": "Other services"
+ },
+ {
+  "code": "akt",
+  "name": "Xworldwallet",
+  "icon": 49882,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "aas",
+  "name": "XXGame",
+  "icon": 49796,
+  "cat": "Games"
+ },
+ {
+  "code": "vn",
+  "name": "Yaay",
+  "icon": 49546,
+  "cat": "Other services"
+ },
+ {
+  "code": "mb",
+  "name": "Yahoo",
+  "icon": 243,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "yl",
+  "name": "Yalla",
+  "icon": 240,
+  "cat": "Messengers"
+ },
+ {
+  "code": "bwm",
+  "name": "YamahaMotor",
+  "icon": 58977,
+  "cat": "Other services"
+ },
+ {
+  "code": "yan",
+  "name": "Yani",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "kj",
+  "name": "YAPPY",
+  "icon": 12101,
+  "cat": "Social media"
+ },
+ {
+  "code": "bdr",
+  "name": "Yara Farmcare",
+  "icon": 50145,
+  "cat": "Other services"
+ },
+ {
+  "code": "bsh",
+  "name": "YELL VOTE",
+  "icon": 58230,
+  "cat": "Other services"
+ },
+ {
+  "code": "yi",
+  "name": "Yemeksepeti",
+  "icon": 367,
+  "cat": "Food"
+ },
+ {
+  "code": "age",
+  "name": "Yetz Promo",
+  "icon": 50297,
+  "cat": "Other services"
+ },
+ {
+  "code": "dc",
+  "name": "Yik Yak",
+  "icon": 49634,
+  "cat": "Other services"
+ },
+ {
+  "code": "ynn",
+  "name": "YN777",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "gr_yo",
+  "name": "YoHo",
+  "icon": 7245,
+  "cat": "Other services"
+ },
+ {
+  "code": "yllg",
+  "name": "Yollgo",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bym",
+  "name": "Yonder",
+  "icon": 60838,
+  "cat": "Other services"
+ },
+ {
+  "code": "adg",
+  "name": "Yono777",
+  "icon": 49425,
+  "cat": "Other services"
+ },
+ {
+  "code": "bcl",
+  "name": "YONOPay",
+  "icon": 49887,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "boh",
+  "name": "Yophone",
+  "icon": 58123,
+  "cat": "Other services"
+ },
+ {
+  "code": "atm",
+  "name": "Yotta",
+  "icon": 50139,
+  "cat": "Other services"
+ },
+ {
+  "code": "wl",
+  "name": "YouGotaGift",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "bro",
+  "name": "YouGov Shopper",
+  "icon": 58250,
+  "cat": "Other services"
+ },
+ {
+  "code": "gb",
+  "name": "YouStar",
+  "icon": 12149,
+  "cat": "Other services"
+ },
+ {
+  "code": "sm",
+  "name": "YoWin",
+  "icon": 49618,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccg",
+  "name": "Ytowait",
+  "icon": 64288,
+  "cat": "Other services"
+ },
+ {
+  "code": "ynch",
+  "name": "Yuancai / 灏捷科技",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "uh",
+  "name": "Yubo",
+  "icon": 49563,
+  "cat": "Other services"
+ },
+ {
+  "code": "asb",
+  "name": "YUEWEN 阅文集团",
+  "icon": 49391,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqv",
+  "name": "Yuzu",
+  "icon": 58337,
+  "cat": "Other services"
+ },
+ {
+  "code": "bgq",
+  "name": "Zalabin",
+  "icon": 49856,
+  "cat": "Other services"
+ },
+ {
+  "code": "mj",
+  "name": "Zalo",
+  "icon": 237,
+  "cat": "Messengers"
+ },
+ {
+  "code": "zal",
+  "name": "Zalora",
+  "icon": 70401,
+  "cat": "Other services"
+ },
+ {
+  "code": "aov",
+  "name": "Zanimaika",
+  "icon": 50194,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbu",
+  "name": "ZapStep",
+  "icon": 64082,
+  "cat": "Other services"
+ },
+ {
+  "code": "bqp",
+  "name": "Zara",
+  "icon": 58179,
+  "cat": "The shops"
+ },
+ {
+  "code": "ahw",
+  "name": "Zasilkovna",
+  "icon": 50045,
+  "cat": "Other services"
+ },
+ {
+  "code": "ajg",
+  "name": "Zaymigo",
+  "icon": 50105,
+  "cat": "Other services"
+ },
+ {
+  "code": "avx",
+  "name": "Zazzle",
+  "icon": 50259,
+  "cat": "Other services"
+ },
+ {
+  "code": "ys",
+  "name": "ZCity",
+  "icon": 49600,
+  "cat": "Other services"
+ },
+ {
+  "code": "btm",
+  "name": "ZeeNow",
+  "icon": 58392,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxt",
+  "name": "ZEMPOT",
+  "icon": 59561,
+  "cat": "Other services"
+ },
+ {
+  "code": "bkv",
+  "name": "Zen",
+  "icon": 58457,
+  "cat": "Other services"
+ },
+ {
+  "code": "zpt",
+  "name": "Zepto",
+  "icon": 14894,
+  "cat": "Food"
+ },
+ {
+  "code": "zrwl",
+  "name": "Zero Wellness",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "zu",
+  "name": "Zhihu",
+  "icon": 7248,
+  "cat": "Social media"
+ },
+ {
+  "code": "tt",
+  "name": "Ziglu",
+  "icon": 58961,
+  "cat": "Other services"
+ },
+ {
+  "code": "zd",
+  "name": "Zilch",
+  "icon": 50133,
+  "cat": "Other services"
+ },
+ {
+  "code": "zlw",
+  "name": "Zillow",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "arx",
+  "name": "Zinia",
+  "icon": 50188,
+  "cat": "Other services"
+ },
+ {
+  "code": "zh",
+  "name": "Zoho",
+  "icon": 11967,
+  "cat": "Ecosystems"
+ },
+ {
+  "code": "dy",
+  "name": "Zomato",
+  "icon": 234,
+  "cat": "Food"
+ },
+ {
+  "code": "zmx6",
+  "name": "Zoomex",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "anf",
+  "name": "ZoomInfo",
+  "icon": 49432,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccc",
+  "name": "Zopa",
+  "icon": 64077,
+  "cat": "Other services"
+ },
+ {
+  "code": "zz68",
+  "name": "Zozo",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "cbh",
+  "name": "ZUL",
+  "icon": 63663,
+  "cat": "Other services"
+ },
+ {
+  "code": "mi",
+  "name": "Zupee",
+  "icon": 13695,
+  "cat": "Games"
+ },
+ {
+  "code": "aik",
+  "name": "ZUS Coffee",
+  "icon": 49156,
+  "cat": "Food"
+ },
+ {
+  "code": "em",
+  "name": "ZéDelivery",
+  "icon": 49317,
+  "cat": "Food"
+ },
+ {
+  "code": "bvs",
+  "name": "Вчасно",
+  "icon": 58154,
+  "cat": "Other services"
+ },
+ {
+  "code": "big",
+  "name": "Копійочка",
+  "icon": 49677,
+  "cat": "Other services"
+ },
+ {
+  "code": "uj",
+  "name": "СhampionСasino",
+  "icon": 50079,
+  "cat": "Other services"
+ },
+ {
+  "code": "bpe",
+  "name": "Сільпо",
+  "icon": 58225,
+  "cat": "Other services"
+ },
+ {
+  "code": "bds",
+  "name": "رسال resal",
+  "icon": 49940,
+  "cat": "Other services"
+ },
+ {
+  "code": "kkrk",
+  "name": "いくくる / Ikukuru",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "dndn",
+  "name": "エディオン / EDION",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "nzhn",
+  "name": "エン転職 /En Tenshoku",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "krsh",
+  "name": "クラシル (Kurashiru)",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "hhrr",
+  "name": "ハハロル",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "hpts",
+  "name": "ハピタス",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "prrp",
+  "name": "プラリ / Ponta",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "pdpd",
+  "name": "ペイディ/ Paidy",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "ymty",
+  "name": "ヤマト運輸",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "shng",
+  "name": "上海淅画科技",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "dngf",
+  "name": "东方航空",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "yktd",
+  "name": "优酷土豆 / Youku",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bi",
+  "name": "勇仕网络Ys4fun",
+  "icon": 49459,
+  "cat": "Other services"
+ },
+ {
+  "code": "bjng",
+  "name": "北京与你科技有限公司",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "hrnjie",
+  "name": "华人街",
+  "icon": 70324,
+  "cat": "Other services"
+ },
+ {
+  "code": "aua",
+  "name": "同程旅行 Tongcheng Travel",
+  "icon": 49208,
+  "cat": "Other services"
+ },
+ {
+  "code": "ccw",
+  "name": "夸克 Quark",
+  "icon": 70977,
+  "cat": "Other services"
+ },
+ {
+  "code": "mdn6",
+  "name": "密电",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "dnzh",
+  "name": "店长直聘",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "atv",
+  "name": "快手 Kuaishou",
+  "icon": 49495,
+  "cat": "Other services"
+ },
+ {
+  "code": "hngj",
+  "name": "恒基 / HCOINS",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bxo",
+  "name": "悠遊卡 EasyCard",
+  "icon": 59501,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "rbnt",
+  "name": "日本トレカセンター",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "yd68",
+  "name": "易达",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "bdu",
+  "name": "星城Online",
+  "icon": 50101,
+  "cat": "Other services"
+ },
+ {
+  "code": "bue",
+  "name": "映客 inke",
+  "icon": 58212,
+  "cat": "Other services"
+ },
+ {
+  "code": "bou",
+  "name": "汇旺 Huione Pay",
+  "icon": 58128,
+  "cat": "Payment systems"
+ },
+ {
+  "code": "cc68",
+  "name": "测测",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "cu",
+  "name": "炙热星河",
+  "icon": 49780,
+  "cat": "Other services"
+ },
+ {
+  "code": "qnxc",
+  "name": "群侠传",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "myjt",
+  "name": "螞蟻集團",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "tngd",
+  "name": "通达文",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "xngt",
+  "name": "醒图",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "lnjw",
+  "name": "链家网",
+  "icon": 46917,
+  "cat": "Other services"
+ },
+ {
+  "code": "buq",
+  "name": "로드나인 LORDNINE",
+  "icon": 58221,
+  "cat": "Other services"
+ }
+]
