@@ -319,6 +319,13 @@
       <label>Max bonuses (0 = unlimited) <input id="cBonusLimit" type="number" min="0" step="1"></label>
       <p class="muted">Given once per user when you approve their first top-up. <span id="cBonusGiven"></span></p>
       <p class="muted">Users send BDT to these numbers via <b>Send Money</b>, then submit the TrxID. You verify in your bKash/Nagad app and approve in <b>Admin → To review</b> — the USD balance is credited at the rate above.</p>
+      <h4 style="margin:14px 0 6px">⚡ Auto-approve via SMS</h4>
+      <p class="muted">Your phone forwards each bKash/Nagad payment SMS to the site → the matching top-up is <b>approved automatically</b>, even while you sleep. Zero fees.</p>
+      <label>Auto-approve <select id="cSmsOn"><option value="0">Off</option><option value="1">On</option></select></label>
+      <label>Webhook URL (give this to the forwarder app) <input id="cSmsUrl" type="text" readonly onclick="this.select()"></label>
+      <label>Secret <input id="cSmsSecret" type="text" readonly onclick="this.select()"></label>
+      <button id="cSmsRegen" class="btn btn-outline" type="button">Regenerate secret</button>
+      <p class="muted">Phone setup: install an <b>SMS-to-webhook forwarder</b> app → forward SMS from sender <b>bKash</b>/<b>Nagad</b> to the webhook URL as JSON: <span class="mono">{"secret":"…","sender":"…","message":"…"}</span> — the TrxID + amount in the SMS must match a pending top-up.</p>
       <label>Google Client ID (for "Continue with Google") <input id="cGoogleId" type="text" maxlength="120" autocomplete="off" placeholder="….apps.googleusercontent.com"></label>
       <label>Google Client Secret <input id="cGoogleSecret" type="password" maxlength="120" autocomplete="off"></label>
       <label>Public site URL (for Google redirect — e.g. https://otpstation.com) <input id="cBaseUrl" type="text" maxlength="120" placeholder="leave empty to auto-detect"></label>

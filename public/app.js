@@ -650,6 +650,9 @@ async function loadAdminPanel(name) {
   $('cBonusOn').value = config.welcomeBonusEnabled === false ? '0' : '1';
   $('cBonusLimit').value = config.welcomeBonusLimit || 0;
   $('cBonusGiven').textContent = `Bonuses given so far: ${config.welcomeBonusGiven || 0}.`;
+  $('cSmsOn').value = config.smsAutoApprove ? '1' : '0';
+  $('cSmsUrl').value = location.origin + '/api/payment-webhook';
+  $('cSmsSecret').value = config.smsWebhookSecret || '(turn On + Save to generate)';
   $('cGoogleId').value = config.googleClientId || '';
   $('cGoogleSecret').value = config.googleClientSecret ? '•••••••• (set — paste a new one to replace)' : '';
   $('cGoogleSecret').placeholder = config.googleClientSecret ? '' : 'GOCSPX-…';
@@ -730,7 +733,8 @@ $('cSave').onclick = async () => {
       bdtRate: $('cRate').value,
       welcomeBonusUsd: $('cBonusUsd').value,
       welcomeBonusEnabled: $('cBonusOn').value === '1',
-      welcomeBonusLimit: $('cBonusLimit').value
+      welcomeBonusLimit: $('cBonusLimit').value,
+      smsAutoApprove: $('cSmsOn').value === '1'
     };
     body.googleClientId = $('cGoogleId').value.trim();
     const gSec = $('cGoogleSecret').value.trim();
@@ -1026,3 +1030,12 @@ async function toggleOrderAlerts() {
     if (st) { st.textContent = 'Alerts are OFF'; st.className = 'alert-status off'; }
   }
 }
+
+$('cSmsRegen').onclick = async () => {
+  if (!confirm('Generate a new webhook secret? Update the forwarder app on your phone too.')) return;
+  try {
+    const { secret } = await api('POST', '/api/admin/sms-secret', {});
+    $('cSmsSecret').value = secret;
+    showMsg('cMsg', 'New secret generated ✓ — update your phone app', 'ok');
+  } catch (e) { showMsg('cMsg', e.message, 'err'); }
+};
