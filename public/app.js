@@ -746,7 +746,12 @@ $('cSave').onclick = async () => {
     const gSec = $('cGoogleSecret').value.trim();
     if (gSec && !gSec.startsWith('•')) body.googleClientSecret = gSec;
     body.baseUrl = $('cBaseUrl').value.trim();
-    await api('POST', '/api/admin/config', body);
+    const { config: saved } = await api('POST', '/api/admin/config', body);
+    if (saved.smsWebhookSecret) $('cSmsSecret').value = saved.smsWebhookSecret;
+    const lb2 = saved.smsLastBalances || {};
+    $('cSmsBalances').textContent = (lb2.bkash != null || lb2.nagad != null)
+      ? `Last seen — bKash: ৳${lb2.bkash ?? '–'}, Nagad: ৳${lb2.nagad ?? '–'}.`
+      : 'No balance seen yet — arrives with the first forwarded SMS.';
     showMsg('cMsg', 'Saved ✓', 'ok'); refreshMe(); loadServices();
   } catch (e) { showMsg('cMsg', e.message, 'err'); }
 };
