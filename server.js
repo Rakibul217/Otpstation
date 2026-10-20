@@ -507,6 +507,99 @@ function scoreChatFaq(faq, text) {
   return hits;
 }
 
+// ---------- smart chat bot: understands intents with live data ----------
+// Runs BEFORE the FAQ keyword match. Answers prices (live), payment-done
+// reassurance (checks the user's real pending top-up), welcome bonus,
+// greetings, how-to-buy — in Bengali when the customer writes Bengali.
+const CHAT_SERVICES = [
+  { code: 'fb', name: 'Facebook', keys: ['facebook', 'ফেসবুক', 'এফবি'] },
+  { code: 'wa', name: 'WhatsApp', keys: ['whatsapp', 'হোয়াটসঅ্যাপ', 'হোয়াটসএপ', 'whats app'] },
+  { code: 'tg', name: 'Telegram', keys: ['telegram', 'টেলিগ্রাম'] },
+  { code: 'ig', name: 'Instagram', keys: ['instagram', 'ইনস্টাগ্রাম'] },
+  { code: 'go', name: 'Google', keys: ['google', 'গুগল', 'youtube', 'ইউটিউব'] },
+  { code: 'tik', name: 'TikTok', keys: ['tiktok', 'টিকটক', 'tik tok'] },
+  { code: 'im', name: 'imo', keys: ['imo', 'ইমো'] }
+];
+const CHAT_PRICE_WORDS = ['দাম', 'প্রাইস', 'price', 'কত টাকা', 'রেট', 'rate', 'খরচ', 'cost', 'charge', 'কত করে', 'পড়বে', 'কতো'];
+const CHAT_PAID_WORDS = ['পেমেন্ট করেছি', 'পেমেন্ট দিয়েছি', 'পেমেন্ট দিলাম', 'পেমেন্ট করলাম', 'টাকা পাঠিয়েছি', 'টাকা দিয়েছি', 'টাকা পাঠালাম', 'টাকা সেন্ড করেছি', 'paid', 'payment done', 'payment sent', 'i have paid', 'already paid', 'sent the money', 'পেমেন্ট ডান'];
+const CHAT_PAY_HOW_WORDS = ['কিভাবে', 'কীভাবে', 'কেমনে', 'কি ভাবে', 'how to pay', 'how do i pay', 'পেমেন্ট করব', 'পেমেন্ট করতে'];
+const CHAT_BONUS_WORDS = ['বোনাস', 'bonus', 'ফ্রি', 'free', 'এক ডলার', '১ ডলার', '$1', 'one dollar', 'অফারটা'];
+function chatServiceOf(t) {
+  for (const s of CHAT_SERVICES) if (s.keys.some(k => t.includes(k))) return s;
+  return null;
+}
+async function smartChatReply(msg, thread) {
+  const t = ' ' + String(msg).toLowerCase() + ' ';
+  const bn = /[\u0980-\u09FF]/.test(msg);
+  try {
+    // Greeting
+    if (/^(hi+|hello+|hey+|হ্যালো|হাই|আসসালামু|সালাম|নমস্কার|আদাব)\b/.test(msg.trim().toLowerCase()) && msg.trim().length <= 30) {
+      return bn
+        ? 'হ্যালো! 👋 OTPStation সাপোর্টে স্বাগতম। আমি দাম, পেমেন্ট স্ট্যাটাস, ওয়েলকাম বোনাস — সবকিছু জানাতে পারি। কী সাহায্য করতে পারি?'
+        : 'Hello! 👋 Welcome to OTPStation support. I can help with prices, payment status, and the welcome bonus. How can I help you?';
+    }
+    // Payment done — reassure, with their real pending top-up when possible
+    if (CHAT_PAID_WORDS.some(k => t.includes(k)) && !CHAT_PAY_HOW_WORDS.some(k => t.includes(k))) {
+      let pending = null;
+      if (thread.userId) {
+        const tops = await db.userTopups(thread.userId);
+        pending = (tops || []).find(x => x.status === 'pending');
+      }
+      if (pending) {
+        const method = pending.method === 'nagad' ? 'Nagad' : 'bKash';
+        return bn
+          ? `হ্যাঁ, দেখতে পাচ্ছি! ✅ আপনার ৳${pending.amountBdt} (${method}) পেমেন্টটা যাচাইয়ের অপেক্ষায় আছে — একটু সময় দিন, approve হলেই ${fmtMoney(pending.amount)} ব্যালেন্সে যোগ হয়ে যাবে।`
+          : `Yes, I can see it! ✅ Your ৳${pending.amountBdt} (${method}) payment is waiting for verification — please give us a little time; once approved, ${fmtMoney(pending.amount)} will be added to your balance.`;
+      }
+      return bn
+        ? 'ধন্যবাদ! ✅ আপনার পেমেন্ট আমরা দেখতে পাচ্ছি — একটু সময় দিন, যাচাই করে ব্যালেন্সে যোগ করে দিচ্ছি। Add Funds পেজে My Top-ups-এ স্ট্যাটাস দেখতে পারবেন।'
+        : 'Thank you! ✅ We have received your payment — please give us a little time while we verify it and credit your balance. You can watch the status under Add Funds → My Top-ups.';
+    }
+    // Welcome bonus
+    if (CHAT_BONUS_WORDS.some(k => t.includes(k))) {
+      const cfg = await db.getConfig();
+      const amt = Number(cfg.welcomeBonusUsd) || 0;
+      if (cfg.welcomeBonusEnabled !== false && amt > 0) {
+        return bn
+          ? `হ্যাঁ, অফারটা এখনো আছে! 🎁 প্রথম ডিপোজিট approve হলেই ফ্রি ${fmtMoney(amt)} ওয়েলকাম বোনাস অটো আপনার ব্যালেন্সে যোগ হয়ে যাবে (শুধু প্রথম টপ-আপে, একবারই)।`
+          : `Yes, the offer is live! 🎁 On your first approved deposit you get a free ${fmtMoney(amt)} welcome bonus added automatically to your balance (first top-up only, one time).`;
+      }
+      return bn ? 'দুঃখিত, এই মুহূর্তে ওয়েলকাম বোনাস অফারটা চালু নেই।'
+                : 'Sorry, the welcome bonus offer is not active at the moment.';
+    }
+    // Prices — live from the provider
+    const svc = chatServiceOf(t);
+    if (CHAT_PRICE_WORDS.some(k => t.includes(k)) || (svc && (t.includes('কত') || t.includes('price') || t.includes('দাম')))) {
+      const use = svc || CHAT_SERVICES[0];
+      try {
+        const p = await getProvider();
+        const list = await p.getCountries(use.code);
+        const priced = await Promise.all(list.map(async c => ({ name: c.name, priceUsd: await priceUSD(c.baseUsd) })));
+        priced.sort((a, b) => a.priceUsd - b.priceUsd);
+        if (priced.length) {
+          const cheap = priced[0];
+          const usa = priced.find(c => /united states|usa/i.test(c.name));
+          const usaTxt = usa ? `, USA ${fmtMoney(usa.priceUsd)}` : '';
+          return bn
+            ? `${use.name} OTP নাম্বারের দাম দেশ অনুযায়ী আলাদা — সবচেয়ে সস্তা ${cheap.name} ${fmtMoney(cheap.priceUsd)} থেকে শুরু${usaTxt}। Services পেজে গিয়ে ${use.name} সিলেক্ট করলেই সব দেশের লাইভ দাম দেখতে পারবেন। অন্য সার্ভিসের দাম জানতে চাইলে নামটা বলুন!`
+            : `${use.name} OTP numbers are priced per country — starting from ${fmtMoney(cheap.priceUsd)} (${cheap.name})${usaTxt}. Tap ${use.name} on the Services page to see live prices for all countries. Ask me about any other service too!`;
+        }
+      } catch (e) {}
+      return bn
+        ? 'দাম সার্ভিস আর দেশ অনুযায়ী আলাদা — Services পেজে সার্ভিস সিলেক্ট করলেই প্রতিটা দেশের লাইভ দাম দেখতে পারবেন। কোন সার্ভিসের দাম জানতে চান?'
+        : 'Prices depend on the service and country — select a service on the Services page to see live prices per country. Which service are you interested in?';
+    }
+    // How to buy a number
+    if ((t.includes('কিভাবে') || t.includes('কীভাবে') || t.includes('how')) &&
+        (t.includes('কিন') || t.includes('buy') || t.includes('number') || t.includes('নাম্বার'))) {
+      return bn
+        ? 'খুব সহজ! 👉 ১) Add Funds থেকে ব্যালেন্সে টাকা যোগ করুন ২) Services থেকে সার্ভিস + দেশ সিলেক্ট করুন ৩) দামের বাটনে ট্যাপ করলেই নাম্বার কেনা হয়ে যাবে — SMS কোড My Numbers-এ অটো চলে আসবে।'
+        : 'Easy! 👉 1) Add funds to your balance 2) Pick a service + country under Services 3) Tap the price to buy — the SMS code arrives automatically under My Numbers.';
+    }
+  } catch (e) {}
+  return null;
+}
+
 // Start (or resume) a chat. Guests get a guest_token they must send back.
 app.post('/api/chat/start', async (req, res) => {
   try {
@@ -535,6 +628,12 @@ app.post('/api/chat/message', async (req, res) => {
     const msg = String(text || '').trim().slice(0, 2000);
     if (!msg) return res.status(400).json({ error: 'Message is empty' });
     await db.addChatMessage(thread.id, 'user', msg);
+    // Smart bot: intent detection with live data (prices, bonus, payment status)
+    const smart = await smartChatReply(msg, thread);
+    if (smart) {
+      await db.addChatMessage(thread.id, 'bot', smart);
+      return res.json({ botReply: smart });
+    }
     // FAQ bot: highest keyword-hit count wins (>=1 hit); tie -> earliest FAQ
     let best = null, bestScore = 0;
     for (const faq of await db.listChatFaqs()) {
