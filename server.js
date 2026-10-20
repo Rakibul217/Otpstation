@@ -560,6 +560,52 @@ app.get('/api/chat/messages', async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// Server-Sent Events: push new chat messages the moment they arrive,
+// so replies feel instant (no polling delay). Reconnects every ~50s.
+// NOTE: chat message ids are random hex strings — never compare them as numbers.
+function chatStream(req, res, thread, since) {
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+    'X-Accel-Buffering': 'no'
+  });
+  res.write(': connected\n\n');
+  let lastSeen = String(since || '');
+  let alive = true;
+  req.on('close', () => { alive = false; });
+  const timer = setInterval(async () => {
+    if (!alive) { clearInterval(timer); return; }
+    try {
+      const msgs = await db.listChatMessages(thread.id);
+      if (!msgs.length) return;
+      let fresh;
+      if (!lastSeen) {
+        fresh = msgs; // fresh thread: the client hasn't rendered anything yet
+      } else {
+        const i = msgs.findIndex(m => String(m.id) === lastSeen);
+        if (i === -1) { lastSeen = String(msgs[msgs.length - 1].id); return; } // resync quietly
+        fresh = msgs.slice(i + 1);
+      }
+      if (fresh.length) {
+        lastSeen = String(msgs[msgs.length - 1].id);
+        res.write('data: ' + JSON.stringify({
+          messages: fresh.map(m => ({ id: m.id, sender: m.sender, text: m.text, createdAt: m.createdAt }))
+        }) + '\n\n');
+      }
+    } catch (e) {}
+  }, 800);
+  setTimeout(() => { clearInterval(timer); try { res.end(); } catch (e) {} }, 50000);
+}
+
+app.get('/api/chat/stream', async (req, res) => {
+  try {
+    const thread = await db.getChatThread(req.query.threadId);
+    if (!thread || !(await chatAccess(req, thread))) return res.status(403).json({ error: 'Not your chat' });
+    chatStream(req, res, thread, req.query.since);
+  } catch (e) { try { res.status(500).end(); } catch (_) {} }
+});
+
 // ---------------- internal agent endpoints ----------------
 // Used by the support-agent poller (not the browser). Auth: X-Agent-Token must
 // equal CHAT_AGENT_TOKEN. If the env var is unset, these endpoints are disabled.
@@ -766,6 +812,13 @@ app.get('/api/admin/chat/threads', requireAuth, requireAdmin, async (req, res) =
       }))
     });
   } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.get('/api/admin/chat/stream/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const thread = await db.getChatThread(req.params.id);
+    if (!thread) return res.status(404).json({ error: 'Chat not found' });
+    chatStream(req, res, thread, req.query.since);
+  } catch (e) { try { res.status(500).end(); } catch (_) {} }
 });
 app.get('/api/admin/chat/thread/:id', requireAuth, requireAdmin, async (req, res) => {
   try {
