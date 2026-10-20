@@ -9,6 +9,7 @@ const api = async (method, path, body) => {
   if (!r.ok) throw new Error(j.error || 'Something went wrong');
   return j;
 };
+const fmtDT = (ts) => ts ? new Date(ts).toLocaleString('en-GB', { timeZone: 'Asia/Dhaka', day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : '—';
 const fmtUSD = (v) => {
   const n = Number(v);
   return '$' + (n < 1 ? n.toFixed(4).replace(/0+$/, '').replace(/\.$/, '.0') : n.toFixed(2));
@@ -76,6 +77,15 @@ $('googleBtn').onclick = () => { location.href = '/api/auth/google'; };
 api('GET', '/api/auth/providers').then(p => {
   if (p.google) $('googleBox').classList.remove('hidden');
 }).catch(() => {});
+
+// ---------- live presence heartbeat (powers Admin → Stats "Online now") ----------
+try {
+  let vizId = localStorage.getItem('vizId');
+  if (!vizId) { vizId = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('vizId', vizId); }
+  const beat = () => { fetch('/api/heartbeat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ viz: vizId }) }).catch(() => {}); };
+  beat(); setInterval(beat, 25000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) beat(); });
+} catch (e) {}
 
 // ---------- plates (navigation) ----------
 function goHome() {
@@ -717,7 +727,7 @@ async function loadProfile() {
     $('pName').value = user.name || '';
     $('pUser').value = user.username || '';
     $('pContact').value = user.email || user.phone || '';
-    $('pJoined').textContent = user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—';
+    $('pJoined').textContent = fmtDT(user.createdAt);
     $('pwCurrentBox').classList.toggle('hidden', !user.hasPassword);
     showMsg('pMsg', '', ''); showMsg('pwMsg', '', '');
   } catch (e) { showMsg('pMsg', e.message, 'err'); }
@@ -759,7 +769,16 @@ async function loadAdmin() {
 document.querySelectorAll('#adminPlates .plate').forEach(b => {
   b.onclick = () => toggleAdminPanel(b.dataset.apanel);
 });
+async function loadOnline() {
+  const el = $('adminOnline'); if (!el) return;
+  try {
+    const o = await api('GET', '/api/admin/online');
+    const names = o.users.length ? o.users.map(u => '@' + esc(u.username)).join(', ') : '—';
+    el.innerHTML = `🟢 <b>Online now: ${o.online}</b> · 👤 Logged in: <b>${o.loggedIn}</b> · 🚶 Guests: <b>${o.guests}</b><br><span class="muted">${names}</span>`;
+  } catch (e) { /* not admin / offline — stay quiet */ }
+}
 async function toggleAdminPanel(name) {
+  clearInterval(window.__onlineTimer);
   const panel = $('apanel-' + name);
   if (!panel) return;
   const willShow = panel.classList.contains('hidden');
@@ -779,6 +798,7 @@ async function loadAdminPanel(name) {
   if (name === 'stats') {
   const { users, orders, revenue, totalReceived, pendingTopups } = await api('GET', '/api/admin/stats');
   $('adminStats').innerHTML = `👥 Users: <b>${users}</b> · 🛒 Orders: <b>${orders}</b> · 💵 Revenue: <b>${fmtUSD(revenue)}</b> · 💰 Received: <b>${fmtUSD(totalReceived || 0)}</b> · ⏳ Pending: <b>${pendingTopups}</b>`;
+  loadOnline(); clearInterval(window.__onlineTimer); window.__onlineTimer = setInterval(loadOnline, 15000);
   }
   if (name === 'awaiting') {
   const awaiting = await api('GET', '/api/admin/topups?status=awaiting');
@@ -831,7 +851,7 @@ async function loadAdminPanel(name) {
         <div class="user-details">
           <div><span class="muted">Email</span><br>${u.email ? esc(u.email) : '—'}</div>
           <div><span class="muted">Phone</span><br>${u.phone ? esc(u.phone) : '—'}</div>
-          <div><span class="muted">Joined</span><br>${new Date(u.createdAt).toLocaleDateString()}</div>
+          <div><span class="muted">Joined</span><br>${fmtDT(u.createdAt)}</div>
           <div><span class="muted">Orders</span><br>${u.orders} (${fmtUSD(u.spent)} spent)</div>
           <div><span class="muted">Top-ups</span><br>${u.topups} approved (${fmtUSD(u.toppedUp)})</div>
           <div><span class="muted">User ID</span><br><span class="mono">${esc(u.id)}</span></div>
