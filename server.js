@@ -275,12 +275,17 @@ app.get('/api/services', async (req, res) => {
     // gets slower with every service added.
     const out = await Promise.all(services.map(async (s) => {
       let min = null;
-      try {
-        const countries = await p.getCountries(s.code);
-        const prices = await Promise.all(countries.map(c => priceUSD(c.baseUsd)));
-        if (prices.length) min = Math.min(...prices);
-      } catch (e) {}
-      return { ...s, fromPrice: min, color: BRAND_COLORS[s.logo] || '#4f7cff' };
+      if (!s.ext) {
+        // Curated popular services get a live "from $X" price. Long-tail
+        // services skip the price call (a per-service call for 2000+
+        // services would hang the page) — price shows when tapped.
+        try {
+          const countries = await p.getCountries(s.code);
+          const prices = await Promise.all(countries.map(c => priceUSD(c.baseUsd)));
+          if (prices.length) min = Math.min(...prices);
+        } catch (e) {}
+      }
+      return { ...s, fromPrice: min, color: s.color || BRAND_COLORS[s.logo] || '#4f7cff' };
     }));
     res.json({ services: out });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -534,21 +539,19 @@ const CHAT_SERVICES = [
   { code: 'tg', name: 'Telegram', keys: ['telegram', 'টেলিগ্রাম'] },
   { code: 'ig', name: 'Instagram', keys: ['instagram', 'ইনস্টাগ্রাম'] },
   { code: 'go', name: 'Google', keys: ['google', 'গুগল', 'youtube', 'ইউটিউব'] },
-  { code: 'tik', name: 'TikTok', keys: ['tiktok', 'টিকটক', 'tik tok'] },
+  { code: 'lf', name: 'TikTok', keys: ['tiktok', 'টিকটক', 'tik tok'] },
   { code: 'im', name: 'imo', keys: ['imo', 'ইমো'] },
   { code: 'am', name: 'Amazon', keys: ['amazon', 'অ্যামাজন'] },
   { code: 'nf', name: 'Netflix', keys: ['netflix', 'নেটফ্লিক্স'] },
   { code: 'ds', name: 'Discord', keys: ['discord', 'ডিসকর্ড'] },
   { code: 'tw', name: 'Twitter / X', keys: ['twitter', 'টুইটার', ' x '] },
-  { code: 'sc', name: 'Snapchat', keys: ['snapchat', 'স্ন্যাপচ্যাট'] },
-  { code: 'pp', name: 'PayPal', keys: ['paypal', 'পেপাল'] },
+  { code: 'fu', name: 'Snapchat', keys: ['snapchat', 'স্ন্যাপচ্যাট'] },
+  { code: 'ts', name: 'PayPal', keys: ['paypal', 'পেপাল'] },
   { code: 'ub', name: 'Uber', keys: ['uber', 'উবার'] },
   { code: 'dr', name: 'ChatGPT', keys: ['chatgpt', 'openai', 'চ্যাটজিপিটি', 'gpt'] },
   { code: 'mm', name: 'Microsoft', keys: ['microsoft', 'মাইক্রোসফট'] },
   { code: 'me', name: 'Line', keys: [' line ', 'লাইন'] },
-  { code: 'bn', name: 'Binance', keys: ['binance', 'বাইনান্স'] },
-  { code: 'wx', name: 'Apple', keys: ['apple', 'অ্যাপল'] },
-  { code: 'oi', name: 'Tinder', keys: ['tinder', 'টিন্ডার'] }
+  { code: 'wx', name: 'Apple', keys: ['apple', 'অ্যাপল'] }
 ];
 const CHAT_PRICE_WORDS = ['দাম', 'প্রাইস', 'price', 'কত টাকা', 'রেট', 'rate', 'খরচ', 'cost', 'charge', 'কত করে', 'পড়বে', 'কতো'];
 const CHAT_PAID_WORDS = ['পেমেন্ট করেছি', 'পেমেন্ট দিয়েছি', 'পেমেন্ট দিলাম', 'পেমেন্ট করলাম', 'টাকা পাঠিয়েছি', 'টাকা দিয়েছি', 'টাকা পাঠালাম', 'টাকা সেন্ড করেছি', 'paid', 'payment done', 'payment sent', 'i have paid', 'already paid', 'sent the money', 'পেমেন্ট ডান'];
