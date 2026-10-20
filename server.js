@@ -27,6 +27,8 @@ async function requireAuth(req, res, next) {
   try {
     const u = await getSessionUser(req);
     if (!u) return res.status(401).json({ error: 'Please log in first' });
+    if ((u.status || 'active') === 'banned' && !u.isAdmin)
+      return res.status(403).json({ error: 'Your account has been banned' });
     req.user = u; next();
   } catch (e) { next(e); }
 }
@@ -96,6 +98,7 @@ app.post('/api/login', async (req, res) => {
   const id = String(username || '').trim();
   const u = await db.findUserByName(id) || await db.findUserByEmail(id);
   if (!u || !u.hash || u.hash !== hashPw(password, u.salt)) return res.status(401).json({ error: 'Wrong username or password' });
+  if ((u.status || 'active') === 'banned') return res.status(403).json({ error: 'This account has been banned' });
   await setSession(res, u.id);
   res.json({ user: pub(u) });
 });
@@ -152,7 +155,8 @@ app.get('/api/history', requireAuth, async (req, res) => {
     else items.push({ label: t.status === 'pending' ? 'Top-up pending review' : 'Top-up awaiting payment', amount: amt, at: t.createdAt, kind: 'none' });
   }
   for (const b of await db.userBonuses(u.id)) {
-    items.push({ label: b.label || 'Bonus', amount: Number(b.amount) || 0, at: b.createdAt, kind: 'credit' });
+    const bAmt = Number(b.amount) || 0;
+    items.push({ label: b.label || 'Bonus', amount: bAmt, at: b.createdAt, kind: bAmt >= 0 ? 'credit' : 'debit' });
   }
   for (const o of await db.userOrders(u.id)) {
     const amt = Number(o.priceUsd) || 0;
@@ -275,6 +279,8 @@ app.get('/api/countries', async (req, res) => {
 
 app.post('/api/orders', requireAuth, async (req, res) => {
   try {
+    if ((req.user.status || 'active') !== 'active')
+      return res.status(403).json({ error: 'Your account is on hold — please contact support' });
     const { service, country, expectedPrice } = req.body || {};
     const p = await getProvider();
     const countries = await p.getCountries(service);
@@ -462,6 +468,8 @@ app.get('/api/account-products', async (req, res) => {
 // User: buy N pieces -> credentials instantly delivered, balance deducted
 app.post('/api/account-products/:id/buy', requireAuth, async (req, res) => {
   try {
+    if ((req.user.status || 'active') !== 'active')
+      return res.status(403).json({ error: 'Your account is on hold — please contact support' });
     const qty = Math.floor(Number((req.body || {}).qty));
     if (!Number.isInteger(qty) || qty < 1 || qty > 100)
       return res.status(400).json({ error: 'Quantity must be between 1 and 100' });
@@ -602,6 +610,7 @@ app.get('/api/admin/users', requireAuth, requireAdmin, async (req, res) => {
       id: u.id, name: u.name || '', username: u.username,
       email: u.email || '', phone: u.phone || '',
       viaGoogle: !!u.googleId, balance: u.balance, isAdmin: !!u.isAdmin,
+      status: u.status || 'active',
       createdAt: u.createdAt,
       orders: orders.length,
       spent: Math.round(orders.filter(o => o.status !== 'cancelled').reduce((s, o) => s + (o.priceUsd || 0), 0) * 100) / 100,
@@ -611,6 +620,30 @@ app.get('/api/admin/users', requireAuth, requireAdmin, async (req, res) => {
   }
   users.sort((a, b) => b.createdAt - a.createdAt);
   res.json({ users });
+});
+// Admin: adjust a user's balance (delta can be + or -); recorded in history
+app.post('/api/admin/users/:id/adjust', requireAuth, requireAdmin, async (req, res) => {
+  const t = await db.findUserById(req.params.id);
+  if (!t) return res.status(404).json({ error: 'User not found' });
+  const delta = Number((req.body || {}).delta);
+  if (!Number.isFinite(delta) || delta === 0 || Math.abs(delta) > 100000)
+    return res.status(400).json({ error: 'Invalid amount' });
+  const nb = Math.round((Number(t.balance) + delta) * 100) / 100;
+  if (nb < 0) return res.status(400).json({ error: 'Balance would go negative' });
+  await db.addBalance(t.id, delta);
+  await db.addBonus({ userId: t.id, amount: delta, kind: 'adjust', label: 'Admin balance adjustment' });
+  res.json({ ok: true, balance: nb });
+});
+// Admin: set user status — active | hold (no purchases) | banned (no login)
+app.post('/api/admin/users/:id/status', requireAuth, requireAdmin, async (req, res) => {
+  const t = await db.findUserById(req.params.id);
+  if (!t) return res.status(404).json({ error: 'User not found' });
+  if (t.id === req.user.id) return res.status(400).json({ error: 'You cannot change your own status' });
+  if (t.isAdmin) return res.status(400).json({ error: 'Admin accounts are protected' });
+  const s = (req.body || {}).status;
+  if (!['active', 'hold', 'banned'].includes(s)) return res.status(400).json({ error: 'Invalid status' });
+  await db.setUserStatus(t.id, s);
+  res.json({ ok: true, status: s });
 });
 app.post('/api/admin/topups/:id', requireAuth, requireAdmin, async (req, res) => {
   const t = await db.getTopup(req.params.id);

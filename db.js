@@ -99,7 +99,8 @@ async function createTables() {
       "googleId" TEXT,
       balance NUMERIC DEFAULT 0,
       "isAdmin" BOOLEAN DEFAULT FALSE,
-      "createdAt" BIGINT
+      "createdAt" BIGINT,
+      status TEXT DEFAULT 'active'
     );
     CREATE TABLE IF NOT EXISTS orders (
       id TEXT PRIMARY KEY,
@@ -214,7 +215,8 @@ function mapUser(r) {
     email: r.email || '', phone: r.phone || '',
     salt: r.salt || '', hash: r.hash || '',
     googleId: r.googleId === null || r.googleId === undefined ? undefined : r.googleId,
-    balance: num(r.balance), isAdmin: !!r.isAdmin, createdAt: num(r.createdAt)
+    balance: num(r.balance), isAdmin: !!r.isAdmin, createdAt: num(r.createdAt),
+    status: r.status || 'active'
   };
 }
 function mapOrder(r) {
@@ -270,7 +272,7 @@ function mapChatFaq(r) {
   return { id: r.id, keywords: r.keywords || '', answer: r.answer || '', active: !!r.active, createdAt: num(r.createdAt) };
 }
 
-const USER_COLS = ['id', 'name', 'username', 'email', 'phone', 'salt', 'hash', 'googleId', 'balance', 'isAdmin', 'createdAt'];
+const USER_COLS = ['id', 'name', 'username', 'email', 'phone', 'salt', 'hash', 'googleId', 'balance', 'isAdmin', 'createdAt', 'status'];
 const ORDER_COLS = ['id', 'userId', 'service', 'serviceName', 'country', 'countryName', 'number', 'priceUsd', 'providerId', 'status', 'code', 'createdAt'];
 const TOPUP_COLS = ['id', 'userId', 'username', 'amount', 'amountBdt', 'bdtRate', 'method', 'trxid', 'senderNumber', 'status', 'createdAt'];
 const ACCOUNT_PRODUCT_COLS = ['id', 'name', 'description', 'priceUsd', 'logo', 'active', 'createdAt'];
@@ -673,6 +675,7 @@ async function init() {
       pool = new Pool({ connectionString: url, ssl: pgSslFor(url), connectionTimeoutMillis: 10000 });
       await pool.query('SELECT 1');
       await createTables();
+      await pool.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active'");
       pgMode = true;
       console.log('[db] PostgreSQL connected — using Postgres mode (data survives redeploys)');
     } catch (e) {
@@ -738,8 +741,14 @@ module.exports = {
     return u;
   },
   addUser: async (u) => {
+    u.status = u.status || 'active';
     if (pgMode) { await pgInsert((t, p) => pool.query(t, p), 'users', USER_COLS, u); return u; }
     mem().users.push(u); save(cache); return u;
+  },
+  setUserStatus: async (userId, status) => {
+    if (pgMode) { await pool.query('UPDATE users SET status = $2 WHERE id = $1', [userId, status]); return; }
+    const u = mem().users.find(x => x.id === userId);
+    if (u) { u.status = status; save(cache); }
   },
   addBalance: async (userId, amount) => {
     if (pgMode) {
