@@ -848,6 +848,17 @@ app.post('/api/admin/users/:id/status', requireAuth, requireAdmin, async (req, r
   await db.setUserStatus(t.id, s);
   res.json({ ok: true, status: s });
 });
+// Admin: reset a user's password (support flow — the user forgot it and
+// asked support; admin sets a fresh one, no current password needed)
+app.post('/api/admin/users/:id/password', requireAuth, requireAdmin, async (req, res) => {
+  const t = await db.findUserById(req.params.id);
+  if (!t) return res.status(404).json({ error: 'User not found' });
+  const pw = String((req.body || {}).password || '');
+  if (pw.length < 4) return res.status(400).json({ error: 'Password must be at least 4 characters' });
+  const salt = crypto.randomBytes(8).toString('hex');
+  await db.updateUser(t.id, { salt, hash: hashPw(pw, salt) });
+  res.json({ ok: true });
+});
 app.post('/api/admin/topups/:id', requireAuth, requireAdmin, async (req, res) => {
   const t = await db.getTopup(req.params.id);
   if (!t || (t.status !== 'pending' && t.status !== 'awaiting')) return res.status(400).json({ error: 'Top-up is not pending' });
