@@ -341,14 +341,37 @@ document.querySelectorAll('#plates .plate').forEach(b => {
 });
 
 // ---------- services ----------
+let allServices = [];
 async function loadServices() {
   try {
     const { services } = await api('GET', '/api/services');
-    $('serviceGrid').innerHTML = services.map(s => `
-      <div class="svc" onclick="openService('${s.code}','${s.name}')">
-        <span class="logo-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${s.name}"></span>${s.name}<span class="pr">${s.fromPrice != null ? 'from ' + fmtUSD(s.fromPrice) : 'tap for prices'}</span>
-      </div>`).join('');
+    allServices = services;
+    renderServices('');
+    const si = $('serviceSearch');
+    if (si && !si.dataset.wired) { si.dataset.wired = '1'; si.addEventListener('input', () => renderServices(si.value)); }
+    const grid = $('serviceGrid');
+    if (grid && !grid.dataset.wired) {
+      grid.dataset.wired = '1';
+      grid.addEventListener('click', e => {
+        const t = e.target.closest('.svc');
+        if (t && t.dataset.code) openService(t.dataset.code, t.dataset.name);
+      });
+    }
   } catch (e) { $('serviceGrid').innerHTML = `<div class="card">${e.message}</div>`; }
+}
+function svcTile(s) {
+  const icon = s.ext
+    ? `<span class="logo-chip letter" style="background:${s.color}">${esc(((s.name || '?').trim()[0] || '?').toUpperCase())}${s.icon ? `<img class="svc-icon" src="${s.icon}" alt="" loading="lazy" onerror="this.remove()">` : ''}</span>`
+    : `<span class="logo-chip" style="background:${s.color}"><img class="logo-img" src="logos/${s.logo}.svg" alt="${esc(s.name)}"></span>`;
+  const pr = s.fromPrice != null ? 'from ' + fmtUSD(s.fromPrice) : 'live price ›';
+  return `<div class="svc" data-code="${esc(s.code)}" data-name="${esc(s.name)}">${icon}${esc(s.name)}<span class="pr">${pr}</span></div>`;
+}
+function renderServices(q) {
+  const query = (q || '').trim().toLowerCase();
+  const list = query ? allServices.filter(s => s.name.toLowerCase().includes(query)) : allServices;
+  $('serviceGrid').innerHTML = list.length
+    ? list.map(svcTile).join('')
+    : '<div class="card">No service matches your search. Try another name.</div>';
 }
 let currentService = null;
 let currentCountries = [];
