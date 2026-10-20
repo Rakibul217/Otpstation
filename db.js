@@ -26,7 +26,9 @@ function defaultConfig() {
     // Welcome bonus: $X free credit on first approved deposit (once per user)
     welcomeBonusUsd: 1, welcomeBonusEnabled: true, welcomeBonusLimit: 0, welcomeBonusGiven: 0,
     // SMS auto-approval: phone forwards bKash/Nagad payment SMS to webhook → matching top-up auto-approved
-    smsAutoApprove: false, smsWebhookSecret: ''
+    smsAutoApprove: false, smsWebhookSecret: '',
+    // Balance check: verify claimed payment against bKash/Nagad balance in SMS (anti-fake-SMS)
+    smsBalanceCheck: false, smsLastBalances: {}
   };
 }
 function defaultDb() {

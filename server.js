@@ -648,32 +648,59 @@ async function approveTopupInternal(t) {
   return { bonus: bonusGiven };
 }
 
-// Parse a bKash/Nagad payment SMS → { trxid, amountBdt } (nulls when not found)
+// Parse a bKash/Nagad payment SMS → { trxid, amountBdt, balance } (nulls when not found)
 function parsePaymentSms(msg) {
   const m = String(msg || '');
   const trxM = m.match(/Txn\s*ID\s*:?\s*([A-Z0-9]{5,})/i);
   const amtM = m.match(/Tk\.?\s*([\d,]+(?:\.\d{1,2})?)/i);
+  const balM = m.match(/Balance\s*(?:is\s*)?:?\s*Tk\.?\s*([\d,]+(?:\.\d{1,2})?)/i);
   return {
     trxid: trxM ? trxM[1].toUpperCase().replace(/\s+/g, '') : null,
-    amountBdt: amtM ? parseFloat(amtM[1].replace(/,/g, '')) : null
+    amountBdt: amtM ? parseFloat(amtM[1].replace(/,/g, '')) : null,
+    balance: balM ? parseFloat(balM[1].replace(/,/g, '')) : null
   };
+}
+
+// Guess MFS method from SMS sender ("bKash" / "16247" → bkash, "Nagad" → nagad)
+function smsMethod(sender) {
+  const s = String(sender || '').toLowerCase();
+  if (s.includes('bkash') || s.includes('16247')) return 'bkash';
+  if (s.includes('nagad')) return 'nagad';
+  return null;
 }
 
 // SMS webhook: phone forwarder POSTs { secret, sender, message } → auto-approve matching pending top-up
 app.post('/api/payment-webhook', async (req, res) => {
   try {
     const cfg = await db.getConfig();
-    const { secret, message } = req.body || {};
+    const { secret, sender, message } = req.body || {};
     if (!cfg.smsAutoApprove || !cfg.smsWebhookSecret || secret !== cfg.smsWebhookSecret)
       return res.status(403).json({ ok: false, reason: 'forbidden' });
-    const { trxid, amountBdt } = parsePaymentSms(message);
+    const { trxid, amountBdt, balance } = parsePaymentSms(message);
+    const method = smsMethod(sender);
+    const balances = { ...(cfg.smsLastBalances || {}) };
+    // Track last known balance from ANY bKash/Nagad SMS (keeps baseline fresh)
+    if (method && balance != null && !trxid) {
+      await db.setConfig({ smsLastBalances: { ...balances, [method]: balance } });
+      return res.json({ ok: true, balanceTracked: balance });
+    }
     if (!trxid) return res.json({ ok: false, reason: 'no-trxid-in-sms' });
+    // Balance check (anti-fake-SMS): claimed amount must match actual balance jump
+    if (cfg.smsBalanceCheck && method && balance != null && amountBdt != null && balances[method] != null) {
+      const expected = balances[method] + amountBdt;
+      if (Math.abs(balance - expected) > 2) {
+        console.warn(`[sms-auto] BALANCE MISMATCH ${method}: last=${balances[method]} claimed=+${amountBdt} smsBalance=${balance} trxid=${trxid} — held for manual review`);
+        return res.json({ ok: false, reason: 'balance-mismatch' });
+      }
+    }
     const pending = await db.topupsByStatus('pending');
     const t = pending.find(x => String(x.trxid || '').toUpperCase().replace(/\s+/g, '') === trxid);
     if (!t) return res.json({ ok: false, reason: 'no-matching-topup' });
     if (amountBdt != null && Math.abs(Number(t.amountBdt) - amountBdt) > 1)
       return res.json({ ok: false, reason: 'amount-mismatch' });
     const { bonus, already } = await approveTopupInternal(t);
+    if (!already && method && balance != null)
+      await db.setConfig({ smsLastBalances: { ...balances, [method]: balance } });
     console.log(`[sms-auto] topup ${t.id} (${t.username}, ৳${t.amountBdt}) auto-approved${already ? ' (already done)' : ''}`);
     res.json({ ok: true, credited: already ? 0 : t.amount, bonus });
   } catch (e) { console.error('[sms-webhook]', e.message); res.status(500).json({ ok: false }); }
@@ -798,9 +825,10 @@ app.get('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
   res.json({ config: { ...c, bkashSet: !!c.bkashNumber, nagadSet: !!c.nagadNumber } });
 });
 app.post('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
-  const { markupPercent, flatFeeUsd, provider, siteName, bkashNumber, nagadNumber, bdtRate, googleClientId, googleClientSecret, baseUrl, welcomeBonusUsd, welcomeBonusEnabled, welcomeBonusLimit, smsAutoApprove } = req.body || {};
+  const { markupPercent, flatFeeUsd, provider, siteName, bkashNumber, nagadNumber, bdtRate, googleClientId, googleClientSecret, baseUrl, welcomeBonusUsd, welcomeBonusEnabled, welcomeBonusLimit, smsAutoApprove, smsBalanceCheck } = req.body || {};
   const patch = {};
   if (smsAutoApprove !== undefined) patch.smsAutoApprove = !!smsAutoApprove;
+  if (smsBalanceCheck !== undefined) patch.smsBalanceCheck = !!smsBalanceCheck;
   if (markupPercent !== undefined) patch.markupPercent = Math.max(0, Math.min(500, Number(markupPercent) || 0));
   if (flatFeeUsd !== undefined) patch.flatFeeUsd = Math.max(0, Math.min(10, Number(flatFeeUsd) || 0));
   if (welcomeBonusUsd !== undefined) patch.welcomeBonusUsd = Math.max(0, Math.min(100, Number(welcomeBonusUsd) || 0));
