@@ -24,7 +24,9 @@ function defaultConfig() {
     // Google OAuth ("Continue with Google") — set in Admin → Settings
     googleClientId: '', googleClientSecret: '', baseUrl: '',
     // Welcome bonus: $X free credit on first approved deposit (once per user)
-    welcomeBonusUsd: 1, welcomeBonusEnabled: true, welcomeBonusLimit: 0, welcomeBonusGiven: 0
+    welcomeBonusUsd: 1, welcomeBonusEnabled: true, welcomeBonusLimit: 0, welcomeBonusGiven: 0,
+    // SMS auto-approval: phone forwards bKash/Nagad payment SMS to webhook → matching top-up auto-approved
+    smsAutoApprove: false, smsWebhookSecret: ''
   };
 }
 function defaultDb() {

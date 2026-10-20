@@ -615,29 +615,75 @@ app.post('/api/admin/topups/:id', requireAuth, requireAdmin, async (req, res) =>
   const t = await db.getTopup(req.params.id);
   if (!t || (t.status !== 'pending' && t.status !== 'awaiting')) return res.status(400).json({ error: 'Top-up is not pending' });
   if (req.body.action === 'approve') {
-    await db.updateTopup(t.id, { status: 'approved' });
-    await db.addBalance(t.userId, t.amount);
-    // Welcome bonus: $X free on first approved deposit (once per user)
-    let bonusGiven = 0;
-    try {
-      const cfg = await db.getConfig();
-      const bonusUsd = Number(cfg.welcomeBonusUsd) || 0;
-      if (cfg.welcomeBonusEnabled !== false && bonusUsd > 0 && !(await db.hasWelcomeBonus(t.userId))) {
-        const limit = Number(cfg.welcomeBonusLimit) || 0;
-        const given = Number(cfg.welcomeBonusGiven) || 0;
-        if (limit === 0 || given < limit) {
-          await db.addBonus({ userId: t.userId, amount: bonusUsd, kind: 'welcome', label: '🎁 Welcome bonus — first deposit' });
-          await db.addBalance(t.userId, bonusUsd);
-          await db.setConfig({ welcomeBonusGiven: given + 1 });
-          bonusGiven = bonusUsd;
-        }
-      }
-    } catch (e) { console.error('[bonus]', e.message); }
-    return res.json({ ok: true, bonus: bonusGiven });
+    const { bonus } = await approveTopupInternal(t);
+    return res.json({ ok: true, bonus });
   } else {
     await db.updateTopup(t.id, { status: 'rejected' });
   }
   res.json({ ok: true });
+});
+
+// Shared approve logic: credit USD + once-per-user welcome bonus. Idempotent.
+async function approveTopupInternal(t) {
+  const cur = await db.getTopup(t.id);
+  if (!cur || cur.status !== 'pending') return { already: true, bonus: 0 };
+  await db.updateTopup(t.id, { status: 'approved' });
+  await db.addBalance(t.userId, t.amount);
+  // Welcome bonus: $X free on first approved deposit (once per user)
+  let bonusGiven = 0;
+  try {
+    const cfg = await db.getConfig();
+    const bonusUsd = Number(cfg.welcomeBonusUsd) || 0;
+    if (cfg.welcomeBonusEnabled !== false && bonusUsd > 0 && !(await db.hasWelcomeBonus(t.userId))) {
+      const limit = Number(cfg.welcomeBonusLimit) || 0;
+      const given = Number(cfg.welcomeBonusGiven) || 0;
+      if (limit === 0 || given < limit) {
+        await db.addBonus({ userId: t.userId, amount: bonusUsd, kind: 'welcome', label: '🎁 Welcome bonus — first deposit' });
+        await db.addBalance(t.userId, bonusUsd);
+        await db.setConfig({ welcomeBonusGiven: given + 1 });
+        bonusGiven = bonusUsd;
+      }
+    }
+  } catch (e) { console.error('[bonus]', e.message); }
+  return { bonus: bonusGiven };
+}
+
+// Parse a bKash/Nagad payment SMS → { trxid, amountBdt } (nulls when not found)
+function parsePaymentSms(msg) {
+  const m = String(msg || '');
+  const trxM = m.match(/Txn\s*ID\s*:?\s*([A-Z0-9]{5,})/i);
+  const amtM = m.match(/Tk\.?\s*([\d,]+(?:\.\d{1,2})?)/i);
+  return {
+    trxid: trxM ? trxM[1].toUpperCase().replace(/\s+/g, '') : null,
+    amountBdt: amtM ? parseFloat(amtM[1].replace(/,/g, '')) : null
+  };
+}
+
+// SMS webhook: phone forwarder POSTs { secret, sender, message } → auto-approve matching pending top-up
+app.post('/api/payment-webhook', async (req, res) => {
+  try {
+    const cfg = await db.getConfig();
+    const { secret, message } = req.body || {};
+    if (!cfg.smsAutoApprove || !cfg.smsWebhookSecret || secret !== cfg.smsWebhookSecret)
+      return res.status(403).json({ ok: false, reason: 'forbidden' });
+    const { trxid, amountBdt } = parsePaymentSms(message);
+    if (!trxid) return res.json({ ok: false, reason: 'no-trxid-in-sms' });
+    const pending = await db.topupsByStatus('pending');
+    const t = pending.find(x => String(x.trxid || '').toUpperCase().replace(/\s+/g, '') === trxid);
+    if (!t) return res.json({ ok: false, reason: 'no-matching-topup' });
+    if (amountBdt != null && Math.abs(Number(t.amountBdt) - amountBdt) > 1)
+      return res.json({ ok: false, reason: 'amount-mismatch' });
+    const { bonus, already } = await approveTopupInternal(t);
+    console.log(`[sms-auto] topup ${t.id} (${t.username}, ৳${t.amountBdt}) auto-approved${already ? ' (already done)' : ''}`);
+    res.json({ ok: true, credited: already ? 0 : t.amount, bonus });
+  } catch (e) { console.error('[sms-webhook]', e.message); res.status(500).json({ ok: false }); }
+});
+
+// Regenerate the SMS webhook secret (admin)
+app.post('/api/admin/sms-secret', requireAuth, requireAdmin, async (req, res) => {
+  const secret = require('crypto').randomBytes(24).toString('hex');
+  await db.setConfig({ smsWebhookSecret: secret });
+  res.json({ ok: true, secret });
 });
 
 // ---------------- admin: live chat ----------------
@@ -752,8 +798,9 @@ app.get('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
   res.json({ config: { ...c, bkashSet: !!c.bkashNumber, nagadSet: !!c.nagadNumber } });
 });
 app.post('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
-  const { markupPercent, flatFeeUsd, provider, siteName, bkashNumber, nagadNumber, bdtRate, googleClientId, googleClientSecret, baseUrl, welcomeBonusUsd, welcomeBonusEnabled, welcomeBonusLimit } = req.body || {};
+  const { markupPercent, flatFeeUsd, provider, siteName, bkashNumber, nagadNumber, bdtRate, googleClientId, googleClientSecret, baseUrl, welcomeBonusUsd, welcomeBonusEnabled, welcomeBonusLimit, smsAutoApprove } = req.body || {};
   const patch = {};
+  if (smsAutoApprove !== undefined) patch.smsAutoApprove = !!smsAutoApprove;
   if (markupPercent !== undefined) patch.markupPercent = Math.max(0, Math.min(500, Number(markupPercent) || 0));
   if (flatFeeUsd !== undefined) patch.flatFeeUsd = Math.max(0, Math.min(10, Number(flatFeeUsd) || 0));
   if (welcomeBonusUsd !== undefined) patch.welcomeBonusUsd = Math.max(0, Math.min(100, Number(welcomeBonusUsd) || 0));
@@ -780,6 +827,11 @@ app.post('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
   if (googleClientSecret !== undefined) patch.googleClientSecret = String(googleClientSecret).trim().slice(0, 120);
   if (baseUrl !== undefined) patch.baseUrl = String(baseUrl).trim().replace(/\/$/, '').slice(0, 120);
   await db.setConfig(patch);
+  // auto-generate webhook secret the first time SMS auto-approve is enabled
+  const c0 = await db.getConfig();
+  if (c0.smsAutoApprove && !c0.smsWebhookSecret) {
+    await db.setConfig({ smsWebhookSecret: require('crypto').randomBytes(24).toString('hex') });
+  }
   const c = await db.getConfig();
   res.json({ config: { ...c, bkashSet: !!c.bkashNumber, nagadSet: !!c.nagadNumber } });
 });
