@@ -919,6 +919,10 @@ function smsMethod(sender) {
   return null;
 }
 
+// Latest OTP code forwarded from the payment phone (in-memory only, 5-min
+// life) — powers the OTP Viewer app on the owner's main phone.
+let smsOtp = { code: null, service: null, at: 0 };
+
 // SMS webhook: phone forwarder calls this → auto-approve matching pending top-up.
 // Accepts GET or POST, JSON or form-encoded. Field aliases for app compatibility:
 //   secret | sender/from | message/text/body
@@ -933,6 +937,15 @@ async function handlePaymentWebhook(req, res) {
       return res.status(403).json({ ok: false, reason: 'forbidden' });
     const { trxid, amountBdt, balance } = parsePaymentSms(message);
     const method = smsMethod(sender);
+    // OTP capture: a login/verification SMS (has an OTP code, no payment
+    // TrxID) → keep the code briefly for the owner's OTP Viewer app.
+    if (!trxid) {
+      const otpM = message.match(/(?:OTP|verification code|security code|one-time(?: password)?)\D{0,30}(\d{4,6})/i);
+      if (otpM) {
+        smsOtp = { code: otpM[1], service: method || String(sender || '').slice(0, 20), at: Date.now() };
+        return res.json({ ok: true, otpStored: true });
+      }
+    }
     const balances = { ...(cfg.smsLastBalances || {}) };
     // Track last known balance from ANY bKash/Nagad SMS (keeps baseline fresh)
     if (method && balance != null && !trxid) {
@@ -962,6 +975,17 @@ async function handlePaymentWebhook(req, res) {
 }
 app.post('/api/payment-webhook', handlePaymentWebhook);
 app.get('/api/payment-webhook', handlePaymentWebhook);
+
+// OTP Viewer app polls this (same webhook secret) for the latest OTP code
+// forwarded from the payment phone. Codes expire after 5 minutes.
+app.get('/api/otp-view', async (req, res) => {
+  const cfg = await db.getConfig();
+  if (!cfg.smsWebhookSecret || (req.query.secret || '') !== cfg.smsWebhookSecret)
+    return res.status(403).json({ ok: false, reason: 'forbidden' });
+  const ageSec = Math.round((Date.now() - (smsOtp.at || 0)) / 1000);
+  if (!smsOtp.code || ageSec > 300) return res.json({ ok: true, otp: null });
+  res.json({ ok: true, otp: { code: smsOtp.code, service: smsOtp.service, ageSec, expiresInSec: Math.max(0, 300 - ageSec) } });
+});
 
 // Regenerate the SMS webhook secret (admin)
 app.post('/api/admin/sms-secret', requireAuth, requireAdmin, async (req, res) => {
