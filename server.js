@@ -897,10 +897,12 @@ async function approveTopupInternal(t) {
 }
 
 // Parse a bKash/Nagad payment SMS → { trxid, amountBdt, balance } (nulls when not found)
+// NOTE: bKash writes "TrxID: XXXXX" while Nagad writes "Txn ID: XXXXX" — accept both.
 function parsePaymentSms(msg) {
   const m = String(msg || '');
-  const trxM = m.match(/Txn\s*ID\s*:?\s*([A-Z0-9]{5,})/i);
-  const amtM = m.match(/Tk\.?\s*([\d,]+(?:\.\d{1,2})?)/i);
+  const trxM = m.match(/(?:Trx|Txn|Transaction)\s*ID\s*:?\s*([A-Z0-9]{6,})/i);
+  const amtM = m.match(/(?:received|Amount)\s*:?\s*Tk\.?\s*([\d,]+(?:\.\d{1,2})?)/i)
+    || m.match(/Tk\.?\s*([\d,]+(?:\.\d{1,2})?)/i);
   const balM = m.match(/Balance\s*(?:is\s*)?:?\s*Tk\.?\s*([\d,]+(?:\.\d{1,2})?)/i);
   return {
     trxid: trxM ? trxM[1].toUpperCase().replace(/\s+/g, '') : null,
