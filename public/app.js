@@ -576,14 +576,17 @@ function toggleAcctCreds(id) {
 
 // ---------- orders ----------
 let pollTimer = null;
+let lastOrders = [];
 async function loadOrders() {
   if (!me) { $('orderList').innerHTML = '<div class="card">Log in to see your numbers.</div>'; return; }
   const { orders } = await api('GET', '/api/orders');
+  lastOrders = orders;
   if (!orders.length) { $('orderList').innerHTML = '<div class="card">No numbers purchased yet.</div>'; return; }
   $('orderList').innerHTML = orders.map(o => `
     <div class="order" id="ord-${o.id}">
       <div><b>${o.serviceName}</b> · ${o.countryName} <span class="badge ${o.status}">${statusEn(o.status)}</span></div>
       <div class="num-row"><span class="num" onclick="copyNum('${o.number}', this)" title="Tap to copy">📞 ${o.number}</span><button class="copy-mini" onclick="copyNum('${o.number}', this)" title="Copy number">📋</button></div>
+      <button class="btn buy-again" onclick="buyAgain('${o.id}', this)">🔁 Next Number — Buy Again</button>
       ${o.status === 'done' ? `<div class="code">${o.code}</div><button class="btn green" onclick="copyCode('${o.code}')">Copy code</button>` : ''}
       ${o.status === 'waiting' ? `<div class="wait">⏳ Waiting for SMS… (checking automatically)</div><span class="cancel-slot" data-created="${o.createdAt}" data-id="${o.id}"></span>` : ''}
       <div class="row"><span>${fmtUSD(o.priceUsd)}</span><span>${new Date(o.createdAt).toLocaleString('en-US')}</span></div>
@@ -634,6 +637,37 @@ async function cancelOrder(id) {
     await api('POST', '/api/orders/' + id + '/cancel');
     await refreshMe(); loadOrders();
   } catch (e) { alert(e.message); loadOrders(); }
+}
+// One-tap reorder: same service + country as an existing order, so buying the
+// same number repeatedly never means walking Services → country list again.
+async function buyAgain(orderId, btn) {
+  const o = lastOrders.find(x => x.id === orderId);
+  if (!o) return;
+  const old = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Buying…'; }
+  try {
+    // Fresh price first, so the confirm shows exactly what will be charged.
+    const { countries } = await api('GET', '/api/countries?service=' + encodeURIComponent(o.service));
+    const c = (countries || []).find(x => x.code === o.country);
+    if (!c) {
+      alert(`${o.serviceName} · ${o.countryName} just sold out — please pick another country.`);
+      document.querySelector('[data-tab="services"]').click();
+      return;
+    }
+    if (!confirm(`Buy another ${o.serviceName} · ${o.countryName} number for ${fmtUSD(c.priceUsd)}?`)) return;
+    const { order } = await api('POST', '/api/orders', { service: o.service, country: o.country, expectedPrice: c.priceUsd });
+    pingSound();
+    alert('Your new number: ' + order.number);
+    await refreshMe();
+    await loadOrders();
+    const el = document.getElementById('ord-' + order.id);
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 2600); }
+  } catch (e) {
+    alert(e.message);
+    loadOrders();
+  } finally {
+    if (btn && document.body.contains(btn)) { btn.disabled = false; btn.innerHTML = old; }
+  }
 }
 
 // ---------- topup (manual bKash / Nagad) ----------
