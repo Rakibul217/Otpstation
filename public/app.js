@@ -646,7 +646,9 @@ async function buyAgain(orderId, btn) {
   const old = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Buying…'; }
   try {
-    // Fresh price first, so the confirm shows exactly what will be charged.
+    // Fresh price first, used as the expectedPrice guard — if Grizzly's price
+    // moved, the server stops the buy instead of charging a surprise price.
+    // NO confirm dialog (his explicit call, Oct 22): one tap on Next = bought.
     const { countries } = await api('GET', '/api/countries?service=' + encodeURIComponent(o.service));
     const c = (countries || []).find(x => x.code === o.country);
     if (!c) {
@@ -654,10 +656,8 @@ async function buyAgain(orderId, btn) {
       document.querySelector('[data-tab="services"]').click();
       return;
     }
-    if (!confirm(`Buy another ${o.serviceName} · ${o.countryName} number for ${fmtUSD(c.priceUsd)}?`)) return;
     const { order } = await api('POST', '/api/orders', { service: o.service, country: o.country, expectedPrice: c.priceUsd });
     pingSound();
-    alert('Your new number: ' + order.number);
     await refreshMe();
     await loadOrders();
     const el = document.getElementById('ord-' + order.id);
