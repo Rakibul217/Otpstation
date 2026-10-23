@@ -371,29 +371,49 @@ async function switchVersion(v) {
     openService(currentService.code, currentService.name);
   }
 }
+function paintServices() {
+  renderVersionSwitch();
+  renderServiceList('');
+  const si = $('svcSearch');
+  if (si) {
+    si.placeholder = '🔍 Search ' + allServices.length.toLocaleString() + ' services…';
+    if (!si.dataset.wired) { si.dataset.wired = '1'; si.addEventListener('input', () => renderServiceList(si.value)); }
+  }
+  const list = $('serviceList');
+  if (list && !list.dataset.wired) {
+    list.dataset.wired = '1';
+    list.addEventListener('click', e => {
+      const t = e.target.closest('.svc-row');
+      if (t && t.dataset.code) openService(t.dataset.code, t.dataset.name);
+    });
+  }
+}
 async function loadServices() {
+  // Instant paint from the copy saved on the last visit — the list is on
+  // screen the moment the page opens; fresh data then replaces it silently.
+  if (!allServices.length) {
+    try {
+      const cached = JSON.parse(localStorage.getItem('otpSvcCache') || 'null');
+      if (cached && cached.services && cached.services.length) {
+        versions = cached.versions || [];
+        currentProvider = cached.provider && versions.includes(cached.provider)
+          ? cached.provider : (versions[0] || null);
+        allServices = cached.services;
+        paintServices();
+      }
+    } catch (e) {}
+  }
   try {
     const data = await api('GET', '/api/services' + (currentProvider ? '?provider=' + currentProvider : ''));
     const { services } = data;
     versions = data.versions || [];
     if (!currentProvider || !versions.includes(currentProvider)) currentProvider = versions[0] || null;
-    renderVersionSwitch();
     allServices = services;
-    renderServiceList('');
-    const si = $('svcSearch');
-    if (si) {
-      si.placeholder = '🔍 Search ' + allServices.length.toLocaleString() + ' services…';
-      if (!si.dataset.wired) { si.dataset.wired = '1'; si.addEventListener('input', () => renderServiceList(si.value)); }
-    }
-    const list = $('serviceList');
-    if (list && !list.dataset.wired) {
-      list.dataset.wired = '1';
-      list.addEventListener('click', e => {
-        const t = e.target.closest('.svc-row');
-        if (t && t.dataset.code) openService(t.dataset.code, t.dataset.name);
-      });
-    }
-  } catch (e) { $('serviceList').innerHTML = `<div class="card">${e.message}</div>`; }
+    paintServices();
+    try { localStorage.setItem('otpSvcCache', JSON.stringify({ services, versions, provider: currentProvider })); } catch (e) {}
+  } catch (e) {
+    if (!allServices.length) $('serviceList').innerHTML = `<div class="card">${e.message}</div>`;
+  }
 }
 function svcRow(s) {
   const chip = s.ext
