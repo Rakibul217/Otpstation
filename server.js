@@ -331,10 +331,19 @@ const BRAND_COLORS = {
 };
 async function computeServices(wantProv) {
   const p = await getProvider();
-  const services = await p.getServices();
+  let services = await p.getServices();
   const cfg = await db.getConfig();
   const primaryName = (cfg.provider || 'mock').toLowerCase();
   const backup = await getBackupProvider();
+  // Version 2 is SMSBower's OWN shop: when browsing it, the service list
+  // comes from SMSBower's catalog, not the primary provider's — the two
+  // versions share nothing but the page.
+  if (wantProv === 'smsbower' && backup) {
+    try {
+      const own = await backup.getServices();
+      if (Array.isArray(own) && own.length) services = own;
+    } catch (e) { /* keep the primary catalog on SMSBower hiccups */ }
+  }
   // Connected systems, in switch order: Version 1 = primary, Version 2 = backup.
   const versions = [primaryName];
   if (backup) versions.push('smsbower');
@@ -392,6 +401,9 @@ app.get('/api/services', async (req, res) => {
 });
 setTimeout(() => {
   computeServices('').then(v => servicesCache.set('merged', { t: Date.now(), v })).catch(() => {});
+  getBackupProvider().then(b => {
+    if (b) computeServices('smsbower').then(v => servicesCache.set('smsbower', { t: Date.now(), v })).catch(() => {});
+  }).catch(() => {});
 }, 2000);
 
 // One provider's own country list (single-offer entries) — the Version 1 /
@@ -450,7 +462,14 @@ app.post('/api/orders', requireAuth, async (req, res) => {
     const primaryName = (cfg.provider || 'mock').toLowerCase();
     const primary = await getProvider();
     const services = await primary.getServices();
-    const s = services.find(x => x.code === service) || { name: service };
+    let s = services.find(x => x.code === service);
+    if (!s) {
+      // A Version-2-only service (SMSBower's own catalog) — take its name
+      // from the backup's catalog so the order history reads properly.
+      const bk = await getBackupProvider();
+      if (bk) { try { s = (await bk.getServices()).find(x => x.code === service); } catch (e) {} }
+    }
+    s = s || { name: service };
     // Candidate sources for this service+country across providers,
     // cheapest first — the SMSBower backup covers stock-outs and wins
     // whenever it is cheaper. The customer is charged the cheapest price,
