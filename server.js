@@ -46,6 +46,54 @@ async function getProvider() {
   return require('./providers/mock');
 }
 
+// SMSBower backup provider. New orders may route to it only when it is
+// enabled in Admin → Settings AND a key is saved there (or the
+// SMSBOWER_API_KEY env var is set). Orders already placed with it keep
+// polling/cancelling through it on the key alone — the enable toggle must
+// never strand a waiting order.
+async function getBackupProvider() {
+  const cfg = await db.getConfig();
+  if (!cfg.smsbowerEnabled) return null;
+  const key = cfg.smsbowerApiKey || process.env.SMSBOWER_API_KEY || '';
+  if (!key) return null;
+  const b = require('./providers/smsbower');
+  b.setKey(key);
+  return b;
+}
+async function providerByName(name) {
+  if (name === 'smsbower') {
+    const cfg = await db.getConfig();
+    const key = cfg.smsbowerApiKey || process.env.SMSBOWER_API_KEY || '';
+    if (key) {
+      const b = require('./providers/smsbower');
+      b.setKey(key);
+      return b;
+    }
+  }
+  return getProvider();
+}
+
+// Country list for a service across providers: both use the sms-activate
+// country numbering, so entries merge by code — cheapest base price wins,
+// stock counts add up, and countries only the backup has are appended.
+async function mergedCountries(service) {
+  const p = await getProvider();
+  const list = await p.getCountries(service);
+  const backup = await getBackupProvider();
+  if (!backup) return list;
+  let bList = [];
+  try { bList = await backup.getCountries(service); } catch (e) { return list; }
+  const byCode = new Map(list.map(c => [c.code, { ...c }]));
+  for (const b of bList) {
+    const cur = byCode.get(b.code);
+    if (cur) {
+      cur.baseUsd = Math.min(cur.baseUsd, b.baseUsd);
+      cur.count = (cur.count || 0) + (b.count || 0);
+    } else byCode.set(b.code, { ...b });
+  }
+  return [...byCode.values()].sort((a, b) => a.baseUsd - b.baseUsd);
+}
+
 // ---------------- helpers ----------------
 const uid = () => crypto.randomBytes(8).toString('hex');
 const hashPw = (pw, salt) => crypto.createHash('sha256').update(salt + pw).digest('hex');
@@ -293,8 +341,7 @@ app.get('/api/services', async (req, res) => {
 
 app.get('/api/countries', async (req, res) => {
   try {
-    const p = await getProvider();
-    const list = await p.getCountries(req.query.service);
+    const list = await mergedCountries(req.query.service);
     res.json({ countries: await Promise.all(list.map(async c => ({ ...c, priceUsd: await priceUSD(c.baseUsd) }))) });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -304,26 +351,52 @@ app.post('/api/orders', requireAuth, async (req, res) => {
     if ((req.user.status || 'active') !== 'active')
       return res.status(403).json({ error: 'Your account is on hold — please contact support' });
     const { service, country, expectedPrice } = req.body || {};
-    const p = await getProvider();
-    const countries = await p.getCountries(service);
-    const c = countries.find(x => x.code === country);
-    if (!c) return res.status(400).json({ error: 'Just sold out — please choose another country', soldOut: true });
-    const services = await p.getServices();
+    const cfg = await db.getConfig();
+    const primaryName = (cfg.provider || 'mock').toLowerCase();
+    const primary = await getProvider();
+    const services = await primary.getServices();
     const s = services.find(x => x.code === service) || { name: service };
-    const price = await priceUSD(c.baseUsd);
-    // Price-shift guard: Grizzly's live price moved since the user saw the list —
+    // Candidate sources for this service+country across providers,
+    // cheapest first — the SMSBower backup covers stock-outs and wins
+    // whenever it is cheaper. The customer is charged the cheapest price,
+    // which is exactly what the merged country list displayed.
+    const sources = [];
+    let countryName = null;
+    try {
+      const cs = await primary.getCountries(service);
+      const c = cs.find(x => x.code === country);
+      if (c) { sources.push({ name: primaryName, p: primary, baseUsd: c.baseUsd }); countryName = c.name; }
+    } catch (e) {}
+    const backup = await getBackupProvider();
+    if (backup) {
+      try {
+        const cs = await backup.getCountries(service);
+        const c = cs.find(x => x.code === country);
+        if (c) { sources.push({ name: 'smsbower', p: backup, baseUsd: c.baseUsd }); if (!countryName) countryName = c.name; }
+      } catch (e) {}
+    }
+    if (!sources.length) return res.status(400).json({ error: 'Just sold out — please choose another country', soldOut: true });
+    sources.sort((a, b) => a.baseUsd - b.baseUsd);
+    const price = await priceUSD(sources[0].baseUsd);
+    // Price-shift guard: the live price moved since the user saw the list —
     // stop the stale buy so the customer never pays a price they didn't confirm.
     if (expectedPrice !== undefined && Math.abs(Number(expectedPrice) - price) > 0.005) {
       return res.status(409).json({ error: 'Price just changed — please try again', priceChanged: true, priceUsd: price });
     }
     const me = await db.findUserById(req.user.id);
     if (me.balance < price) return res.status(400).json({ error: `Insufficient balance — need ${fmtMoney(price)}, have ${fmtMoney(me.balance)}` });
-    const bought = await p.buyNumber(service, country);
+    // Try each source cheapest-first until one actually delivers a number.
+    let bought = null, used = null, lastErr = null;
+    for (const src of sources) {
+      try { bought = await src.p.buyNumber(service, country); used = src; break; }
+      catch (e) { lastErr = e; }
+    }
+    if (!bought) throw lastErr || new Error('No numbers right now — please try again');
     await db.addBalance(me.id, -price);
     const order = await db.addOrder({
       id: uid(), userId: me.id, service, serviceName: s.name,
-      country, countryName: c.name, number: bought.number,
-      priceUsd: price, providerId: bought.providerId,
+      country, countryName: countryName || country, number: bought.number,
+      priceUsd: price, providerId: bought.providerId, provider: used.name,
       status: 'waiting', code: null, createdAt: Date.now()
     });
     res.json({ order });
@@ -339,7 +412,7 @@ app.get('/api/orders/:id', requireAuth, async (req, res) => {
   if (!o || o.userId !== req.user.id) return res.status(404).json({ error: 'Order not found' });
   if (o.status === 'waiting') {
     try {
-      const code = await (await getProvider()).getSms(o.providerId);
+      const code = await (await providerByName(o.provider)).getSms(o.providerId);
       if (code) await db.updateOrder(o.id, { status: 'done', code });
     } catch (e) { /* stays waiting on provider error */ }
   }
@@ -353,8 +426,8 @@ app.post('/api/orders/:id/cancel', requireAuth, async (req, res) => {
   if (!o || o.userId !== req.user.id) return res.status(404).json({ error: 'Order not found' });
   if (o.status !== 'waiting') return res.status(400).json({ error: 'This order cannot be cancelled' });
   if (Date.now() - o.createdAt < CANCEL_MIN_MS)
-    return res.status(400).json({ error: 'You can cancel this number 5 minutes after purchase (Grizzly policy)' });
-  try { await (await getProvider()).cancel(o.providerId); } catch (e) {}
+    return res.status(400).json({ error: 'You can cancel this number 5 minutes after purchase (provider policy)' });
+  try { await (await providerByName(o.provider)).cancel(o.providerId); } catch (e) {}
   await db.updateOrder(o.id, { status: 'cancelled' });
   await db.addBalance(o.userId, o.priceUsd);
   res.json({ ok: true, refund: o.priceUsd });
@@ -1113,10 +1186,12 @@ app.get('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
   res.json({ config: { ...c, bkashSet: !!c.bkashNumber, nagadSet: !!c.nagadNumber } });
 });
 app.post('/api/admin/config', requireAuth, requireAdmin, async (req, res) => {
-  const { markupPercent, flatFeeUsd, provider, siteName, bkashNumber, nagadNumber, bdtRate, googleClientId, googleClientSecret, baseUrl, welcomeBonusUsd, welcomeBonusEnabled, welcomeBonusLimit, smsAutoApprove, smsBalanceCheck } = req.body || {};
+  const { markupPercent, flatFeeUsd, provider, siteName, bkashNumber, nagadNumber, bdtRate, googleClientId, googleClientSecret, baseUrl, welcomeBonusUsd, welcomeBonusEnabled, welcomeBonusLimit, smsAutoApprove, smsBalanceCheck, smsbowerEnabled, smsbowerApiKey } = req.body || {};
   const patch = {};
   if (smsAutoApprove !== undefined) patch.smsAutoApprove = !!smsAutoApprove;
   if (smsBalanceCheck !== undefined) patch.smsBalanceCheck = !!smsBalanceCheck;
+  if (smsbowerEnabled !== undefined) patch.smsbowerEnabled = !!smsbowerEnabled;
+  if (smsbowerApiKey !== undefined) patch.smsbowerApiKey = String(smsbowerApiKey).trim().slice(0, 80);
   if (markupPercent !== undefined) patch.markupPercent = Math.max(0, Math.min(500, Number(markupPercent) || 0));
   if (flatFeeUsd !== undefined) patch.flatFeeUsd = Math.max(0, Math.min(10, Number(flatFeeUsd) || 0));
   if (welcomeBonusUsd !== undefined) patch.welcomeBonusUsd = Math.max(0, Math.min(100, Number(welcomeBonusUsd) || 0));
