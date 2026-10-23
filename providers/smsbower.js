@@ -10,7 +10,8 @@
 // SMSBOWER_API_KEY env var is used when set (local testing).
 
 let KEY = '';
-const API_BASE = 'https://smsbower.page/stubs/handler_api.php';
+// SMSBOWER_API_BASE override exists for local testing against a stub.
+const API_BASE = process.env.SMSBOWER_API_BASE || 'https://smsbower.page/stubs/handler_api.php';
 
 function setKey(k) { KEY = String(k || '').trim(); }
 function currentKey() { return KEY || process.env.SMSBOWER_API_KEY || ''; }
