@@ -92,11 +92,117 @@ const FLAGS = {
   '81': '🇳🇵', '53': '🇸🇦', '31': '🇿🇦', '73': '🇧🇷',
 };
 
+// Canonical display names for the well-known country ids — the same names
+// Version 1 (Grizzly) shows, so "USA" / "Canada" searches find them in
+// Version 2 too (SMSBower's own English names differ, e.g. "United States").
+const NAMES = {
+  '187': 'USA', '12': 'USA (2)', '16': 'United Kingdom', '22': 'India',
+  '60': 'Bangladesh', '6': 'Indonesia', '66': 'Pakistan', '10': 'Vietnam',
+  '4': 'Philippines', '19': 'Nigeria', '36': 'Canada', '175': 'Australia',
+  '43': 'Germany', '78': 'France', '1': 'Ukraine', '7': 'Malaysia',
+  '81': 'Nepal', '53': 'Saudi Arabia', '31': 'South Africa', '73': 'Brazil',
+};
+
+// The site's popular services (same codes/logos as Version 1). In
+// Version 2 these keep their brand chips; everything else SMSBower
+// offers joins as letter-icon long-tail entries.
+const POPULAR = [
+  { code: 'fb', name: 'Facebook', logo: 'facebook' },
+  { code: 'wa', name: 'WhatsApp', logo: 'whatsapp' },
+  { code: 'tg', name: 'Telegram', logo: 'telegram' },
+  { code: 'ig', name: 'Instagram', logo: 'instagram' },
+  { code: 'go', name: 'Google', logo: 'google' },
+  { code: 'lf', name: 'TikTok', logo: 'tiktok' },
+  { code: 'im', name: 'imo', logo: 'imo' },
+  { code: 'am', name: 'Amazon', logo: 'amazon' },
+  { code: 'nf', name: 'Netflix', logo: 'netflix' },
+  { code: 'ds', name: 'Discord', logo: 'discord' },
+  { code: 'tw', name: 'Twitter / X', logo: 'twitter' },
+  { code: 'fu', name: 'Snapchat', logo: 'snapchat' },
+  { code: 'ts', name: 'PayPal', logo: 'paypal' },
+  { code: 'ub', name: 'Uber', logo: 'uber' },
+  { code: 'dr', name: 'ChatGPT', logo: 'openai' },
+  { code: 'mm', name: 'Microsoft', logo: 'microsoft' },
+  { code: 'me', name: 'Line', logo: 'line' },
+  { code: 'wx', name: 'Apple', logo: 'apple' },
+];
+function hashHue(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360;
+  return h;
+}
+
+let allPricesCache = { at: 0, data: null };
+let svcNamesCache = { at: 0, data: null };
+const ALL_TTL = 60 * 1000, SVC_TTL = 10 * 60 * 1000;
+
+// The whole price matrix in ONE call: {countryId: {service: {count, cost}}}.
+async function getAllPrices() {
+  if (allPricesCache.data && Date.now() - allPricesCache.at < ALL_TTL) return allPricesCache.data;
+  const text = await api('getPrices');
+  checkError(text);
+  const data = JSON.parse(text);
+  allPricesCache = { at: Date.now(), data };
+  return data;
+}
+
+// SMSBower's own service names ({code: name}) — best effort only; the
+// price matrix alone is enough to build the catalog if this is missing.
+async function getServiceNames() {
+  if (svcNamesCache.data && Date.now() - svcNamesCache.at < SVC_TTL) return svcNamesCache.data;
+  const out = {};
+  try {
+    const text = await api('getServicesList');
+    checkError(text);
+    const raw = JSON.parse(text);
+    if (Array.isArray(raw)) {
+      for (const s of raw) if (s && s.code) out[String(s.code)] = s.name || String(s.code);
+    } else if (raw && typeof raw === 'object') {
+      for (const [code, s] of Object.entries(raw)) out[code] = (s && s.name) || code;
+    }
+  } catch (e) { /* names are cosmetic — the matrix still gives the codes */ }
+  svcNamesCache = { at: Date.now(), data: out };
+  return out;
+}
+
 module.exports = {
   name: 'smsbower',
   setKey,
 
-  async getServices() { return []; }, // catalog stays with the primary provider
+  // Version 2's catalog is SMSBower's OWN — every service in their price
+  // matrix, independent of the primary provider's catalog (if they list
+  // 500 services, all 500 show). Popular codes keep the site's brand
+  // name/logo; the rest get letter icons, biggest stock first.
+  async getServices() {
+    let matrix = null;
+    try { matrix = await getAllPrices(); } catch (e) { matrix = null; }
+    const names = await getServiceNames();
+    const stock = new Map(); // code -> total numbers across all countries
+    if (matrix && typeof matrix === 'object') {
+      for (const svcMap of Object.values(matrix)) {
+        if (!svcMap || typeof svcMap !== 'object') continue;
+        for (const [code, info] of Object.entries(svcMap)) {
+          if (info && Number(info.count)) stock.set(code, (stock.get(code) || 0) + Number(info.count));
+        }
+      }
+    }
+    if (stock.size) {
+      const pop = POPULAR.filter(p => stock.has(p.code)).map(p => ({ ...p }));
+      const rest = [];
+      for (const code of stock.keys()) {
+        if (POPULAR.some(p => p.code === code)) continue;
+        const name = names[code] || code;
+        rest.push({ code, name, logo: 'letter', ext: true, icon: null, color: 'hsl(' + hashHue(name) + ', 65%, 48%)' });
+      }
+      rest.sort((a, b) => (stock.get(b.code) || 0) - (stock.get(a.code) || 0));
+      return [...pop, ...rest];
+    }
+    // Price matrix unavailable — still show the popular services SMSBower
+    // lists (or the full popular set if even that failed); their country
+    // lists keep loading per-service as usual.
+    const listed = Object.keys(names);
+    return POPULAR.filter(p => !listed.length || listed.includes(p.code)).map(p => ({ ...p }));
+  },
 
   async getCountries(service) {
     const [prices, names] = await Promise.all([getPricesFor(service), getCountryNames()]);
@@ -106,14 +212,17 @@ module.exports = {
       if (!info || !info.count) continue;
       out.push({
         code: cid,
-        name: names[cid] || ('Country ' + cid),
+        name: NAMES[cid] || names[cid] || ('Country ' + cid),
         flag: FLAGS[cid] || '🌍',
         baseUsd: info.cost,
         count: info.count,
       });
     }
     out.sort((a, b) => a.baseUsd - b.baseUsd);
-    return out.slice(0, 60);
+    // ALL of SMSBower's countries, untrimmed — Version 2 is SMSBower's own
+    // shop; a cheapest-60 cut here used to hide the USA/Canada (pricier
+    // than dozens of cheaper countries) from the list and from search.
+    return out;
   },
 
   async buyNumber(service, country) {
