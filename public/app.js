@@ -352,9 +352,32 @@ document.querySelectorAll('#plates .plate').forEach(b => {
 
 // ---------- services ----------
 let allServices = [];
+let versions = [];
+let currentProvider = null;
+function renderVersionSwitch() {
+  const el = $('verSwitch');
+  if (!el) return;
+  if (versions.length < 2) { el.classList.add('hidden'); el.innerHTML = ''; return; }
+  el.classList.remove('hidden');
+  el.innerHTML = versions.map((v, i) =>
+    `<button class="ver-tab ${v === currentProvider ? 'active' : ''}" onclick="switchVersion('${v}')">Version ${i + 1}</button>`).join('');
+}
+async function switchVersion(v) {
+  if (v === currentProvider) return;
+  currentProvider = v;
+  renderVersionSwitch();
+  await loadServices();
+  if (currentService && !$('countryBox').classList.contains('hidden')) {
+    openService(currentService.code, currentService.name);
+  }
+}
 async function loadServices() {
   try {
-    const { services } = await api('GET', '/api/services');
+    const data = await api('GET', '/api/services' + (currentProvider ? '?provider=' + currentProvider : ''));
+    const { services } = data;
+    versions = data.versions || [];
+    if (!currentProvider || !versions.includes(currentProvider)) currentProvider = versions[0] || null;
+    renderVersionSwitch();
     allServices = services;
     renderServiceList('');
     const si = $('svcSearch');
@@ -394,7 +417,7 @@ function countryRowHtml(code, c) {
   const offers = (c.offers && c.offers.length) ? c.offers : null;
   const btns = (offers && offers.length > 1)
     ? offers.map((o, i) => `<button class="buy ${i ? 'alt' : ''}" onclick="buyNumber('${code}','${c.code}','${fmtUSD(o.priceUsd)}',${o.priceUsd},'${o.provider}')">Version ${i + 1} · ${fmtUSD(o.priceUsd)}</button>`).join('')
-    : `<button class="buy" onclick="buyNumber('${code}','${c.code}','${fmtUSD(c.priceUsd)}',${c.priceUsd})">${fmtUSD(c.priceUsd)}</button>`;
+    : `<button class="buy" onclick="buyNumber('${code}','${c.code}','${fmtUSD(c.priceUsd)}',${c.priceUsd}${offers ? `,'${offers[0].provider}'` : ''})">${fmtUSD(c.priceUsd)}</button>`;
   return `
     <div class="country">
       <div><div class="nm">${c.flag} ${esc(c.name)}</div><div class="ct">${Number(c.count).toLocaleString()} numbers</div></div>
@@ -402,6 +425,12 @@ function countryRowHtml(code, c) {
     </div>`;
 }
 function renderCountries() {
+  if (!currentCountries.length) {
+    $('countryList').innerHTML = versions.length > 1
+      ? '<div class="card">No numbers in this version right now — please switch to the other version above.</div>'
+      : '<div class="card">No numbers available right now — please try again shortly.</div>';
+    return;
+  }
   const q = ($('countrySearch').value || '').trim().toLowerCase();
   const list = q ? currentCountries.filter(c => c.name.toLowerCase().includes(q)) : currentCountries;
   $('countryList').innerHTML = list.length
@@ -415,7 +444,7 @@ async function openService(code, name) {
   $('countryTitle').textContent = name + ' — choose country';
   $('countrySearch').value = '';
   $('countryList').innerHTML = '<div class="card">Loading countries…</div>';
-  const { countries } = await api('GET', '/api/countries?service=' + code);
+  const { countries } = await api('GET', '/api/countries?service=' + code + (currentProvider ? '&provider=' + currentProvider : ''));
   currentCountries = countries;
   renderCountries();
 }
