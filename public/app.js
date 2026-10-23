@@ -461,16 +461,50 @@ function renderCountries() {
     ? list.map(c => countryRowHtml(currentService.code, c)).join('')
     : '<div class="card">No country matches your search.</div>';
 }
+// Country lists are cached per service+version (last 10 lists, up to
+// 10 min old) so tapping a service paints INSTANTLY from the copy on
+// the phone; a fresh list is fetched in the background and quietly
+// replaces it if the customer is still looking at the same list.
+function countryCacheGet(code, prov) {
+  try {
+    const all = JSON.parse(localStorage.getItem('otpCountryCache') || '{}');
+    const hit = all[code + '|' + (prov || 'merged')];
+    if (hit && hit.countries && hit.countries.length && Date.now() - hit.t < 10 * 60 * 1000) return hit.countries;
+  } catch (e) {}
+  return null;
+}
+function countryCacheSet(code, prov, countries) {
+  try {
+    const all = JSON.parse(localStorage.getItem('otpCountryCache') || '{}');
+    all[code + '|' + (prov || 'merged')] = { t: Date.now(), countries };
+    const keys = Object.keys(all).sort((a, b) => all[b].t - all[a].t).slice(0, 10);
+    const trimmed = {};
+    for (const k of keys) trimmed[k] = all[k];
+    localStorage.setItem('otpCountryCache', JSON.stringify(trimmed));
+  } catch (e) {}
+}
 async function openService(code, name) {
+  const prov = currentProvider;
   currentService = { code, name };
   $('svcBox').classList.add('hidden');
   $('countryBox').classList.remove('hidden');
   $('countryTitle').textContent = name + ' — choose country';
   $('countrySearch').value = '';
-  $('countryList').innerHTML = '<div class="card">Loading countries…</div>';
-  const { countries } = await api('GET', '/api/countries?service=' + code + (currentProvider ? '&provider=' + currentProvider : ''));
-  currentCountries = countries;
-  renderCountries();
+  const cached = countryCacheGet(code, prov);
+  if (cached) { currentCountries = cached; renderCountries(); }
+  else $('countryList').innerHTML = '<div class="card">Loading countries…</div>';
+  try {
+    const { countries } = await api('GET', '/api/countries?service=' + code + (prov ? '&provider=' + prov : ''));
+    countryCacheSet(code, prov, countries);
+    // Repaint only if the customer is still on this service+version.
+    if (currentService && currentService.code === code && currentProvider === prov
+        && !$('countryBox').classList.contains('hidden')) {
+      currentCountries = countries;
+      renderCountries();
+    }
+  } catch (e) {
+    if (!cached) $('countryList').innerHTML = `<div class="card">${e.message}</div>`;
+  }
 }
 $('countrySearch').addEventListener('input', renderCountries);
 $('backBtn').onclick = () => { $('countryBox').classList.add('hidden'); $('svcBox').classList.remove('hidden'); };
