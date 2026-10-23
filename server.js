@@ -74,24 +74,38 @@ async function providerByName(name) {
 }
 
 // Country list for a service across providers: both use the sms-activate
-// country numbering, so entries merge by code — cheapest base price wins,
-// stock counts add up, and countries only the backup has are appended.
+// country numbering, so entries merge by code. Each country keeps BOTH
+// providers' offers separately (`offers`, cheapest first) so the UI can
+// show them as "Version 1 / Version 2" buy buttons; the entry's own
+// baseUsd/count remain the cheapest price / combined stock, and countries
+// only the backup has are appended.
 async function mergedCountries(service) {
   const p = await getProvider();
+  const cfg = await db.getConfig();
+  const primaryName = (cfg.provider || 'mock').toLowerCase();
   const list = await p.getCountries(service);
+  const byCode = new Map(list.map(c => [c.code, {
+    ...c,
+    offers: [{ provider: primaryName, baseUsd: c.baseUsd, count: c.count }],
+  }]));
   const backup = await getBackupProvider();
-  if (!backup) return list;
-  let bList = [];
-  try { bList = await backup.getCountries(service); } catch (e) { return list; }
-  const byCode = new Map(list.map(c => [c.code, { ...c }]));
-  for (const b of bList) {
-    const cur = byCode.get(b.code);
-    if (cur) {
-      cur.baseUsd = Math.min(cur.baseUsd, b.baseUsd);
-      cur.count = (cur.count || 0) + (b.count || 0);
-    } else byCode.set(b.code, { ...b });
+  if (backup) {
+    let bList = [];
+    try { bList = await backup.getCountries(service); } catch (e) { bList = []; }
+    for (const b of bList) {
+      const cur = byCode.get(b.code);
+      if (cur) {
+        cur.offers.push({ provider: 'smsbower', baseUsd: b.baseUsd, count: b.count });
+        cur.baseUsd = Math.min(cur.baseUsd, b.baseUsd);
+        cur.count = (cur.count || 0) + (b.count || 0);
+      } else {
+        byCode.set(b.code, { ...b, offers: [{ provider: 'smsbower', baseUsd: b.baseUsd, count: b.count }] });
+      }
+    }
   }
-  return [...byCode.values()].sort((a, b) => a.baseUsd - b.baseUsd);
+  const out = [...byCode.values()];
+  for (const c of out) c.offers.sort((a, b) => a.baseUsd - b.baseUsd);
+  return out.sort((a, b) => a.baseUsd - b.baseUsd);
 }
 
 // ---------------- helpers ----------------
@@ -342,7 +356,13 @@ app.get('/api/services', async (req, res) => {
 app.get('/api/countries', async (req, res) => {
   try {
     const list = await mergedCountries(req.query.service);
-    res.json({ countries: await Promise.all(list.map(async c => ({ ...c, priceUsd: await priceUSD(c.baseUsd) }))) });
+    res.json({
+      countries: await Promise.all(list.map(async c => ({
+        ...c,
+        priceUsd: await priceUSD(c.baseUsd),
+        offers: await Promise.all((c.offers || []).map(async o => ({ ...o, priceUsd: await priceUSD(o.baseUsd) }))),
+      }))),
+    });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -377,7 +397,17 @@ app.post('/api/orders', requireAuth, async (req, res) => {
     }
     if (!sources.length) return res.status(400).json({ error: 'Just sold out — please choose another country', soldOut: true });
     sources.sort((a, b) => a.baseUsd - b.baseUsd);
-    const price = await priceUSD(sources[0].baseUsd);
+    // The customer may tap a specific version (provider) in the country
+    // list — that version leads, and its displayed price is what they pay.
+    const wantProvider = String((req.body || {}).provider || '').toLowerCase();
+    let cap = sources[0];
+    if (wantProvider) {
+      const chosen = sources.find(x => x.name === wantProvider);
+      if (!chosen) return res.status(400).json({ error: 'That version just sold out — please pick the other version', soldOut: true });
+      cap = chosen;
+      sources.sort((a, b) => (a === chosen ? -1 : b === chosen ? 1 : a.baseUsd - b.baseUsd));
+    }
+    const price = await priceUSD(cap.baseUsd);
     // Price-shift guard: the live price moved since the user saw the list —
     // stop the stale buy so the customer never pays a price they didn't confirm.
     if (expectedPrice !== undefined && Math.abs(Number(expectedPrice) - price) > 0.005) {
@@ -385,9 +415,14 @@ app.post('/api/orders', requireAuth, async (req, res) => {
     }
     const me = await db.findUserById(req.user.id);
     if (me.balance < price) return res.status(400).json({ error: `Insufficient balance — need ${fmtMoney(price)}, have ${fmtMoney(me.balance)}` });
-    // Try each source cheapest-first until one actually delivers a number.
+    // Try each source in order until one actually delivers a number.
+    // Fallback safety: a substitute provider is used only when its price
+    // is close to the chosen one (≤30% above) — a far dearer source must
+    // never silently replace the version the customer picked; the order
+    // then fails cleanly and they can tap the other version themselves.
+    const eligible = sources.filter(x => x.baseUsd <= cap.baseUsd * 1.3 + 0.005);
     let bought = null, used = null, lastErr = null;
-    for (const src of sources) {
+    for (const src of eligible) {
       try { bought = await src.p.buyNumber(service, country); used = src; break; }
       catch (e) { lastErr = e; }
     }
