@@ -329,44 +329,70 @@ const BRAND_COLORS = {
   apple: '#111111',
   tinder: '#FE3C72'
 };
+async function computeServices(wantProv) {
+  const p = await getProvider();
+  const services = await p.getServices();
+  const cfg = await db.getConfig();
+  const primaryName = (cfg.provider || 'mock').toLowerCase();
+  const backup = await getBackupProvider();
+  // Connected systems, in switch order: Version 1 = primary, Version 2 = backup.
+  const versions = [primaryName];
+  if (backup) versions.push('smsbower');
+  // "From" prices respect the version the customer is browsing: scoped
+  // to that provider, or the cheapest across all providers when unset.
+  const priceCountries = async (code) => {
+    if (!wantProv) return mergedCountries(code);
+    if (wantProv === 'smsbower') return backup ? backup.getCountries(code).catch(() => []) : [];
+    if (wantProv === primaryName) return p.getCountries(code);
+    return [];
+  };
+  // Fetch every service's cheapest price in PARALLEL — sequential fetching
+  // gets slower with every service added.
+  const out = await Promise.all(services.map(async (s) => {
+    let min = null;
+    if (!s.ext) {
+      // Curated popular services get a live "from $X" price. Long-tail
+      // services skip the price call (a per-service call for 2000+
+      // services would hang the page) — price shows when tapped.
+      try {
+        const countries = await priceCountries(s.code);
+        const prices = await Promise.all(countries.map(c => priceUSD(c.baseUsd)));
+        if (prices.length) min = Math.min(...prices);
+      } catch (e) {}
+    }
+    return { ...s, fromPrice: min, color: s.color || BRAND_COLORS[s.logo] || '#4f7cff' };
+  }));
+  return { services: out, versions };
+}
+
+// The services payload takes seconds to build (dozens of provider price
+// calls), so it is cached: fresh for 60s, then served stale while a
+// background refresh runs — after the first build it is effectively
+// instant, and a boot warm-up (below) covers even the first visitor.
+const servicesCache = new Map();
 app.get('/api/services', async (req, res) => {
+  const wantProv = String(req.query.provider || '').toLowerCase();
+  const key = wantProv || 'merged';
+  const hit = servicesCache.get(key);
+  const age = hit ? Date.now() - hit.t : Infinity;
+  if (hit && age < 60000) return res.json(hit.v);
+  if (hit && age < 300000) {
+    if (!hit.refreshing) {
+      hit.refreshing = computeServices(wantProv)
+        .then(v => servicesCache.set(key, { t: Date.now(), v }))
+        .catch(() => { hit.refreshing = null; });
+    }
+    return res.json(hit.v);
+  }
   try {
-    const p = await getProvider();
-    const services = await p.getServices();
-    const cfg = await db.getConfig();
-    const primaryName = (cfg.provider || 'mock').toLowerCase();
-    const backup = await getBackupProvider();
-    // Connected systems, in switch order: Version 1 = primary, Version 2 = backup.
-    const versions = [primaryName];
-    if (backup) versions.push('smsbower');
-    const wantProv = String(req.query.provider || '').toLowerCase();
-    // "From" prices respect the version the customer is browsing: scoped
-    // to that provider, or the cheapest across all providers when unset.
-    const priceCountries = async (code) => {
-      if (!wantProv) return mergedCountries(code);
-      if (wantProv === 'smsbower') return backup ? backup.getCountries(code).catch(() => []) : [];
-      if (wantProv === primaryName) return p.getCountries(code);
-      return [];
-    };
-    // Fetch every service's cheapest price in PARALLEL — sequential fetching
-    // gets slower with every service added.
-    const out = await Promise.all(services.map(async (s) => {
-      let min = null;
-      if (!s.ext) {
-        // Curated popular services get a live "from $X" price. Long-tail
-        // services skip the price call (a per-service call for 2000+
-        // services would hang the page) — price shows when tapped.
-        try {
-          const countries = await priceCountries(s.code);
-          const prices = await Promise.all(countries.map(c => priceUSD(c.baseUsd)));
-          if (prices.length) min = Math.min(...prices);
-        } catch (e) {}
-      }
-      return { ...s, fromPrice: min, color: s.color || BRAND_COLORS[s.logo] || '#4f7cff' };
-    }));
-    res.json({ services: out, versions });
+    const v = await computeServices(wantProv);
+    servicesCache.set(key, { t: Date.now(), v });
+    res.json(v);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
+setTimeout(() => {
+  computeServices('').then(v => servicesCache.set('merged', { t: Date.now(), v })).catch(() => {});
+}, 2000);
 
 // One provider's own country list (single-offer entries) — the Version 1 /
 // Version 2 browsing mode, where the customer picks a system first and
@@ -390,19 +416,28 @@ async function providerCountries(service, providerName) {
     .sort((a, b) => a.baseUsd - b.baseUsd);
 }
 
+// Country lists are cached for 20s per service+version — repeat opens
+// are instant; the buy-time price guard still protects checkout if a
+// price moves inside that window.
+const countriesCache = new Map();
 app.get('/api/countries', async (req, res) => {
   try {
     const prov = String(req.query.provider || '').toLowerCase();
+    const key = (req.query.service || '') + '|' + (prov || 'merged');
+    const hit = countriesCache.get(key);
+    if (hit && Date.now() - hit.t < 20000) return res.json(hit.v);
     const list = prov
       ? await providerCountries(req.query.service, prov)
       : await mergedCountries(req.query.service);
-    res.json({
+    const v = {
       countries: await Promise.all(list.map(async c => ({
         ...c,
         priceUsd: await priceUSD(c.baseUsd),
         offers: await Promise.all((c.offers || []).map(async o => ({ ...o, priceUsd: await priceUSD(o.baseUsd) }))),
       }))),
-    });
+    };
+    countriesCache.set(key, { t: Date.now(), v });
+    res.json(v);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
