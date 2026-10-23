@@ -178,8 +178,10 @@ module.exports = {
     }
     // Cheapest first — the cheapest AVAILABLE option is always on top.
     // When it sells out it drops off automatically; when restocked it jumps back.
+    // ALL countries are returned (no cheapest-60 cut — it hid pricey ones
+    // like the USA/Canada from the list entirely).
     out.sort((a, b) => a.baseUsd - b.baseUsd);
-    return out.slice(0, 60);
+    return out;
   },
 
   async buyNumber(service, country) {
