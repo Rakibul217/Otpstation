@@ -338,6 +338,10 @@
       <label>🛡️ Balance check — hold for manual review if the SMS balance doesn't match <select id="cSmsBal"><option value="0">Off</option><option value="1">On</option></select></label>
       <p class="muted">Anti-fake-SMS: the claimed amount must match your actual bKash/Nagad balance jump. <span id="cSmsBalances"></span><br>Forward <b>all</b> SMS from bKash/Nagad (not just payment ones) so the balance baseline stays fresh.</p>
       <p class="muted">Phone setup: install an <b>SMS-to-webhook forwarder</b> app → forward SMS from sender <b>bKash</b>/<b>Nagad</b> to the webhook URL as JSON: <span class="mono">{"secret":"…","sender":"…","message":"…"}</span> — the TrxID + amount in the SMS must match a pending top-up.</p>
+      <h4 style="margin:14px 0 6px">📡 Backup provider — SMSBower</h4>
+      <p class="muted">When the main provider has <b>no stock</b> for a service + country — or SMSBower is <b>cheaper</b> — the order automatically goes to SMSBower instead. The customer always pays the cheapest shown price. Needs balance on your SMSBower account.</p>
+      <label>Backup enabled <select id="cBowerOn"><option value="0">Off</option><option value="1">On</option></select></label>
+      <label>SMSBower API key <input id="cBowerKey" type="password" maxlength="80" autocomplete="off"></label>
       <label>Google Client ID (for "Continue with Google") <input id="cGoogleId" type="text" maxlength="120" autocomplete="off" placeholder="….apps.googleusercontent.com"></label>
       <label>Google Client Secret <input id="cGoogleSecret" type="password" maxlength="120" autocomplete="off"></label>
       <label>Public site URL (for Google redirect — e.g. https://otpstation.com) <input id="cBaseUrl" type="text" maxlength="120" placeholder="leave empty to auto-detect"></label>
