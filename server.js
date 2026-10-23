@@ -333,6 +333,21 @@ app.get('/api/services', async (req, res) => {
   try {
     const p = await getProvider();
     const services = await p.getServices();
+    const cfg = await db.getConfig();
+    const primaryName = (cfg.provider || 'mock').toLowerCase();
+    const backup = await getBackupProvider();
+    // Connected systems, in switch order: Version 1 = primary, Version 2 = backup.
+    const versions = [primaryName];
+    if (backup) versions.push('smsbower');
+    const wantProv = String(req.query.provider || '').toLowerCase();
+    // "From" prices respect the version the customer is browsing: scoped
+    // to that provider, or the cheapest across all providers when unset.
+    const priceCountries = async (code) => {
+      if (!wantProv) return mergedCountries(code);
+      if (wantProv === 'smsbower') return backup ? backup.getCountries(code).catch(() => []) : [];
+      if (wantProv === primaryName) return p.getCountries(code);
+      return [];
+    };
     // Fetch every service's cheapest price in PARALLEL — sequential fetching
     // gets slower with every service added.
     const out = await Promise.all(services.map(async (s) => {
@@ -342,20 +357,45 @@ app.get('/api/services', async (req, res) => {
         // services skip the price call (a per-service call for 2000+
         // services would hang the page) — price shows when tapped.
         try {
-          const countries = await p.getCountries(s.code);
+          const countries = await priceCountries(s.code);
           const prices = await Promise.all(countries.map(c => priceUSD(c.baseUsd)));
           if (prices.length) min = Math.min(...prices);
         } catch (e) {}
       }
       return { ...s, fromPrice: min, color: s.color || BRAND_COLORS[s.logo] || '#4f7cff' };
     }));
-    res.json({ services: out });
+    res.json({ services: out, versions });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// One provider's own country list (single-offer entries) — the Version 1 /
+// Version 2 browsing mode, where the customer picks a system first and
+// then sees only that system's countries and prices.
+async function providerCountries(service, providerName) {
+  const cfg = await db.getConfig();
+  const primaryName = (cfg.provider || 'mock').toLowerCase();
+  let raw = null, name = null;
+  if (providerName === 'smsbower') {
+    const backup = await getBackupProvider();
+    if (!backup) return [];
+    try { raw = await backup.getCountries(service); } catch (e) { raw = []; }
+    name = 'smsbower';
+  } else if (providerName === primaryName) {
+    const p = await getProvider();
+    raw = await p.getCountries(service);
+    name = primaryName;
+  } else return [];
+  return raw
+    .map(c => ({ ...c, offers: [{ provider: name, baseUsd: c.baseUsd, count: c.count }] }))
+    .sort((a, b) => a.baseUsd - b.baseUsd);
+}
+
 app.get('/api/countries', async (req, res) => {
   try {
-    const list = await mergedCountries(req.query.service);
+    const prov = String(req.query.provider || '').toLowerCase();
+    const list = prov
+      ? await providerCountries(req.query.service, prov)
+      : await mergedCountries(req.query.service);
     res.json({
       countries: await Promise.all(list.map(async c => ({
         ...c,
