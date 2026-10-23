@@ -53,35 +53,70 @@ function checkError(text) {
   }
 }
 
-// Small in-memory caches so page loads never hammer their API.
-let pricesCache = new Map(); // service -> { at, data }
-let namesCache = { at: 0, data: null };
-const PRICES_TTL = 45 * 1000, NAMES_TTL = 10 * 60 * 1000;
+// In-memory caches with stale-while-revalidate: SMSBower's API takes
+// seconds to answer, so a visitor must NEVER wait on it when we already
+// have a recent copy — serve the cached data instantly and refresh it
+// in the background. (Fresh window first, then a stale window during
+// which the old copy is served while one refresh runs.)
+let pricesCache = new Map(); // service -> { at, data, refreshing }
+let namesCache = { at: 0, data: null, refreshing: null };
+const PRICES_FRESH = 60 * 1000, PRICES_STALE = 10 * 60 * 1000;
+const NAMES_FRESH = 10 * 60 * 1000, NAMES_STALE = 60 * 60 * 1000;
 
 async function getPricesFor(service) {
   const hit = pricesCache.get(service);
-  if (hit && Date.now() - hit.at < PRICES_TTL) return hit.data;
+  const now = Date.now();
+  if (hit && now - hit.at < PRICES_FRESH) return hit.data;
+  if (hit && now - hit.at < PRICES_STALE) {
+    if (!hit.refreshing) {
+      hit.refreshing = (async () => {
+        try {
+          const text = await api('getPrices', { service });
+          checkError(text);
+          pricesCache.set(service, { at: Date.now(), data: JSON.parse(text) });
+        } catch (e) { const h = pricesCache.get(service); if (h) h.refreshing = null; }
+      })();
+    }
+    return hit.data;
+  }
   const text = await api('getPrices', { service });
   checkError(text);
   const data = JSON.parse(text); // {countryId: {service: {count, cost}}}
-  pricesCache.set(service, { at: Date.now(), data });
+  pricesCache.set(service, { at: now, data });
   return data;
 }
 
 async function getCountryNames() {
-  if (namesCache.data && Date.now() - namesCache.at < NAMES_TTL) return namesCache.data;
+  const now = Date.now();
+  if (namesCache.data && now - namesCache.at < NAMES_FRESH) return namesCache.data;
+  if (namesCache.data && now - namesCache.at < NAMES_STALE) {
+    if (!namesCache.refreshing) {
+      namesCache.refreshing = (async () => {
+        try {
+          const text = await api('getCountries');
+          checkError(text);
+          namesCache = { at: Date.now(), data: parseCountryNames(JSON.parse(text)), refreshing: null };
+        } catch (e) { namesCache.refreshing = null; }
+      })();
+    }
+    return namesCache.data;
+  }
   const text = await api('getCountries');
   checkError(text);
-  const raw = JSON.parse(text);
-  // Their getCountries may be an array of {id, eng, ...} or an object keyed
-  // by id (Grizzly style) — normalize to { id: engName }.
+  const out = parseCountryNames(JSON.parse(text));
+  namesCache = { at: Date.now(), data: out, refreshing: null };
+  return out;
+}
+
+// Their getCountries may be an array of {id, eng, ...} or an object keyed
+// by id (Grizzly style) — normalize to { id: engName }.
+function parseCountryNames(raw) {
   const out = {};
   if (Array.isArray(raw)) {
     for (const c of raw) if (c && c.id !== undefined) out[String(c.id)] = c.eng || c.name || ('Country ' + c.id);
   } else if (raw && typeof raw === 'object') {
     for (const [cid, c] of Object.entries(raw)) out[cid] = (c && (c.eng || c.name)) || ('Country ' + cid);
   }
-  namesCache = { at: Date.now(), data: out };
   return out;
 }
 
@@ -132,17 +167,31 @@ function hashHue(s) {
   return h;
 }
 
-let allPricesCache = { at: 0, data: null };
+let allPricesCache = { at: 0, data: null, refreshing: null };
 let svcNamesCache = { at: 0, data: null };
-const ALL_TTL = 60 * 1000, SVC_TTL = 10 * 60 * 1000;
+const ALL_FRESH = 60 * 1000, ALL_STALE = 10 * 60 * 1000, SVC_TTL = 10 * 60 * 1000;
 
 // The whole price matrix in ONE call: {countryId: {service: {count, cost}}}.
+// Same stale-while-revalidate discipline as the per-service prices.
 async function getAllPrices() {
-  if (allPricesCache.data && Date.now() - allPricesCache.at < ALL_TTL) return allPricesCache.data;
+  const now = Date.now();
+  if (allPricesCache.data && now - allPricesCache.at < ALL_FRESH) return allPricesCache.data;
+  if (allPricesCache.data && now - allPricesCache.at < ALL_STALE) {
+    if (!allPricesCache.refreshing) {
+      allPricesCache.refreshing = (async () => {
+        try {
+          const text = await api('getPrices');
+          checkError(text);
+          allPricesCache = { at: Date.now(), data: JSON.parse(text), refreshing: null };
+        } catch (e) { allPricesCache.refreshing = null; }
+      })();
+    }
+    return allPricesCache.data;
+  }
   const text = await api('getPrices');
   checkError(text);
   const data = JSON.parse(text);
-  allPricesCache = { at: Date.now(), data };
+  allPricesCache = { at: now, data, refreshing: null };
   return data;
 }
 
