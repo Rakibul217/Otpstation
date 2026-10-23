@@ -140,20 +140,56 @@ async function withRetry(fn, retries = 1) {
   throw last;
 }
 
+// Stale-while-revalidate caches: a visitor never waits on the Grizzly
+// API when a recent copy exists — the cached copy is served instantly
+// and refreshed in the background. (Buys still re-check via maxPrice
+// tolerance + the server's price-shift guard.)
+let pricesCache = new Map(); // service -> { at, data, refreshing }
+let namesCache = { at: 0, data: null, refreshing: null };
+const PRICES_FRESH = 60 * 1000, PRICES_STALE = 10 * 60 * 1000;
+const NAMES_FRESH = 10 * 60 * 1000, NAMES_STALE = 60 * 60 * 1000;
+
+async function fetchPrices(service) {
+  const text = await api('getPrices', { service });
+  checkError(text);
+  return JSON.parse(text); // {countryId: {service: {count, cost, retry}}}
+}
 async function getPricesFor(service) {
-  return withRetry(async () => {
-    const text = await api('getPrices', { service });
-    checkError(text);
-    return JSON.parse(text); // {countryId: {service: {count, cost, retry}}}
-  });
+  const hit = pricesCache.get(service);
+  const now = Date.now();
+  if (hit && now - hit.at < PRICES_FRESH) return hit.data;
+  if (hit && now - hit.at < PRICES_STALE) {
+    if (!hit.refreshing) {
+      hit.refreshing = withRetry(() => fetchPrices(service))
+        .then(data => pricesCache.set(service, { at: Date.now(), data }))
+        .catch(() => { const h = pricesCache.get(service); if (h) h.refreshing = null; });
+    }
+    return hit.data;
+  }
+  const data = await withRetry(() => fetchPrices(service));
+  pricesCache.set(service, { at: now, data });
+  return data;
 }
 
+async function fetchNames() {
+  const text = await api('getCountries');
+  checkError(text);
+  return JSON.parse(text); // {countryId: {id, eng, ...}}
+}
 async function getCountryNames() {
-  return withRetry(async () => {
-    const text = await api('getCountries');
-    checkError(text);
-    return JSON.parse(text); // {countryId: {id, eng, ...}}
-  });
+  const now = Date.now();
+  if (namesCache.data && now - namesCache.at < NAMES_FRESH) return namesCache.data;
+  if (namesCache.data && now - namesCache.at < NAMES_STALE) {
+    if (!namesCache.refreshing) {
+      namesCache.refreshing = withRetry(fetchNames)
+        .then(data => { namesCache = { at: Date.now(), data, refreshing: null }; })
+        .catch(() => { namesCache.refreshing = null; });
+    }
+    return namesCache.data;
+  }
+  const data = await withRetry(fetchNames);
+  namesCache = { at: now, data, refreshing: null };
+  return data;
 }
 
 module.exports = {
