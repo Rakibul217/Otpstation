@@ -68,6 +68,10 @@ $('aGo').onclick = async () => {
         name: $('aName').value.trim(), username: $('aUser').value.trim(),
         contact: $('aContact').value.trim(), password: $('aPass').value
       });
+      // One extra welcome-bonus popup right after signup (once per
+      // browser) — flag survives the reload below and is consumed by
+      // the ticker block on the fresh page.
+      if (!bonusGet('signup')) { bonusSet('signup', '1'); bonusSet('justSignup', '1'); }
     }
     location.reload();
   } catch (e) { showMsg('aMsg', e.message, 'err'); }
@@ -1256,15 +1260,40 @@ $('cRestore').onclick = async () => {
   } catch (e) {}
   const half = items.map(t => `<span>${t}</span>`).join('<span class="tick-sep">✦</span>');
   $('tickerTrack').innerHTML = half + '<span class="tick-sep">✦</span>' + half + '<span class="tick-sep">✦</span>';
-  // welcome bonus popup: show once per page load when bonus is enabled
+  // welcome bonus popup: once per visit, 30-min cooldown between visits,
+  // one extra show right after a fresh signup (the register handler sets
+  // the flag before its reload; it is consumed here)
   if (wb.enabled && wb.amount > 0) {
     $('bpAmount').textContent = wb.amount;
-    setTimeout(showBonusPopup, 1500);
+    bonusCfg = wb;
+    let justSignup = false;
+    try { justSignup = !!localStorage.getItem('otpBonus_justSignup'); if (justSignup) localStorage.removeItem('otpBonus_justSignup'); } catch (e) {}
+    setTimeout(justSignup ? showBonusPopup : maybeShowBonusPopup, 1500);
   }
 })();
 
 // ---------- welcome bonus popup ----------
-function showBonusPopup() { $('bonusPopup').classList.remove('hidden'); }
+// Show discipline (রাকিবুল's rule, Oct 23): at most once per visit — once
+// it has been shown (and closed) it stays away while the visitor keeps
+// browsing, and it only returns on a fresh visit at least 30 minutes
+// later. One exception: right after signing up it shows one extra time.
+const BONUS_COOLDOWN_MS = 30 * 60 * 1000;
+let bonusCfg = null; // welcomeBonus config, filled by the ticker block
+function bonusGet(k) { try { return (k === 'sess' ? sessionStorage : localStorage).getItem('otpBonus_' + k); } catch (e) { return null; } }
+function bonusSet(k, v) { try { (k === 'sess' ? sessionStorage : localStorage).setItem('otpBonus_' + k, v); } catch (e) {} }
+function showBonusPopup() {
+  const el = $('bonusPopup');
+  if (!el || !el.classList.contains('hidden')) return;
+  el.classList.remove('hidden');
+  bonusSet('last', String(Date.now()));
+  bonusSet('sess', '1');
+}
+function maybeShowBonusPopup() {
+  if (bonusGet('sess')) return; // already shown during this visit
+  const last = Number(bonusGet('last') || 0);
+  if (last && Date.now() - last < BONUS_COOLDOWN_MS) return; // came back too soon
+  showBonusPopup();
+}
 function closeBonusPopup() { $('bonusPopup').classList.add('hidden'); }
 function bonusPopupCta() { closeBonusPopup(); bnavTopup(); }
 
