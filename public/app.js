@@ -866,6 +866,9 @@ async function loadAdminPanel(name) {
   $('cSmsBalances').textContent = (lb.bkash != null || lb.nagad != null)
     ? `Last seen — bKash: ৳${lb.bkash ?? '–'}, Nagad: ৳${lb.nagad ?? '–'}.`
     : 'No balance seen yet — arrives with the first forwarded SMS.';
+  $('cBowerOn').value = config.smsbowerEnabled ? '1' : '0';
+  $('cBowerKey').value = config.smsbowerApiKey ? '•••••••• (set — paste a new one to replace)' : '';
+  $('cBowerKey').placeholder = config.smsbowerApiKey ? '' : 'Paste SMSBower API key';
   $('cGoogleId').value = config.googleClientId || '';
   $('cGoogleSecret').value = config.googleClientSecret ? '•••••••• (set — paste a new one to replace)' : '';
   $('cGoogleSecret').placeholder = config.googleClientSecret ? '' : 'GOCSPX-…';
@@ -950,6 +953,9 @@ $('cSave').onclick = async () => {
       smsAutoApprove: $('cSmsOn').value === '1',
       smsBalanceCheck: $('cSmsBal').value === '1'
     };
+    body.smsbowerEnabled = $('cBowerOn').value === '1';
+    const bKey = $('cBowerKey').value.trim();
+    if (bKey && !bKey.startsWith('•')) body.smsbowerApiKey = bKey;
     body.googleClientId = $('cGoogleId').value.trim();
     const gSec = $('cGoogleSecret').value.trim();
     if (gSec && !gSec.startsWith('•')) body.googleClientSecret = gSec;
