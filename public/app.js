@@ -388,10 +388,17 @@ function renderServiceList(q) {
 let currentService = null;
 let currentCountries = [];
 function countryRowHtml(code, c) {
+  // When both providers stock this country, show them as Version 1
+  // (cheapest) and Version 2 — tapping one buys from that system, with
+  // the other as a close-price fallback. One offer = one plain Buy button.
+  const offers = (c.offers && c.offers.length) ? c.offers : null;
+  const btns = (offers && offers.length > 1)
+    ? offers.map((o, i) => `<button class="buy ${i ? 'alt' : ''}" onclick="buyNumber('${code}','${c.code}','${fmtUSD(o.priceUsd)}',${o.priceUsd},'${o.provider}')">Version ${i + 1} · ${fmtUSD(o.priceUsd)}</button>`).join('')
+    : `<button class="buy" onclick="buyNumber('${code}','${c.code}','${fmtUSD(c.priceUsd)}',${c.priceUsd})">${fmtUSD(c.priceUsd)}</button>`;
   return `
     <div class="country">
       <div><div class="nm">${c.flag} ${esc(c.name)}</div><div class="ct">${Number(c.count).toLocaleString()} numbers</div></div>
-      <button class="buy" onclick="buyNumber('${code}','${c.code}','${fmtUSD(c.priceUsd)}',${c.priceUsd})">${fmtUSD(c.priceUsd)}</button>
+      <div class="ver-btns">${btns}</div>
     </div>`;
 }
 function renderCountries() {
@@ -415,11 +422,13 @@ async function openService(code, name) {
 $('countrySearch').addEventListener('input', renderCountries);
 $('backBtn').onclick = () => { $('countryBox').classList.add('hidden'); $('svcBox').classList.remove('hidden'); };
 
-async function buyNumber(service, country, priceLabel, priceUsd) {
+async function buyNumber(service, country, priceLabel, priceUsd, provider) {
   if (!me) { $('authModal').classList.remove('hidden'); return; }
   if (!confirm(`Buy a number for ${priceLabel}?`)) return;
   try {
-    const { order } = await api('POST', '/api/orders', { service, country, expectedPrice: priceUsd });
+    const payload = { service, country, expectedPrice: priceUsd };
+    if (provider) payload.provider = provider;
+    const { order } = await api('POST', '/api/orders', payload);
     alert('Your number: ' + order.number);
     await refreshMe();
     document.querySelector('[data-tab="numbers"]').click();
