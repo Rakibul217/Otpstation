@@ -399,12 +399,8 @@ app.get('/api/services', async (req, res) => {
     res.json(v);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
-setTimeout(() => {
-  computeServices('').then(v => servicesCache.set('merged', { t: Date.now(), v })).catch(() => {});
-  getBackupProvider().then(b => {
-    if (b) computeServices('smsbower').then(v => servicesCache.set('smsbower', { t: Date.now(), v })).catch(() => {});
-  }).catch(() => {});
-}, 2000);
+setTimeout(warmCaches, 2000);
+setInterval(warmCaches, 4 * 60 * 1000);
 
 // One provider's own country list (single-offer entries) — the Version 1 /
 // Version 2 browsing mode, where the customer picks a system first and
@@ -428,30 +424,80 @@ async function providerCountries(service, providerName) {
     .sort((a, b) => a.baseUsd - b.baseUsd);
 }
 
-// Country lists are cached for 20s per service+version — repeat opens
-// are instant; the buy-time price guard still protects checkout if a
-// price moves inside that window.
+// Country lists are cached per service+version with stale-while-
+// revalidate: fresh for 60s, then the cached copy is still served
+// instantly while a background refresh runs (up to 10 min old). A
+// background warmer (below) keeps the hot lists permanently fresh, so
+// a tap essentially never waits on a provider API. The buy-time price
+// guard still protects checkout if a price moves inside the window.
+async function buildCountries(service, prov) {
+  const list = prov
+    ? await providerCountries(service, prov)
+    : await mergedCountries(service);
+  return {
+    countries: await Promise.all(list.map(async c => ({
+      ...c,
+      priceUsd: await priceUSD(c.baseUsd),
+      offers: await Promise.all((c.offers || []).map(async o => ({ ...o, priceUsd: await priceUSD(o.baseUsd) }))),
+    }))),
+  };
+}
 const countriesCache = new Map();
 app.get('/api/countries', async (req, res) => {
   try {
     const prov = String(req.query.provider || '').toLowerCase();
-    const key = (req.query.service || '') + '|' + (prov || 'merged');
+    const service = String(req.query.service || '');
+    const key = service + '|' + (prov || 'merged');
     const hit = countriesCache.get(key);
-    if (hit && Date.now() - hit.t < 20000) return res.json(hit.v);
-    const list = prov
-      ? await providerCountries(req.query.service, prov)
-      : await mergedCountries(req.query.service);
-    const v = {
-      countries: await Promise.all(list.map(async c => ({
-        ...c,
-        priceUsd: await priceUSD(c.baseUsd),
-        offers: await Promise.all((c.offers || []).map(async o => ({ ...o, priceUsd: await priceUSD(o.baseUsd) }))),
-      }))),
-    };
+    const age = hit ? Date.now() - hit.t : Infinity;
+    if (hit && age < 60000) return res.json(hit.v);
+    if (hit && age < 600000) {
+      if (!hit.refreshing) {
+        hit.refreshing = buildCountries(service, prov)
+          .then(v => {
+            // A transient provider outage must not wipe a good list:
+            // an empty refresh only replaces an already-empty cache.
+            if ((v.countries || []).length || !(hit.v.countries || []).length) countriesCache.set(key, { t: Date.now(), v });
+            else hit.refreshing = null;
+          })
+          .catch(() => { hit.refreshing = null; });
+      }
+      return res.json(hit.v);
+    }
+    const v = await buildCountries(service, prov);
     countriesCache.set(key, { t: Date.now(), v });
     res.json(v);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
+
+// Background warmer: rebuild the services payloads and the hottest
+// country lists (top services × every version scope) at boot and every
+// 4 minutes, so real visitors always hit a warm cache.
+const WARM_SERVICES = ['fb', 'wa', 'tg', 'ig', 'go', 'lf'];
+async function warmCaches() {
+  try { servicesCache.set('merged', { t: Date.now(), v: await computeServices('') }); } catch (e) {}
+  let primaryName = 'mock', backup = null;
+  try {
+    const cfg = await db.getConfig();
+    primaryName = (cfg.provider || 'mock').toLowerCase();
+    backup = await getBackupProvider();
+  } catch (e) {}
+  if (backup) {
+    try { servicesCache.set('smsbower', { t: Date.now(), v: await computeServices('smsbower') }); } catch (e) {}
+  }
+  const scopes = ['', primaryName];
+  if (backup) scopes.push('smsbower');
+  for (const code of WARM_SERVICES) {
+    for (const prov of scopes) {
+      try {
+        const v = await buildCountries(code, prov);
+        // Never let a transient provider outage at warm-up time poison
+        // the cache with an empty list — only real results are stored.
+        if (v.countries && v.countries.length) countriesCache.set(code + '|' + (prov || 'merged'), { t: Date.now(), v });
+      } catch (e) {}
+    }
+  }
+}
 
 app.post('/api/orders', requireAuth, async (req, res) => {
   try {
