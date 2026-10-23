@@ -28,7 +28,10 @@ function defaultConfig() {
     // SMS auto-approval: phone forwards bKash/Nagad payment SMS to webhook → matching top-up auto-approved
     smsAutoApprove: false, smsWebhookSecret: '',
     // Balance check: verify claimed payment against bKash/Nagad balance in SMS (anti-fake-SMS)
-    smsBalanceCheck: false, smsLastBalances: {}
+    smsBalanceCheck: false, smsLastBalances: {},
+    // Backup provider (SMSBower): orders route there when the primary is
+    // out of stock for a service+country or SMSBower is cheaper
+    smsbowerEnabled: false, smsbowerApiKey: ''
   };
 }
 function defaultDb() {
