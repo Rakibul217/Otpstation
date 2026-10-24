@@ -767,6 +767,108 @@ app.get('/api/my-accounts', requireAuth, async (req, res) => {
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// ---------------- complaint box / replacements ----------------
+// Buyers report a broken purchase (with a screenshot); the admin replaces it
+// from stock in one click, rejects it with a reason, or marks it resolved.
+// Guard rails: one OPEN complaint per purchased item, and ONE replacement
+// per item for its whole lifetime — no farming free accounts.
+const COMPLAINT_CATEGORIES = ['Cannot log in', 'Account locked', 'Password changed', 'Account banned', 'OTP not coming', 'Wrong / duplicate account', 'Other'];
+function complaintKey(c) { return c.refId + '|' + c.item; }
+app.get('/api/complaint-items', requireAuth, async (req, res) => {
+  try {
+    const [acctOrders, numOrders, mine] = await Promise.all([
+      db.myAccountOrders(req.user.id), db.userOrders(req.user.id), db.myComplaints(req.user.id)
+    ]);
+    const replaced = new Set(mine.filter(c => c.status === 'replaced').map(complaintKey));
+    const open = new Set(mine.filter(c => c.status === 'pending').map(complaintKey));
+    const items = [];
+    for (const o of acctOrders) {
+      for (const cred of (o.items || [])) {
+        const key = o.id + '|' + cred;
+        items.push({
+          kind: 'account', refId: o.id, productId: o.productId, productName: o.productName,
+          item: cred, label: `${o.productName} — ${String(cred).slice(0, 42)}`,
+          replaced: replaced.has(key), openComplaint: open.has(key), createdAt: o.createdAt
+        });
+      }
+    }
+    for (const o of numOrders) {
+      if (!o.number || o.status === 'cancelled') continue;
+      const key = o.id + '|' + o.number;
+      items.push({
+        kind: 'order', refId: o.id, productId: null,
+        productName: (o.serviceName || o.service || 'Number') + ' · ' + (o.countryName || ''),
+        item: o.number, label: `${o.serviceName || o.service} number ${o.number}`,
+        replaced: replaced.has(key), openComplaint: open.has(key), createdAt: o.createdAt
+      });
+    }
+    res.json({ items, categories: COMPLAINT_CATEGORIES });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/complaints', requireAuth, async (req, res) => {
+  try {
+    const { kind, refId, item, category, description, image } = req.body || {};
+    const desc = String(description || '').trim().slice(0, 1000);
+    if (!desc) return res.status(400).json({ error: 'Please describe the problem' });
+    const cat = COMPLAINT_CATEGORIES.includes(category) ? category : 'Other';
+    let img = null;
+    if (image) {
+      if (typeof image !== 'string' || !image.startsWith('data:image/') || image.length > 700000)
+        return res.status(400).json({ error: 'Screenshot is too large — please retake it' });
+      img = image;
+    }
+    // Ownership: the item must really be one of this user's purchases.
+    let productId = null, productName = '';
+    if (kind === 'account') {
+      const orders = await db.myAccountOrders(req.user.id);
+      const o = orders.find(x => x.id === refId);
+      if (!o || !(o.items || []).includes(item)) return res.status(400).json({ error: 'That purchase was not found in your account' });
+      productId = o.productId; productName = o.productName;
+    } else if (kind === 'order') {
+      const o = await db.getOrder(refId);
+      if (!o || o.userId !== req.user.id || o.number !== item) return res.status(400).json({ error: 'That order was not found in your account' });
+      productName = (o.serviceName || o.service || 'Number') + ' · ' + (o.countryName || '');
+    } else {
+      return res.status(400).json({ error: 'Please choose what you bought' });
+    }
+    const mine = await db.myComplaints(req.user.id);
+    const same = mine.filter(c => c.refId === refId && c.item === item);
+    if (same.some(c => c.status === 'replaced'))
+      return res.status(400).json({ error: 'This item was already replaced once — a second replacement is not available' });
+    if (same.some(c => c.status === 'pending'))
+      return res.status(400).json({ error: 'You already have an open complaint for this item — please wait for the reply' });
+    const now = Date.now();
+    const c = await db.createComplaint({
+      id: uid(), userId: req.user.id, username: req.user.username, kind, refId, productId, productName,
+      item: String(item), category: cat, description: desc, image: img,
+      status: 'pending', adminNote: '', replacement: null, createdAt: now, updatedAt: now
+    });
+    res.json({ ok: true, complaint: c });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+app.get('/api/my-complaints', requireAuth, async (req, res) => {
+  try {
+    const list = await db.myComplaints(req.user.id);
+    res.json({ complaints: list.map(c => ({ ...c, image: undefined, hasImage: !!c.image })) });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.get('/api/admin/complaints', requireAuth, requireAdmin, async (req, res) => {
+  try { res.json({ complaints: await db.adminComplaints(req.query.status || 'pending') }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.post('/api/admin/complaints/:id/replace', requireAuth, requireAdmin, async (req, res) => {
+  try { res.json({ ok: true, complaint: await db.replaceComplaint(req.params.id) }); }
+  catch (e) { res.status(400).json({ error: e.message }); }
+});
+app.post('/api/admin/complaints/:id/decide', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const { action, note } = req.body || {};
+    if (action !== 'reject' && action !== 'resolve') return res.status(400).json({ error: 'Unknown action' });
+    const status = action === 'reject' ? 'rejected' : 'resolved';
+    res.json({ ok: true, complaint: await db.decideComplaint(req.params.id, status, String(note || '').slice(0, 500)) });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
 // ---------------- live chat ----------------
 // Floating widget on the site. Guests chat with a random token; logged-in
 // users are matched by session. A keyword bot answers FAQs instantly; anything
