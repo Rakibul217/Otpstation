@@ -267,8 +267,9 @@ async function chatStartAsGuest() {
 async function chatRefresh() {
   if (!chatThread) return;
   try {
-    const q = new URLSearchParams({ threadId: chatThread.id, token: chatThread.token || '' });
-    const { messages } = await api('GET', '/api/chat/messages?' + q.toString());
+    const q = new URLSearchParams({ threadId: chatThread.id, token: chatThread.token || '', since: chatLastSeenId || '' });
+    const { messages, unchanged } = await api('GET', '/api/chat/messages?' + q.toString());
+    if (unchanged) return; // server confirmed nothing new — keep the current render
     const lastIdStr = messages.length ? String(messages[messages.length - 1].id) : '';
     const isFirst = chatSeenIds.size === 0;
     const fresh = isFirst ? [] : messages.filter(m => !chatSeenIds.has(String(m.id)));
