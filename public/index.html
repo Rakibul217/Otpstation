@@ -63,6 +63,12 @@
       </span>
       <span><span class="plate-label">Profile</span><br><span class="plate-sub">Account & history</span></span>
     </button>
+    <button class="plate hidden" data-tab="complaints" id="complaintPlate">
+      <span class="plate-icon" style="background:linear-gradient(135deg,#ec4899,#a04fff)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+      </span>
+      <span><span class="plate-label">Complaints</span><br><span class="plate-sub">Report a problem</span></span>
+    </button>
     <button class="plate hidden" data-tab="admin" id="adminPlate">
       <span class="plate-icon" style="background:linear-gradient(135deg,#f5b301,#d97706)">
         <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -157,6 +163,25 @@
     <div id="myAccounts"><span class="muted">Loading…</span></div>
   </section>
 
+  <!-- COMPLAINTS -->
+  <section id="tab-complaints" class="tab-page hidden">
+    <div class="section-head">
+      <h2>📮 Complaint Box</h2>
+      <p>Bought something that doesn't work? Report it here with a screenshot — we usually reply within a few hours. One free replacement per purchased item.</p>
+    </div>
+    <div class="card">
+      <label>What did you buy? <select id="cmplItem"></select></label>
+      <label>Problem type <select id="cmplCategory"></select></label>
+      <label>Describe the problem <textarea id="cmplDesc" rows="3" maxlength="1000" placeholder="e.g. I tried to log in and it says the password is wrong…"></textarea></label>
+      <label>Screenshot (recommended) <input id="cmplImage" type="file" accept="image/*"></label>
+      <img id="cmplPreview" class="cmpl-preview hidden" alt="Screenshot preview">
+      <button id="cmplSubmit" class="btn">📮 Send complaint</button>
+      <div id="cmplMsg" class="msg"></div>
+    </div>
+    <h3>My Complaints</h3>
+    <div id="myComplaints"><span class="muted">Loading…</span></div>
+  </section>
+
   <!-- TOPUP -->
   <section id="tab-topup" class="tab-page hidden">
     <div class="card">
@@ -237,6 +262,12 @@
         </span>
         <span><span class="plate-label">Accounts</span><br><span class="plate-sub">Sell accounts</span></span>
       </button>
+      <button class="plate" data-apanel="complaints">
+        <span class="plate-icon" style="background:linear-gradient(135deg,#e02828,#a04fff)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        </span>
+        <span><span class="plate-label">Complaints</span><br><span class="plate-sub">Replace &amp; fix</span></span>
+      </button>
       <button class="plate" data-apanel="chat">
         <span class="plate-icon" style="background:linear-gradient(135deg,#0ea5e9,#a04fff)">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -286,6 +317,16 @@
         <div id="apMsg" class="msg"></div>
       </div>
       <div id="apList"><span class="muted">Loading…</span></div>
+    </div>
+    <div id="apanel-complaints" class="apanel hidden">
+      <div class="card">
+        <h3>📮 Complaints</h3>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <button class="btn btn-sm" onclick="loadAdminComplaints('pending')">⏳ Pending</button>
+          <button class="btn btn-sm btn-outline" onclick="loadAdminComplaints('all')">All</button>
+        </div>
+        <div id="adminComplaints"><span class="muted">Loading…</span></div>
+      </div>
     </div>
     <div id="apanel-chat" class="apanel hidden">
       <div class="card">
