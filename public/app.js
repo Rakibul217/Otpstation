@@ -32,6 +32,7 @@ async function refreshMe() {
     $('pBalance').textContent = Number(me.balance).toFixed(2);
     $('adminPlate').classList.toggle('hidden', !me.isAdmin);
     $('profilePlate').classList.remove('hidden');
+    $('complaintPlate').classList.remove('hidden');
     $('plates').classList.remove('hidden');
     initAcctPlates();
     syncBnavAuth();
@@ -42,6 +43,7 @@ async function refreshMe() {
     $('profileBar').classList.add('hidden');
     $('adminPlate').classList.add('hidden');
     $('profilePlate').classList.add('hidden');
+    $('complaintPlate').classList.add('hidden');
     $('plates').classList.add('hidden');
     syncBnavAuth();
   }
@@ -348,6 +350,7 @@ document.querySelectorAll('#plates .plate').forEach(b => {
     if (b.dataset.tab === 'numbers') loadOrders();
     if (b.dataset.tab === 'topup') { loadPayInfo(); loadMyTopups(); }
     if (b.dataset.tab === 'profile') loadProfile();
+    if (b.dataset.tab === 'complaints') loadComplaintTab();
     if (b.dataset.tab === 'admin') loadAdmin();
     if (b.dataset.tab === 'accounts') { acctServiceKey = null; $('acctDelivered').innerHTML = ''; loadAccountShop(); }
     if (b.dataset.tab === 'services') document.getElementById('servicesHead').scrollIntoView({ behavior: 'smooth' });
@@ -920,7 +923,7 @@ async function toggleAdminPanel(name) {
   const btn = document.querySelector('#adminPlates .plate[data-apanel="' + name + '"]');
   if (btn) btn.classList.add('active');
   // payment queues + live chat always refresh; the rest load once per visit
-  if (name === 'awaiting' || name === 'review' || name === 'chat' || !adminLoaded[name]) {
+  if (name === 'awaiting' || name === 'review' || name === 'chat' || name === 'complaints' || !adminLoaded[name]) {
     adminLoaded[name] = true;
     await loadAdminPanel(name);
   }
@@ -944,6 +947,7 @@ async function loadAdminPanel(name) {
     <span><button class="appr" onclick="decideTopup('${t.id}','approve')">✓</button><button class="rej" onclick="decideTopup('${t.id}','reject')">✕</button></span></div>`).join('')
     : 'Nothing to review.';
   }
+  if (name === 'complaints') { await loadAdminComplaints('pending'); }
   if (name === 'settings') {
   const { config } = await api('GET', '/api/admin/config');
   $('cFlatFee').value = config.flatFeeUsd || 0;
@@ -1335,7 +1339,7 @@ function bonusPopupCta() { closeBonusPopup(); bnavTopup(); }
 refreshMe().then(() => { loadServices(); });
 
 // ---------- order alerts: bell rings on new top-up ----------
-const orderAlerts = { on: false, known: new Set(), timer: null, wakeLock: null, audio: null, origTitle: document.title };
+const orderAlerts = { on: false, known: new Set(), knownComplaints: new Set(), timer: null, wakeLock: null, audio: null, origTitle: document.title };
 function alertAudio() {
   if (!orderAlerts.audio) {
     const AC = window.AudioContext || window.webkitAudioContext;
@@ -1391,6 +1395,26 @@ async function pollOrderAlerts() {
       }
     });
   } catch (e) { /* keep polling silently */ }
+  // New complaints ring the same bell — a broken-account report is as
+  // urgent as a payment for keeping buyers happy.
+  try {
+    const { complaints } = await api('GET', '/api/admin/complaints?status=pending');
+    (complaints || []).forEach(c => {
+      if (orderAlerts.knownComplaints.has(c.id)) return;
+      orderAlerts.knownComplaints.add(c.id);
+      bellRing(3);
+      if (navigator.vibrate) navigator.vibrate([250, 120, 250, 120, 500]);
+      flashTitle('📮 New complaint from ' + (c.username || 'a buyer') + '!');
+      const log = $('alertLog');
+      if (log) {
+        const row = document.createElement('div');
+        row.className = 'alert-row';
+        row.innerHTML = `<span>📮 <b>${esc(c.username || '')}</b> · ${esc(c.productName || '')}<br><span class="muted">${new Date().toLocaleTimeString()}</span></span>
+          <button class="btn btn-sm" onclick="toggleAdminPanel('complaints')">Open</button>`;
+        log.prepend(row);
+      }
+    });
+  } catch (e) { /* keep polling silently */ }
 }
 async function acquireWakeLock() {
   try {
@@ -1411,6 +1435,8 @@ async function toggleOrderAlerts() {
     try {
       const { topups } = await api('GET', '/api/admin/topups?status=pending');
       (topups || []).forEach(t => orderAlerts.known.add(t.id));
+      const { complaints } = await api('GET', '/api/admin/complaints?status=pending');
+      (complaints || []).forEach(c => orderAlerts.knownComplaints.add(c.id));
     } catch (e) {}
     orderAlerts.on = true;
     acquireWakeLock();
@@ -1435,3 +1461,126 @@ $('cSmsRegen').onclick = async () => {
     showMsg('cMsg', 'New secret generated ✓ — update your phone app', 'ok');
   } catch (e) { showMsg('cMsg', e.message, 'err'); }
 };
+
+// ---------- complaint box (buyer side) ----------
+let cmplItemsCache = [], cmplImageData = null, myComplaintsCache = [];
+function cmplStatusLabel(s) {
+  return { pending: '⏳ Pending', replaced: '✅ Replaced', rejected: '✕ Rejected', resolved: '✔ Resolved' }[s] || s;
+}
+async function loadComplaintTab() {
+  try {
+    const { items, categories } = await api('GET', '/api/complaint-items');
+    cmplItemsCache = items || [];
+    $('cmplItem').innerHTML = cmplItemsCache.length ? cmplItemsCache.map((it, i) => {
+      const suffix = it.replaced ? ' — already replaced' : (it.openComplaint ? ' — complaint pending' : '');
+      return `<option value="${i}" ${it.replaced || it.openComplaint ? 'disabled' : ''}>${esc(it.label)}${suffix}</option>`;
+    }).join('') : '<option value="">No purchases yet — buy something first</option>';
+    $('cmplCategory').innerHTML = (categories || []).map(c => `<option>${esc(c)}</option>`).join('');
+  } catch (e) { showMsg('cmplMsg', e.message, 'err'); }
+  loadMyComplaints();
+}
+async function loadMyComplaints() {
+  try {
+    const { complaints } = await api('GET', '/api/my-complaints');
+    myComplaintsCache = complaints || [];
+    $('myComplaints').innerHTML = myComplaintsCache.length ? myComplaintsCache.map(c => `
+      <div class="cmpl-card">
+        <div class="cmpl-head"><b>${esc(c.productName || '')}</b><span class="chip st-${c.status}">${cmplStatusLabel(c.status)}</span></div>
+        <div class="muted">${esc(c.category)} · ${new Date(c.createdAt).toLocaleString()}</div>
+        <div class="cmpl-item mono">${esc(String(c.item).slice(0, 60))}</div>
+        <div>${esc(c.description)}</div>
+        ${c.hasImage ? '<div class="muted">📎 Screenshot attached</div>' : ''}
+        ${c.adminNote ? `<div class="cmpl-note">💬 Admin: ${esc(c.adminNote)}</div>` : ''}
+        ${c.status === 'replaced' && c.replacement ? `<div class="rep-box">✅ Your replacement account:<br><span class="mono">${esc(c.replacement)}</span><br><button class="btn btn-sm" onclick="copyComplaintReplacement('${c.id}', this)">📋 Copy</button></div>` : ''}
+      </div>`).join('') : '<span class="muted">No complaints yet.</span>';
+  } catch (e) { /* stay quiet */ }
+}
+function copyComplaintReplacement(id, btn) {
+  const c = myComplaintsCache.find(x => x.id === id);
+  if (!c || !c.replacement) return;
+  const done = () => { const old = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = old; }, 1200); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(c.replacement).then(done).catch(done);
+  else done();
+}
+$('cmplImage').addEventListener('change', () => {
+  const f = $('cmplImage').files[0];
+  cmplImageData = null;
+  $('cmplPreview').classList.add('hidden');
+  if (!f) return;
+  const img = new Image();
+  img.onload = () => {
+    const max = 1280, scale = Math.min(1, max / Math.max(img.width, img.height));
+    const cv = document.createElement('canvas');
+    cv.width = Math.round(img.width * scale); cv.height = Math.round(img.height * scale);
+    cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+    cmplImageData = cv.toDataURL('image/jpeg', 0.72);
+    $('cmplPreview').src = cmplImageData;
+    $('cmplPreview').classList.remove('hidden');
+    URL.revokeObjectURL(img.src);
+  };
+  img.onerror = () => showMsg('cmplMsg', 'Could not read that image — try another one', 'err');
+  img.src = URL.createObjectURL(f);
+});
+$('cmplSubmit').onclick = async () => {
+  const it = cmplItemsCache[Number($('cmplItem').value)];
+  if (!it) { showMsg('cmplMsg', 'Please choose what you bought', 'err'); return; }
+  const desc = $('cmplDesc').value.trim();
+  if (!desc) { showMsg('cmplMsg', 'Please describe the problem', 'err'); return; }
+  const btn = $('cmplSubmit');
+  btn.disabled = true;
+  try {
+    await api('POST', '/api/complaints', {
+      kind: it.kind, refId: it.refId, item: it.item,
+      category: $('cmplCategory').value, description: desc, image: cmplImageData
+    });
+    pingSound();
+    showMsg('cmplMsg', 'Complaint sent ✓ — we will check it and reply here.', 'ok');
+    $('cmplDesc').value = '';
+    $('cmplImage').value = '';
+    cmplImageData = null;
+    $('cmplPreview').classList.add('hidden');
+    loadComplaintTab();
+  } catch (e) { showMsg('cmplMsg', e.message, 'err'); }
+  btn.disabled = false;
+};
+
+// ---------- complaint box (admin side) ----------
+let adminComplaintsCache = [], adminComplaintFilter = 'pending';
+async function loadAdminComplaints(filter) {
+  adminComplaintFilter = filter || 'pending';
+  try {
+    const { complaints } = await api('GET', '/api/admin/complaints?status=' + adminComplaintFilter);
+    adminComplaintsCache = complaints || [];
+    $('adminComplaints').innerHTML = adminComplaintsCache.length ? adminComplaintsCache.map(c => `
+      <div class="cmpl-card">
+        <div class="cmpl-head"><b>${esc(c.username || '')}</b><span class="chip st-${c.status}">${cmplStatusLabel(c.status)}</span><span class="muted">${new Date(c.createdAt).toLocaleString()}</span></div>
+        <div><b>${esc(c.productName || '')}</b> · ${esc(c.category)}</div>
+        <div class="cmpl-item mono">${esc(String(c.item).slice(0, 80))}</div>
+        <div>${esc(c.description)}</div>
+        ${c.image ? `<img class="cmpl-img" src="${esc(c.image)}" onclick="this.classList.toggle('full')" alt="Buyer screenshot — tap to enlarge">` : ''}
+        ${c.adminNote ? `<div class="cmpl-note">Note: ${esc(c.adminNote)}</div>` : ''}
+        ${c.status === 'replaced' && c.replacement ? `<div class="rep-box">Replacement given:<br><span class="mono">${esc(c.replacement)}</span></div>` : ''}
+        ${c.status === 'pending' ? `<div class="cmpl-actions">
+          ${c.kind === 'account' ? `<button class="appr" onclick="adminComplaintReplace('${c.id}')">🔁 Replace from stock</button>` : ''}
+          <button class="btn btn-sm" onclick="adminComplaintDecide('${c.id}','resolve')">✔ Resolve</button>
+          <button class="rej" onclick="adminComplaintDecide('${c.id}','reject')">✕ Reject</button>
+        </div>` : ''}
+      </div>`).join('') : '<span class="muted">No complaints here. 🎉</span>';
+  } catch (e) { $('adminComplaints').innerHTML = '<span class="muted">' + esc(e.message) + '</span>'; }
+}
+async function adminComplaintReplace(id) {
+  if (!confirm('Give this buyer a FREE replacement from stock?')) return;
+  try {
+    await api('POST', '/api/admin/complaints/' + id + '/replace', {});
+    bellRing(1);
+    loadAdminComplaints(adminComplaintFilter);
+  } catch (e) { alert(e.message); }
+}
+async function adminComplaintDecide(id, action) {
+  const note = prompt(action === 'reject' ? 'Reason for rejecting (the buyer will see this):' : 'Note for the buyer (optional):');
+  if (note === null) return;
+  try {
+    await api('POST', '/api/admin/complaints/' + id + '/decide', { action, note });
+    loadAdminComplaints(adminComplaintFilter);
+  } catch (e) { alert(e.message); }
+}
