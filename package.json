@@ -5,6 +5,9 @@
     "pg": "^8.11.3"
   },
   "description": "OTP selling website MVP (Grizzly SMS style) - BD Bazar OTP",
+  "engines": {
+    "node": "24.22.1"
+  },
   "main": "server.js",
   "name": "bd-bazar-otp-website",
   "scripts": {
