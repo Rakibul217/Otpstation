@@ -537,6 +537,16 @@ async function pgListChatMessages(threadId) {
   );
   return r.rows.map(mapChatMessage);
 }
+// Cheapest possible "did anything change?" probe: one row, one column.
+// Used by the chat poll endpoint so idle polls stop pulling whole threads
+// out of Postgres (Neon bills/counts every byte of that egress).
+async function pgLatestChatMessageId(threadId) {
+  const r = await pool.query(
+    `SELECT id FROM chat_messages WHERE "threadId" = $1 ORDER BY "createdAt" DESC, id DESC LIMIT 1`,
+    [threadId]
+  );
+  return r.rows.length ? r.rows[0].id : null;
+}
 // Admin thread list: open first, newest first, with last-message preview + unread count
 // (user messages after the last bot/agent/admin message).
 async function pgListChatThreadsAdmin() {
@@ -964,6 +974,13 @@ module.exports = {
     return mem().chatMessages
       .filter(m => m.threadId === threadId)
       .sort((a, b) => a.createdAt - b.createdAt || (a.id < b.id ? -1 : 1));
+  },
+  latestChatMessageId: async (threadId) => {
+    if (pgMode) return pgLatestChatMessageId(threadId);
+    const list = mem().chatMessages
+      .filter(m => m.threadId === threadId)
+      .sort((a, b) => a.createdAt - b.createdAt || (a.id < b.id ? -1 : 1));
+    return list.length ? list[list.length - 1].id : null;
   },
   // Admin: open first, newest first; last-message preview + unread count.
   // Never includes guestToken or emails.
