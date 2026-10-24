@@ -46,7 +46,8 @@ function defaultDb() {
     chatThreads: [],  // {id, userId|null, guestName, guestToken, status:'open'|'closed', createdAt, updatedAt}
     chatMessages: [],  // {id, threadId, sender:'user'|'bot'|'agent'|'admin', text, createdAt}
     chatFaqs: [],       // {id, keywords, answer, active, createdAt}
-    bonuses: []        // {id, userId, amount, kind:'welcome', label, createdAt}
+    bonuses: [],       // {id, userId, amount, kind:'welcome', label, createdAt}
+    complaints: []     // {id, userId, username, kind:'account'|'order', refId, productId, productName, item, category, description, image, status:'pending'|'replaced'|'rejected'|'resolved', adminNote, replacement, createdAt, updatedAt}
   };
 }
 
@@ -203,6 +204,26 @@ async function createTables() {
       label TEXT,
       "createdAt" BIGINT
     );
+    CREATE TABLE IF NOT EXISTS complaints (
+      id TEXT PRIMARY KEY,
+      "userId" TEXT,
+      username TEXT,
+      kind TEXT,
+      "refId" TEXT,
+      "productId" TEXT,
+      "productName" TEXT,
+      item TEXT,
+      category TEXT,
+      description TEXT,
+      image TEXT,
+      status TEXT DEFAULT 'pending',
+      "adminNote" TEXT,
+      replacement TEXT,
+      "createdAt" BIGINT,
+      "updatedAt" BIGINT
+    );
+    CREATE INDEX IF NOT EXISTS idx_complaints_user ON complaints ("userId", "createdAt");
+    CREATE INDEX IF NOT EXISTS idx_complaints_status ON complaints (status, "createdAt");
   `);
 }
 
@@ -285,6 +306,17 @@ const CHAT_THREAD_COLS = ['id', 'userId', 'guestName', 'guestToken', 'status', '
 const CHAT_MESSAGE_COLS = ['id', 'threadId', 'sender', 'text', 'createdAt'];
 const CHAT_FAQ_COLS = ['id', 'keywords', 'answer', 'active', 'createdAt'];
 const BONUS_COLS = ['id', 'userId', 'amount', 'kind', 'label', 'createdAt'];
+const COMPLAINT_COLS = ['id', 'userId', 'username', 'kind', 'refId', 'productId', 'productName', 'item', 'category', 'description', 'image', 'status', 'adminNote', 'replacement', 'createdAt', 'updatedAt'];
+function mapComplaint(r) {
+  if (!r) return undefined;
+  return {
+    id: r.id, userId: r.userId, username: r.username || '', kind: r.kind || 'account',
+    refId: r.refId, productId: r.productId || null, productName: r.productName || '',
+    item: r.item || '', category: r.category || '', description: r.description || '',
+    image: r.image || null, status: r.status || 'pending', adminNote: r.adminNote || '',
+    replacement: r.replacement || null, createdAt: num(r.createdAt), updatedAt: num(r.updatedAt)
+  };
+}
 function mapBonus(r) {
   if (!r) return undefined;
   return { id: r.id, userId: r.userId, amount: num(r.amount), kind: r.kind || '', label: r.label || '', createdAt: num(r.createdAt) };
@@ -297,6 +329,72 @@ async function pgAddBonus({ userId, amount, kind, label }) {
 async function pgUserBonuses(userId) {
   const r = await pool.query('SELECT * FROM bonuses WHERE "userId" = $1 ORDER BY "createdAt" DESC', [userId]);
   return r.rows.map(mapBonus);
+}
+
+// ---- complaints (pg implementations) ----
+async function pgCreateComplaint(c) {
+  await pgInsert((q, p) => pool.query(q, p), 'complaints', COMPLAINT_COLS, c);
+  return c;
+}
+async function pgMyComplaints(userId) {
+  const r = await pool.query(`SELECT * FROM complaints WHERE "userId" = $1 ${NEWEST_FIRST}`, [userId]);
+  return r.rows.map(mapComplaint);
+}
+async function pgAdminComplaints(status) {
+  const r = status === 'pending'
+    ? await pool.query(`SELECT * FROM complaints WHERE status = 'pending' ${NEWEST_FIRST} LIMIT 100`)
+    : await pool.query(`SELECT * FROM complaints ${NEWEST_FIRST} LIMIT 100`);
+  return r.rows.map(mapComplaint);
+}
+async function pgGetComplaint(id) {
+  const r = await pool.query('SELECT * FROM complaints WHERE id = $1', [id]);
+  return mapComplaint(r.rows[0]);
+}
+async function pgDecideComplaint(id, status, note) {
+  const c = await pgGetComplaint(id);
+  if (!c) throw new Error('Complaint not found');
+  if (c.status !== 'pending') throw new Error('This complaint was already handled');
+  await pool.query('UPDATE complaints SET status = $2, "adminNote" = $3, "updatedAt" = $4 WHERE id = $1',
+    [id, status, note || '', Date.now()]);
+  return pgGetComplaint(id);
+}
+// Give a free replacement for an account purchase: atomically take the next
+// available stock item of the same product, record it as a $0 account order
+// in the buyer's My Accounts, and mark the complaint replaced. One shot only
+// (the caller also blocks a second complaint for an already-replaced item).
+async function pgReplaceComplaint(id) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const q = (t, p) => client.query(t, p);
+    const cr = await q('SELECT * FROM complaints WHERE id = $1 FOR UPDATE', [id]);
+    const c = mapComplaint(cr.rows[0]);
+    if (!c) throw new Error('Complaint not found');
+    if (c.status !== 'pending') throw new Error('This complaint was already handled');
+    if (c.kind !== 'account' || !c.productId) throw new Error('Replacement is only available for account purchases');
+    const sr = await q(
+      `SELECT id, credential FROM account_stock WHERE "productId" = $1 AND status = 'available' ORDER BY "createdAt" ASC, id ASC LIMIT 1 FOR UPDATE SKIP LOCKED`,
+      [c.productId]
+    );
+    if (!sr.rows.length) throw new Error('No stock left for this product — add stock first, or reject/resolve instead');
+    const stock = sr.rows[0];
+    const now = Date.now();
+    await q('UPDATE account_stock SET status = \'sold\', "soldToUserId" = $2, "soldAt" = $3 WHERE id = $1', [stock.id, c.userId, now]);
+    const order = {
+      id: uid(), userId: c.userId, productId: c.productId,
+      productName: (c.productName || 'Account') + ' (Replacement)', qty: 1, totalUsd: 0,
+      items: [stock.credential], createdAt: now
+    };
+    await pgInsert(q, 'account_orders', ACCOUNT_ORDER_COLS, Object.assign({}, order, { items: JSON.stringify(order.items) }));
+    await q('UPDATE complaints SET status = \'replaced\', replacement = $2, "updatedAt" = $3 WHERE id = $1', [id, stock.credential, now]);
+    await client.query('COMMIT');
+    return pgGetComplaint(id);
+  } catch (e) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    throw e;
+  } finally {
+    client.release();
+  }
 }
 
 function dbVal(v) { return v === undefined ? null : v; }
@@ -385,7 +483,8 @@ async function pgExport() {
     chatThreads: ct.rows.map(mapChatThread),
     chatMessages: cm.rows.map(mapChatMessage),
     chatFaqs: cf.rows.map(mapChatFaq),
-    bonuses: bn.rows.map(mapBonus)
+    bonuses: bn.rows.map(mapBonus),
+    complaints: await pgAdminComplaints('all')
   };
 }
 function validateBackup(data) {
@@ -393,7 +492,7 @@ function validateBackup(data) {
       !Array.isArray(data.topups) || typeof data.config !== 'object' || !data.config) {
     throw new Error('Invalid backup file.');
   }
-  for (const k of ['accountProducts', 'accountStock', 'accountOrders', 'chatThreads', 'chatMessages', 'chatFaqs', 'bonuses']) {
+  for (const k of ['accountProducts', 'accountStock', 'accountOrders', 'chatThreads', 'chatMessages', 'chatFaqs', 'bonuses', 'complaints']) {
     if (data[k] === undefined) data[k] = [];
     else if (!Array.isArray(data[k])) throw new Error('Invalid backup file.');
   }
@@ -425,6 +524,8 @@ async function pgImport(data) {
     for (const cf of data.chatFaqs) await pgInsert(q, 'chat_faqs', CHAT_FAQ_COLS, cf);
     await q('DELETE FROM bonuses');
     for (const b of data.bonuses || []) await pgInsert(q, 'bonuses', BONUS_COLS, b);
+    await q('DELETE FROM complaints');
+    for (const c of data.complaints || []) await pgInsert(q, 'complaints', COMPLAINT_COLS, c);
     await q('INSERT INTO config (id, data) VALUES (1, $1)', [JSON.stringify(data.config || {})]);
     await q('COMMIT');
   } catch (e) {
@@ -928,6 +1029,56 @@ module.exports = {
       return r.rows.map(mapAccountOrder);
     }
     return mem().accountOrders.filter(o => o.userId === userId);
+  },
+
+  // ---- complaints / replacement box ----
+  createComplaint: async (c) => {
+    if (pgMode) return pgCreateComplaint(c);
+    const d = mem(); if (!d.complaints) d.complaints = [];
+    d.complaints.unshift(c); save(cache); return c;
+  },
+  myComplaints: async (userId) => {
+    if (pgMode) return pgMyComplaints(userId);
+    return (mem().complaints || []).filter(c => c.userId === userId);
+  },
+  adminComplaints: async (status) => {
+    if (pgMode) return pgAdminComplaints(status);
+    const all = (mem().complaints || []).slice(0, 100);
+    return status === 'pending' ? all.filter(c => c.status === 'pending') : all;
+  },
+  getComplaint: async (id) => {
+    if (pgMode) return pgGetComplaint(id);
+    return (mem().complaints || []).find(c => c.id === id);
+  },
+  decideComplaint: async (id, status, note) => {
+    if (pgMode) return pgDecideComplaint(id, status, note);
+    const d = mem(); if (!d.complaints) d.complaints = [];
+    const c = d.complaints.find(x => x.id === id);
+    if (!c) throw new Error('Complaint not found');
+    if (c.status !== 'pending') throw new Error('This complaint was already handled');
+    c.status = status; c.adminNote = note || ''; c.updatedAt = Date.now();
+    save(cache); return c;
+  },
+  replaceComplaint: async (id) => {
+    if (pgMode) return pgReplaceComplaint(id);
+    const d = mem(); if (!d.complaints) d.complaints = [];
+    const c = d.complaints.find(x => x.id === id);
+    if (!c) throw new Error('Complaint not found');
+    if (c.status !== 'pending') throw new Error('This complaint was already handled');
+    if (c.kind !== 'account' || !c.productId) throw new Error('Replacement is only available for account purchases');
+    const row = d.accountStock
+      .filter(s => s.productId === c.productId && s.status === 'available')
+      .sort((a, b) => a.createdAt - b.createdAt)[0];
+    if (!row) throw new Error('No stock left for this product — add stock first, or reject/resolve instead');
+    const now = Date.now();
+    row.status = 'sold'; row.soldToUserId = c.userId; row.soldAt = now;
+    d.accountOrders.unshift({
+      id: uid(), userId: c.userId, productId: c.productId,
+      productName: (c.productName || 'Account') + ' (Replacement)', qty: 1, totalUsd: 0,
+      items: [row.credential], createdAt: now
+    });
+    c.status = 'replaced'; c.replacement = row.credential; c.updatedAt = now;
+    save(cache); return c;
   },
 
   // ---- live chat ----
