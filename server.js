@@ -5,6 +5,19 @@ const crypto = require('crypto');
 const path = require('path');
 const db = require('./db');
 
+// Chat change tracker (in-memory): every chat write in this process goes
+// through db.addChatMessage, so a per-thread counter reliably tells the
+// SSE stream and the poll endpoint "nothing new — don't touch Postgres".
+// Idle chat connections used to re-read the whole thread from Neon up to
+// every 800 ms, burning the free plan's 5 GB monthly transfer allowance.
+const chatVer = new Map(); // threadId -> int, bumped on every new message
+const _addChatMessage = db.addChatMessage.bind(db);
+db.addChatMessage = async (threadId, sender, text) => {
+  const m = await _addChatMessage(threadId, sender, text);
+  chatVer.set(threadId, (chatVer.get(threadId) || 0) + 1);
+  return m;
+};
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '10mb' }));
@@ -935,6 +948,13 @@ app.get('/api/chat/messages', async (req, res) => {
     const thread = await db.getChatThread(req.query.threadId);
     if (!thread) return res.status(404).json({ error: 'Chat not found' });
     if (!(await chatAccess(req, thread))) return res.status(403).json({ error: 'Not your chat' });
+    // Fast path: the client already has the newest message → return a tiny
+    // "unchanged" reply after a one-row probe instead of the whole thread.
+    const since = String(req.query.since || '');
+    if (since) {
+      const latest = await db.latestChatMessageId(thread.id);
+      if (latest && String(latest) === since) return res.json({ messages: [], unchanged: true });
+    }
     const messages = await db.listChatMessages(thread.id);
     res.json({ messages: messages.map(m => ({ id: m.id, sender: m.sender, text: m.text, createdAt: m.createdAt })) });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -953,9 +973,15 @@ function chatStream(req, res, thread, since) {
   res.write(': connected\n\n');
   let lastSeen = String(since || '');
   let alive = true;
+  let lastVer = -1; // chatVer value at the last DB read (-1 = never read yet)
   req.on('close', () => { alive = false; });
   const timer = setInterval(async () => {
     if (!alive) { clearInterval(timer); return; }
+    // Skip the Postgres read entirely while no new message was written to
+    // this thread (all writes pass through the wrapped db.addChatMessage).
+    const vNow = chatVer.get(thread.id) || 0;
+    if (lastVer !== -1 && vNow === lastVer) return;
+    lastVer = vNow;
     try {
       const msgs = await db.listChatMessages(thread.id);
       if (!msgs.length) return;
