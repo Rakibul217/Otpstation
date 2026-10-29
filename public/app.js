@@ -36,7 +36,7 @@ async function refreshMe() {
     $('plates').classList.remove('hidden');
     initAcctPlates();
     syncBnavAuth();
-    if (me.isAdmin) chatAdminWatch(); // sound + title ping on new customer messages
+    // chatAdminWatch removed with live chat (Oct 29, 2026) — no more polling.
   } else {
     $('authArea').innerHTML = `<button class="link" id="loginBtn">Log in / Register</button>`;
     $('loginBtn').onclick = () => { $('authModal').classList.remove('hidden'); };
@@ -324,7 +324,10 @@ function chatStreamStart() {
   } catch (e) {}
 }
 // Watch silently for replies on page load (returning visitor with a stored thread)
-if (chatStored()) { chatThread = chatStored(); ensureChatBg(); }
+// Live chat is DISABLED (Oct 29, 2026, owner's decision): no widget in the
+// page and no background polling — support runs through the Complaint Box.
+// Do not restart chatThread/ensureChatBg here; the polling was the main
+// driver of Neon data-transfer burn.
 async function chatSend() {
   const inp = $('chatInput');
   const text = inp.value.trim();
